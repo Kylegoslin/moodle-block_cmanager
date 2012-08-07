@@ -9,9 +9,9 @@ class block_cmanager extends block_base {
 function init() {
 
     $this->title   = 'Course Request Manager';
-	$plugin = new stdClass();
-    $plugin->version   = 2012080725;      // The current module version (Date: YYYYMMDDXX)
-	$plugin->requires  = 2010031900;      // Requires this Moodle version
+    $plugin = new stdClass();
+    $plugin->version   = 2012080724;      // The current module version (Date: YYYYMMDDXX)
+    $plugin->requires  = 2010031900;      // Requires this Moodle version
 
    
   }

@@ -5,11 +5,11 @@
  *    verison.php 
  * 
  */
-$plugin->version = 2012072522;      // The current module version (Date: YYYYMMDDXX)
+$plugin->version = 2012080724;      // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2012062501.00;      // Requires this Moodle version
 
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '2.2';
+$plugin->release = '2.4';
 ?>
 
 

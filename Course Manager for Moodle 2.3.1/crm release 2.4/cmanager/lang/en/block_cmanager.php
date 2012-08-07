@@ -185,21 +185,25 @@ $string['requestReview_Summary'] = 'Request Summary';
 $string['requestReview_intro1'] = 'Please review the following information carefully before submitting your request.';
 $string['requestReview_intro2'] = 'Your request will be dealt with as soon as possible.';
 $string['requestReview_status'] = 'STATUS';
+
 $string['requestReview_requestType'] = 'Request Type';
 $string['requestReview_moduleCode'] = 'Course Code';
 $string['requestReview_moduleName'] = 'Course Name';
 $string['requestReview_Originator'] = 'Originator';
+
 $string['requestReview_SubmitRequest'] = 'Submit Request';
 $string['requestReview_AlterRequest'] = 'Alter Request';
 $string['requestReview_CancelRequest'] = 'Cancel Request';
 $string['requestReview_creationDate'] = 'Creation Date';
 $string['requestReview_requestType'] = 'Request Type';
+
 $string['requestReview_OpenDetails'] = 'Open Details';
 $string['requestReview_ApproveRequest'] = 'Approve Request';
 $string['requestReview_ApproveRequest'] = 'Approve Request';
+
 $string['requestReview_courseName'] = 'Course Name';
 $string['requestReview_courseCode'] = 'Course Code';
-$string['requestReview_originator'] = 'Originator';
+
 
 
 //comments

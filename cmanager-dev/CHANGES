@@ -5,15 +5,27 @@
 ----------------------------------------------------------------------
 
 
+CRM Version 3.1
+Date:
+
+CHANGES
+
+Dropdown deleting error has been resolved. Dropdowns can be deleted
+without any error. (Error: No Id added)
+
+Echo added to review_request.php
 
 
+Ordering issue in course_new.php and displayLists.php updated to ASC
 
+Postgree SQL error on module_manager.php removed
 
 ----------------------------------------------------------------------
 CRM Version: 3.0
 Date: 12th March 2013
 
 CHANGES:
+
 
 
 Debug errors showing up in Moodle 2.4 these have been removed.

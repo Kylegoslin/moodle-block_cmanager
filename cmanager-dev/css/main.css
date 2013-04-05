@@ -1,0 +1,73 @@
+
+
+div.statusblock { 
+  color: #00FF00; 
+  font-family:arial; 
+  font-size: 5pt; 
+}
+ 
+
+
+
+#twobordertitle {
+
+
+border-top:1px solid black; 
+border-bottom: 1px solid black;
+width: 700px;
+height:20px;
+}
+
+
+
+#twobordertitlewide {
+
+
+border-top:1px solid black; 
+border-bottom: 1px solid black;
+width: 800px;
+height:20px;
+}
+#singleborderwide {
+
+ 
+border-bottom: 1px solid black;
+width: 800px;
+height:150px;
+padding-bottom:10px;
+padding-top:10px;
+font-size: 12px;
+
+}
+
+
+
+
+#existingrequest {
+
+background-color: white; 
+width: 700px;
+height:200px;
+padding-bottom:80px;
+padding-top:10px;
+font-size: 12px;
+
+}
+
+
+#pendingrequestcontainer{
+width: 700px;
+
+}
+
+#tabtitlebar {
+border: 1px #000000 solid;
+
+background-color: #eee; 
+-moz-border-radius: 15px;
+border-radius: 15px;
+height: 50px;
+padding-left:10px;
+padding-top: 20px;
+}
+

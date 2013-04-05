@@ -75,7 +75,9 @@ class courserequest_form extends moodleform {
 	
 
 	// Get the list of pending requests
-   $pendingList = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid AND" , 'status' => 'PENDING'), 'id ASC');
+   //$pendingList = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid AND" , 'status' => 'PENDING'), 'id ASC');
+   $pendingList = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid" , 'status' => 'PENDING'), 'id ASC');
+  
    $outputHTML = '<div id="pendingrequestcontainer">';
 
 

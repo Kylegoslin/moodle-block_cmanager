@@ -93,9 +93,11 @@ function addIdToList(id){
  * This function is used to save the text from the 
  * categories when they are changed.
  */
-function saveChangedCategory(fieldvalue, recordId){
+function saveChangedCategory(recordId){
 
-   
+   var fieldvalue = document.getElementById('menucat' + recordId).value;
+ 
+ 	
    
     $.post("ajax_functions.php", { type: 'updatecategory', value: fieldvalue, recId: recordId },
     		   function(data) {

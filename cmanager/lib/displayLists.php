@@ -213,7 +213,7 @@ select.my_dropdown{width:200px}
 
 	$catlistHTML = '';
 	if($editCatAvailable == true){
-			
+			/*
 				$catlistHTML.= '<select class="my_dropdown" name="category"  onChange="saveChangedCategory(this.value, '.$rec->id.')">';	
 				$courseCategories = $DB->get_records('course_categories');
 				$catlistHTML .= '<option value="" selected=""></option>';
@@ -229,6 +229,22 @@ select.my_dropdown{width:200px}
 				}
 	
 			$catlistHTML.= '</select>';
+			*/
+			
+			    $movetocategories = array();
+        $notused = array();
+        make_categories_list($movetocategories, $notused);
+      	$cateDrop =  html_writer::select($movetocategories, 'cat'.$rec->id, $rec->cate, null);
+ 	    $catlistHTML .= '<div id="catname" class="catname">'.$cateDrop . '';
+		
+		//$catlistHTML .=  '<button onClick="saveChangedCategory(\''.$rec->id.'\')">Save</button>';
+		$catlistHTML .=  '<input id="clickMe" type="button" value="'.get_string('update','block_cmanager').'" onclick="saveChangedCategory(\''.$rec->id.'\')" /></div>';
+		//echo '<script> document.getElementById("'.'cat'.$rec->id.'").value = '.$rec->cate.'; </script> ';
+	
+	
+			
+			
+			
 	} else {
 		
 		if(!empty($rec->cate)){

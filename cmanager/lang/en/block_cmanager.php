@@ -17,7 +17,7 @@ $string['Continue'] = 'Continue';
 $string['Enabled'] = 'Enabled';
 $string['Disabled'] = 'Disabled';
 $string['clickhere'] = 'Click here';
-
+$string['update'] = 'Update';
 
 //block_cmanager_config.php
 $string['administratorConfig'] = 'Other Settings';
@@ -147,6 +147,7 @@ $string['formBuilder_addedItemsTxt'] = 'The following items are listed in this c
 $string['formBuilder_addItemBtnTxt'] = 'Add new item';
 $string['formBuilder_editingForm']  = 'Editing Form';
 $string['formBuilder_shownbelow']  = 'is shown below';
+
 
 
 

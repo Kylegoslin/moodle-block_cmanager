@@ -161,6 +161,7 @@ if(isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date'
  
 <?php
 
+$naming = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'naming'");
 
 
 class courserequest_form extends moodleform {
@@ -170,7 +171,8 @@ class courserequest_form extends moodleform {
         global $currentSess;
 		global $mid;
 		global $USER, $DB;
-
+	
+		global $naming;
 
         $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=> $currentSess));
 	    $mform =& $this->_form; // Don't forget the underscore! 
@@ -179,101 +181,7 @@ class courserequest_form extends moodleform {
 	    // Back Button
 		$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;<a href="cmanager_confighome.php">&lt ' . get_string('back','block_cmanager') . '</a><p></p>');
 	
-	/*
-		// Email text box
-		$approvedTextRecord = $DB->get_record('block_cmanager_config', array('varname'=>'approved_text'));
-	
-		$emailText = '';
-		if($approvedTextRecord != null){
-			$emailText = $approvedTextRecord->value;
-		}
-	
-	
-			// Approved user email
-			$approved_user_email =  $DB->get_record('block_cmanager_config', array('varname'=>'approveduseremail'));
-			$approved_user_email_value = '';
-			if(!empty($approved_user_email)){
-				$approved_user_email_value = $approved_user_email->value;
-			}
-			
-			// Approved admin email
-			$approved_admin_email =  $DB->get_record('block_cmanager_config', array('varname'=>'approvedadminemail'));
-			$approved_admin_email_value = '';
-			if(!empty($approved_admin_email)){
-			$approved_admin_email_value = $approved_admin_email->value;
-			}
-			
-			
-			// Request new module user
-			$request_new_module_user =  $DB->get_record('block_cmanager_config', array('varname'=>'requestnewmoduleuser'));
-			$request_new_module_user_value = '';
-			if(!empty($request_new_module_user)){
-			$request_new_module_user_value = $request_new_module_user->value;
-			}
-			
-			
-			// Request new module admin
-			$request_new_module_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'requestnewmoduleadmin'));
-			$request_new_module_admin_value = '';
-			if(!empty($request_new_module_admin)){
-				$request_new_module_admin_value = $request_new_module_admin->value;
-			}
-			
-			
-		    // Comment email admin
-			$comment_email_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'commentemailadmin'));
-			$comment_email_admin_value = '';
-			if(!empty($comment_email_admin)){
-				$comment_email_admin_value = $comment_email_admin->value;
-			}
-			
-		    // Comment email user
-			$comment_email_user =  $DB->get_record('block_cmanager_config', array('varname'=>'commentemailuser'));
-			$comment_email_user_value = '';
-			if(!empty($comment_email_user)){
-				$comment_email_user_value = $comment_email_user->value;
-			}
-			
-			
-		    // Request denied admin
-			$module_request_denied_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'modulerequestdeniedadmin'));
-			$module_request_denied_admin_value = '';
-			if(!empty($module_request_denied_admin)){
-				$module_request_denied_admin_value = $module_request_denied_admin->value;
-			}
-		
-			
-			
-			// Request denied user
-			$module_request_denied_user =  $DB->get_record('block_cmanager_config', array('varname'=>'modulerequestdenieduser'));
-			$module_request_denied_user_value = '';
-			if(!empty($module_request_denied_user)){
-				$module_request_denied_user_value = $module_request_denied_user->value;
-			}
-			
-			
-			// Handover current
-			$handover_current =  $DB->get_record('block_cmanager_config', array('varname'=>'handovercurrent'));
-			$handover_current_value = '';
-			if(!empty($handover_current)){
-				$handover_current_value = $handover_current->value;
-			}
-			
-			//Handover user
-			$handover_user =  $DB->get_record('block_cmanager_config', array('varname'=>'handoveruser'));
-			$handover_user_value = '';
-			if(!empty($handover_user)){
-				$handover_user_value = $handover_user->value;
-			}
-			
-			
-			// Handover admin
-			$handover_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'handoveradmin'));
-			$handover_admin_value = '';
-			if(!empty($handover_admin)){
-				$handover_admin_value = $handover_admin->value;
-			}
-			*/
+
 			
 			$statsCode = get_string('totalRequests','block_cmanager').':';
 			$whereQuery = "varname = 'admin_email'";
@@ -283,7 +191,7 @@ class courserequest_form extends moodleform {
 			//get the current values for naming and autoKey from the database and use in the setting of seleted values for dropdowns
 		
 			$autoKey = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'autoKey'");	
-			$naming = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'naming'");
+			
 			$snaming = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'snaming'");
 			$emailSender = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'emailSender'");
 	
@@ -307,28 +215,20 @@ class courserequest_form extends moodleform {
 			<br><br>
 	
 		<form action="cmanager_othersettings.php" method="post">
-			<select name="naming">';
+			<select id="naming" name="naming">';
 		
-			if($naming == 1){
-				$fragment2 .='
-				<option value="1" selected="selected">'.get_string('namingConvetion_option1','block_cmanager').'</option>
-				<option value="2">'.get_string('namingConvetion_option2','block_cmanager').'</option>
-				<option value="3">'.get_string('namingConvetion_option3','block_cmanager').'</option>';
-			}
+
+	$fragment2 .='
+	<option value="1">'.get_string('namingConvetion_option1','block_cmanager').'</option>
+	<option value="2">'.get_string('namingConvetion_option2','block_cmanager').'</option>
+	<option value="3">'.get_string('namingConvetion_option3','block_cmanager').'</option>
+	<option value="4">'.get_string('namingConvetion_option4','block_cmanager').'</option>
+	<option value="5">'.get_string('namingConvetion_option5','block_cmanager').'</option>
+	
+	';
+
 		
-			else if ($naming == 2){
-				$fragment2 .='
-				<option value="1">'.get_string('namingConvetion_option1','block_cmanager').'</option>
-				<option value="2" selected="selected">'.get_string('namingConvetion_option2','block_cmanager').'</option>
-				<option value="3">'.get_string('namingConvetion_option3','block_cmanager').'</option>';
-			}
-		
-			else if ($naming == 3){
-				$fragment2 .='
-				<option value="1">'.get_string('namingConvetion_option1','block_cmanager').'</option>
-				<option value="2">'.get_string('namingConvetion_option2','block_cmanager').'</option>
-				<option value="3" selected="selected">'.get_string('namingConvetion_option3','block_cmanager').'</option>';
-			}
+			
 		
 	$fragment2 .='
 			</select>
@@ -534,6 +434,11 @@ class courserequest_form extends moodleform {
 	}
 }
 
+	
+
+
+
+
    $mform = new courserequest_form();
 
    if ($mform->is_cancelled()){
@@ -602,8 +507,9 @@ function validateEmail($email){
 	}
 
 }
-
-
+if(!empty($naming)){
+	echo '<script> document.getElementById("naming").value = '.$naming.'; </script> ';
+}
 ?>
 
 	

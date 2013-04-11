@@ -135,7 +135,7 @@ class courserequest_form extends moodleform {
 		$mform->focus();
 		$mform->set_data($mform);
 		$mform->display();
-		$OUTPUT->footer();
+		echo $OUTPUT->footer();
  
 }
 

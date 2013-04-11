@@ -459,7 +459,7 @@ return $outputHTML;
 	$whereQuery = "formid = '$formId'";
  	
 	
-	$modRecords = $DB->get_records('block_cmanager_formfields',array('formid'=>$formId));
+	$modRecords = $DB->get_records('block_cmanager_formfields', array('formid'=>$formId), $sort='position ASC');
 	
 	
 		

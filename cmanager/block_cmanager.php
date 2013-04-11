@@ -10,7 +10,7 @@ function init() {
 
     $this->title   = 'Course Request Manager';
     $plugin = new stdClass();
-    $plugin->version   = 2013031230;      // The current module version (Date: YYYYMMDDXX)
+    $plugin->version   = 2013041131;      // The current module version (Date: YYYYMMDDXX)
     $plugin->requires  = 2012062500;      // Requires this Moodle version
 
 

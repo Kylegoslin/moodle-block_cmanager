@@ -55,13 +55,17 @@ echo '<script>
 // Deleting dropdown menus
 if(isset($_GET['t']) && isset($_GET['del'])){
 
-    if($_GET['t'] == 'drop'){
-
-	}
-	else if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
+  
+	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
 		$itemid = $_GET['del'];
 		$fieldid = $_GET['fid'];
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
+	}
+	
+	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
+	
+		$fieldid = $_GET['del'];
+		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
 	}
 
 }
@@ -91,7 +95,11 @@ if(isset($_GET['del'])){
 
 	  }
 
+
 }
+
+
+
 
 
 // Move field up
@@ -596,7 +604,7 @@ function saveOptionalStatus(id){
 
 					       	 		newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"> '+
 					       	 		'<img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a>  <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"> '+
-					       	 		'<img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?t=drop&del=' + uniqueId + '"> '+
+					       	 		'<img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"> '+
 					       	 		'<img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> '+
 					       	 		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
 

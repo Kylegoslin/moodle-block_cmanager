@@ -35,6 +35,10 @@ $string['namingConvetionInstruction'] = 'Course Request Manager will set up your
 $string['namingConvetion_option1'] = 'Full Name Only';
 $string['namingConvetion_option2'] = 'Short Name - Full Name';
 $string['namingConvetion_option3'] = 'Full Name (Short Name)';
+$string['namingConvetion_option4'] = 'Short Name - Full Name (Year)';
+$string['namingConvetion_option5'] = 'Full Name (Year)';
+
+
 $string['snamingConvetion'] = 'Short Name Format';
 $string['snamingConvetionInstruction'] = 'Please choose a short name format for newly created courses';
 $string['snamingConvetion_option1'] = 'Short Name Only';

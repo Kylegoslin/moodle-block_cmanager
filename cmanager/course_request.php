@@ -58,7 +58,8 @@ else if (isset($_GET['edit'])){ // If we are editing the mod
 }
 
 
-
+$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess), '*', IGNORE_MULTIPLE);
+		
 
 
 class courserequest_form extends moodleform {
@@ -66,10 +67,9 @@ class courserequest_form extends moodleform {
     function definition() {
        
 	    global $CFG;
-        global $currentSess, $DB;
+        global $currentSess, $DB, $currentRecord;
 		
-        $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess), '*', IGNORE_MULTIPLE);
-		$mform =& $this->_form; // Don't forget the underscore! 
+        $mform =& $this->_form; // Don't forget the underscore! 
  		$mform->addElement('html', '<style>
 		#content {
 		
@@ -143,23 +143,26 @@ class courserequest_form extends moodleform {
 	 
 	 // If enabled, give the user the option
 	 // to select a category location for the course.
+	 
 	if($selfcat == 'yes'){
-
+		/**
 		$options = array();			
 		$catItems = $DB->get_records('course_categories');
 	
 		foreach($catItems as $item){
 	  	        	$options[$item->id] = $item->name;
-						
-					
-	} 
+		} 
 		$mform->addElement('select', 'category', get_string('category'), $options);
 		$mform->setDefault('category', $currentRecord->cate); 
-		
-		
-		
+		**/
+	
+	    $movetocategories = array();
+        $notused = array();
+        make_categories_list($movetocategories, $notused);
+      	$cateDrop =  html_writer::select($movetocategories, 'category', null, null);
+ 	    $mform->addElement('html', '<div id="catname" class="catname">'.get_string('category') .' '. $cateDrop . '</div>');
+	
 	}
-	 
 	 
 	 
 	 if(!$autoKey){
@@ -300,6 +303,14 @@ div.fdescription.required {
 	
 	right:400px;
 }
+
+div.catname {
+	
+	position:relative;
+	
+	left:120px;
+}
+
 		
 </style>
 
@@ -333,5 +344,11 @@ div.fdescription.required {
 	theDiv.appendChild(div);
 
 </script>
+
 <?php
+
+	if(!empty($currentRecord->cate)){
+		echo '<script> document.getElementById("menucategory").value = '.$currentRecord->cate.'; </script> ';
+	}
+
 echo $OUTPUT->footer();

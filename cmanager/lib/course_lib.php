@@ -144,8 +144,14 @@ function createNewCourseByRecordId($mid, $sendMail){
 	else if($naming ==2){
 		$new_course->fullname = $rec->modcode . ' - '. $rec->modname;	
 	}
-	else{
-		$new_course->fullname = $rec->modname . ' ('. $rec->modcode . ')';
+	else if($naming == 3){
+		$new_course->fullname = $rec->modname . ' ('. $rec->modcode . ')'; // Fullname, shortname
+	}
+	else if($naming == 4){
+		$new_course->fullname = $rec->modcode . ' - '. $rec->modname . ' ('.date("Y").')';	// Shortname, fullname (year)
+	}
+	else if($naming == 5){
+		$new_course->fullname = $rec->modname . ' ('.date("Y").')';
 	}
 	
 	// Enrollment key?

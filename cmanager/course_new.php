@@ -69,11 +69,7 @@ class courserequest_form extends moodleform {
  
  
   	    $selectQuery = "";
-		//$formFields = $DB->get_records('block_cmanager_formfields', 'formid', $formId, $sort='position ASC', $fields='*', $limitfrom='', $limitnum='');
-
-		$DB->sql_order_by_text('position', $numchars=32);
-		$formFields = $DB->get_records('block_cmanager_formfields',array('formid'=>$formId));
-				
+		$formFields = $DB->get_records('block_cmanager_formfields', array('formid'=>$formId), $sort='position ASC');		
 				
 		$fieldnameCounter = 1;
 		

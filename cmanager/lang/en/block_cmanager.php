@@ -103,7 +103,7 @@ $string['request_pleaseSelect'] = 'Please select course mode.';
 $string['request_complete'] = 'Course Request Complete.';
 $string['request_addModule'] = 'Add Module';
 
-
+$string['changeshavebeensaved'] = 'Changes Saved!';
 //form builder
 $string['formBuilder_name'] = 'Configure Request Form - Page 2';
 $string['formBuilder_instructions'] = 'The course request facility has been developed to allow users to enter additional information on course requests. This form can be configured to allow you to gather as much or as little information from the end user. If you require information from your users to assist you in creating a course, then configure the form here. Typical uses have included:';

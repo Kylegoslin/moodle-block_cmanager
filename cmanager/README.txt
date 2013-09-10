@@ -7,7 +7,7 @@ by Kyle Goslin & Daniel McSweeney
 
 ------------------------------------------------
 
-  CRM Current Version 3.1
+  CRM Current Version 3.3
   For Moodle: 2.3+
   Tested on: Moodle 2.3, 2.4
 

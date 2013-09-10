@@ -86,9 +86,7 @@ class courserequest_form extends moodleform {
    
 	// Get the field values
 	$field1title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname1'), IGNORE_MULTIPLE);
-	//$field1desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
 	$field2title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname2'), IGNORE_MULTIPLE);
-	//$field2desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);
 	$field3desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc3'), IGNORE_MULTIPLE);
 	$field4title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname4'), IGNORE_MULTIPLE);
 	$field4desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc4'), IGNORE_MULTIPLE);
@@ -145,16 +143,7 @@ class courserequest_form extends moodleform {
 	 // to select a category location for the course.
 	 
 	if($selfcat == 'yes'){
-		/**
-		$options = array();			
-		$catItems = $DB->get_records('course_categories');
-	
-		foreach($catItems as $item){
-	  	        	$options[$item->id] = $item->name;
-		} 
-		$mform->addElement('select', 'category', get_string('category'), $options);
-		$mform->setDefault('category', $currentRecord->cate); 
-		**/
+		
 	
 	    $movetocategories = array();
         $notused = array();
@@ -183,9 +172,6 @@ class courserequest_form extends moodleform {
 	if($inEditingMode){
 		$mform->addElement('hidden', 'editingmode', $currentSess); 
 	}
-
-
-  
 	
 	    $mform->addElement('html', '<p></p>&nbsp<p></p>');
 	    $buttonarray=array();
@@ -195,9 +181,6 @@ class courserequest_form extends moodleform {
 	
 	}
 }
-
-
-
 
   $mform = new courserequest_form();//name of the form you defined in file above.
 
@@ -244,9 +227,9 @@ class courserequest_form extends moodleform {
 
 	// Find which records are similar to the one which we are currently looking for.
 	$spaceCheck =  substr($postCode, 0, 4) . ' ' . substr($postCode, 4, strlen($postCode));
-	$selectQuery = "shortname LIKE '%$postCode%' 					
-				    OR (shortname LIKE '%$spaceCheck%' AND shortname LIKE '%$postMode%')
-					OR shortname LIKE '%$spaceCheck%'
+	$selectQuery = "shortname LIKE '%".addslashes($postCode)."%' 					
+				    OR (shortname LIKE '%".addslashes($spaceCheck)."%' AND shortname LIKE '%".addslashes($postMode)."%')
+					OR shortname LIKE '%".addslashes($spaceCheck)."%'
 					";
 	
 	
@@ -268,20 +251,10 @@ class courserequest_form extends moodleform {
 	}
 
 
-
-
-
-   
-	    
-
 	$mform->focus();
 	$mform->set_data($mform);
 	$mform->display();
 	
-	
-	  
- 
-
 
 $field1desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
 $field2desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);

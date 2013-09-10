@@ -15,6 +15,7 @@ require_once($formPath);
 require_login();
 require_once('../validate_admin.php');
 /** Navigation Bar **/
+
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('bulkapprove', 'block_cmanager'));
@@ -24,8 +25,6 @@ $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 ?>
 
 
-<SCRIPT LANGUAGE="JavaScript" SRC="http://code.jquery.com/jquery-1.6.min.js">
-</SCRIPT>
 <?php
 
 
@@ -99,11 +98,11 @@ class courserequest_form extends moodleform {
 
 
   } else {
-        echo $OUTPUT->header();
-        $mform->focus();
-	    $mform->set_data($mform);
+    //    echo $OUTPUT->header();
+     //   $mform->focus();
+	 //   $mform->set_data($mform);
 	    $mform->display();
-	  	echo $OUTPUT->footer();
+//	  	echo $OUTPUT->footer();
 }
 
 

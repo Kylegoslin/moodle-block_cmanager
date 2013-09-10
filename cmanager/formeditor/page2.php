@@ -1,4 +1,7 @@
 <?php
+
+
+	
 /* --------------------------------------------------------
  *
  *
@@ -42,8 +45,90 @@ else {
 	echo get_string('formBuilder_p2_error','block_cmanager');
 	die;
 }
+	
+	
+			$htmlOutput = '<br>
+	<script>		
+	//onscreen language variables and default values
+	var dropdownTxt = "";
+	var radioTxt = "";
+	var textAreaTxt = "";
+	var textFieldTxt = "";
+	var leftTxt = "";
+	var saveTxt = "";
+	var addedItemsTxt = "";
+	var addItemBtnTxt = "";
+	
+		//Accept values for onscreen language variables from PHP
+	function setLangStrings(lang_dropdownTxt,lang_radioTxt,lang_textAreaTxt,lang_textFieldTxt,lang_leftTxt,lang_saveTxt,lang_addedItemsTxt,lang_addItemBtnTxt)
+	{
+
+		dropdownTxt = lang_dropdownTxt;
+		radioTxt = lang_radioTxt;
+		textAreaTxt = lang_textAreaTxt;
+		textFieldTxt = lang_textFieldTxt;
+		leftTxt = lang_leftTxt;
+		saveTxt = lang_saveTxt;
+		addedItemsTxt = lang_addedItemsTxt;
+		addItemBtnTxt = lang_addItemBtnTxt;
+
+	}
+				setLangStrings("'.get_string('formBuilder_dropdownTxt','block_cmanager').'","'.get_string('formBuilder_radioTxt','block_cmanager').'","'.get_string('formBuilder_textAreaTxt','block_cmanager').'","'.get_string('formBuilder_textFieldTxt','block_cmanager').'","'.get_string('formBuilder_leftTxt','block_cmanager').'","'.get_string('formBuilder_saveTxt','block_cmanager').'","'.get_string('formBuilder_addedItemsTxt','block_cmanager').'","'.get_string('formBuilder_addItemBtnTxt','block_cmanager').'")
+	
+	
+			</script>
+			
+		<a href="form_builder.php">< '.get_string('back','block_cmanager').'</a><br>
+			<br><b>'.get_string('formBuilder_editingForm','block_cmanager').':</b> ' .$formName.'<br><br>
+			'.get_string('formBuilder_p2_instructions','block_cmanager').'
+			<hr><p></p><br>
+	 		'.get_string('formBuilder_p2_addNewField','block_cmanager').':
+			<select onchange="addNewField(this);">
+			   <option>'.get_string('formBuilder_p2_dropdown1','block_cmanager').'</option>
+			   <option value="tf">'.get_string('formBuilder_p2_dropdown2','block_cmanager').'</option>
+			   <option value="ta">'.get_string('formBuilder_p2_dropdown3','block_cmanager').'</option>
+			   <option value="radio">'.get_string('formBuilder_p2_dropdown4','block_cmanager').'</option>
+			   <option value="dropdown">'.get_string('formBuilder_p2_dropdown5','block_cmanager').'</option>
+			</select>
+
+			<p></p>
+			<br>
+			<hr>
+			<div style="width: 100%; filter:alpha(Opacity=50); overflow:auto;">
+			<div style="background: #9c9c9c;">
+			<br>
+			<center><b>' .$formName.' '.get_string('formBuilder_shownbelow','block_cmanager').'</b></center><br>
+			</div><p></p><br>
 
 
+
+
+
+
+
+			<div id="formdiv" style="width:400px">
+
+
+			</div>
+
+			<a href="preview.php?id=' . $formId . '">'.get_string('formBuilder_previewForm','block_cmanager').'</a>
+			<center><a href="../cmanager_admin.php"><input type="button" value="'.get_string('formBuilder_returntoCM','block_cmanager').'"/></a></center>
+		';
+		
+	echo $htmlOutput;	
+?>
+
+
+
+
+
+			<div id="formdiv" style="width:400px">
+
+
+			</div>
+
+
+<?php
 echo '<script>
        var num = 1; // Used to count the number of fields added.
        var formId = '.$formId .';
@@ -186,31 +271,10 @@ function saveOptionalStatus(id){
 	}
 
 
-	//onscreen language variables and default values
-	var dropdownTxt = "";
-	var radioTxt = "";
-	var textAreaTxt = "";
-	var textFieldTxt = "";
-	var leftTxt = "";
-	var saveTxt = "";
-	var addedItemsTxt = "";
-	var addItemBtnTxt = "";
 
 
-	//Accept values for onscreen language variables from PHP
-	function setLangStrings(lang_dropdownTxt,lang_radioTxt,lang_textAreaTxt,lang_textFieldTxt,lang_leftTxt,lang_saveTxt,lang_addedItemsTxt,lang_addItemBtnTxt)
-	{
 
-		dropdownTxt = lang_dropdownTxt;
-		radioTxt = lang_radioTxt;
-		textAreaTxt = lang_textAreaTxt;
-		textFieldTxt = lang_textFieldTxt;
-		leftTxt = lang_leftTxt;
-		saveTxt = lang_saveTxt;
-		addedItemsTxt = lang_addedItemsTxt;
-		addItemBtnTxt = lang_addItemBtnTxt;
 
-	}
 
 
 	function enableSave(id){
@@ -271,37 +335,16 @@ function saveOptionalStatus(id){
 	         $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textfield', formid: formId},
    				function(data) {
 
-   					/*
-		     		uniqueId = data;
-
-		     		if(num == 1){
-		     		 newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <img src="../images/move_up_dis.gif" width="20" height="20" alt="move up" />  <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"> '+
-		     		 '<img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"> '+
-		     		 '<img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> '+
-		     		 '<p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" id="'+uniqueId+'_savebtn" disabled="disabled" onclick="saveFieldValue(' + uniqueId + ');"/> ';
-	       			}
-	       			else if(movedownEnabled == 0){
-					   newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"> '+
-					   '<img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a> <img src="../images/move_down_dis.gif" width="20" height="20" alt="move down" /> <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"> '+
-					   '<img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> ' +
-					   '<p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+');"/>';
-
-			        }
-	       			else {
-	       	 			newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"> ' +
-	       	 			'<img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a> '+
-	       	 			'<img src="../images/move_down_dis.gif" width="20" height="20" alt="move down" /> <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"> ' +
-	       	 			'<img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> '+
-	       	 			'<p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+');"/>';
-
-	       			}*/
-
+   		
 
 			   });
 
+			
+ 			num++;
+			window.location = 'page2.php?id=' + formId + '&name='+formName; 
 
-			   num++;
-			   window.location = 'page2.php?id=' + formId + '&name='+formName;
+
+
 	}
 
 
@@ -388,20 +431,7 @@ function saveOptionalStatus(id){
 	         $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textarea', formid: formId},
    				function(data) {
 
-   					/*
-		     		uniqueId = data;
-
-		     		if(num == 1){
-		     		 newdiv.innerHTML = '<b>'+textAreaTxt+':</b>  <img src="../images/move_up_dis.gif" width="20" height="20" alt="move up" /> <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-	       			}
-	       			else if(movedownEnabled == 0){
-	       	 			newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a> <img src="../images/move_down_dis.gif" width="20" height="20" alt="move down" /> <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-	       			}
-	       			else {
-	       	 			newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a>  <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" size="30" id="'+ uniqueId+'" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-	       			}*/
+   					
 			   });
 
 
@@ -430,6 +460,9 @@ function saveOptionalStatus(id){
 
 	 //alert('A new item has been added: ' + value);
        window.location = 'page2.php?id=' + formId;
+       
+       
+       
 	}
 
 
@@ -521,19 +554,7 @@ function saveOptionalStatus(id){
 	         $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'dropdown', formid: formId},
    				function(data) {
 		     		uniqueId = data;
-		     		/*
-			          	if(num == 1){
-       					newdiv.innerHTML = '<b>'+dropdownTxt+':</b><img src="../images/move_up_dis.gif" width="20" height="20" alt="move up" /><a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a> <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-	       				}
-	       				else if(movedownEnabled == 0){
-	       					newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a> <img src="../images/move_down_dis.gif" width="20" height="20" alt="move down" /> <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-	       				}
-	       				else {
-	       	 			newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a>  <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-	       			}
-	       			 */
+		     		
 
 			   });
 
@@ -642,19 +663,7 @@ function saveOptionalStatus(id){
 	         $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'radio', formid: formId},
    				function(data) {
 		     		uniqueId = data;
-		     		/*
-			          	if(num == 1){
-		     		 newdiv.innerHTML = '<b>'+radioTxt+':</b>  <img src="../images/move_up_dis.gif" width="20" height="20" alt="move up" /> <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+ uniqueId+ '" value = "' + leftText+ '" size="30" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><input type="text" id="newitem"></input><p></p><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');">';
-	       			}
-	       			else if(movedownEnabled == 0){
-	       				newdiv.innerHTML = '<b>'+radioTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a> <img src="../images/move_down_dis.gif" width="20" height="20" alt="move down" /> <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-	       			}
-	       			 else {
-	       	 			newdiv.innerHTML = '<b>'+radioTxt+':</b> <a href="page2.php?id=' + formId + '&up=' + uniqueId + '"><img src="../images/move_up.gif" width="20" height="20" alt="move up" /></a>  <a href="page2.php?id=' + formId + '&down=' + uniqueId + '"><img src="../images/move_down.gif" width="20" height="20" alt="move down" /></a>  <a href="page2.php?id=' + formId + '&t=drop&del=' + uniqueId + '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-	       			}
-	       			 */
+		     		
 
 			   });
 
@@ -745,102 +754,27 @@ function saveOptionalStatus(id){
 
 		var value = document.getElementById(id).value;
         var currentId = id;
+        
        $.ajaxSetup({async:false});
         $.post("ajax_functions.php", { type: 'updatefield', id: currentId, value: value},
    				function(data) {
-
+						alert('<?php echo get_string('changeshavebeensaved', 'block_cmanager'); ?>');
 
 			   });
 
 
 
-			   window.location = 'page2.php?id=' + formId;
-
-
+	 window.location = 'page2.php?id=' + formId;
+	
 	}
 
 
 
 
 </script>
+
 <?php
-
-class courserequest_form extends moodleform {
-
-    function definition() {
-
-		global $CFG;
-        global $USER;
-        $mform =& $this->_form; // Don't forget the underscore!
-		global $formId;
-	   	global $formName;
-  		$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('formBuilder_p2_header','block_cmanager').'</span>');
-
-		$htmlOutput = '<br>
-		<a href="form_builder.php">< '.get_string('back','block_cmanager').'</a><br>
-			<br><b>'.get_string('formBuilder_editingForm','block_cmanager').':</b> ' .$formName.'<br><br>
-			'.get_string('formBuilder_p2_instructions','block_cmanager').'
-			<hr><p></p><br>
-	 		'.get_string('formBuilder_p2_addNewField','block_cmanager').':
-			<select onchange="addNewField(this);">
-			   <option>'.get_string('formBuilder_p2_dropdown1','block_cmanager').'</option>
-			   <option value="tf">'.get_string('formBuilder_p2_dropdown2','block_cmanager').'</option>
-			   <option value="ta">'.get_string('formBuilder_p2_dropdown3','block_cmanager').'</option>
-			   <option value="radio">'.get_string('formBuilder_p2_dropdown4','block_cmanager').'</option>
-			   <option value="dropdown">'.get_string('formBuilder_p2_dropdown5','block_cmanager').'</option>
-			</select>
-
-			<p></p>
-			<br>
-			<hr>
-			<div style="width: 100%; filter:alpha(Opacity=50); overflow:auto;">
-			<div style="background: #9c9c9c;">
-			<br>
-			<center><b>' .$formName.' '.get_string('formBuilder_shownbelow','block_cmanager').'</b></center><br>
-			</div><p></p><br>
-
-
-	<script type="text/javascript">
-				setLangStrings("'.get_string('formBuilder_dropdownTxt','block_cmanager').'","'.get_string('formBuilder_radioTxt','block_cmanager').'","'.get_string('formBuilder_textAreaTxt','block_cmanager').'","'.get_string('formBuilder_textFieldTxt','block_cmanager').'","'.get_string('formBuilder_leftTxt','block_cmanager').'","'.get_string('formBuilder_saveTxt','block_cmanager').'","'.get_string('formBuilder_addedItemsTxt','block_cmanager').'","'.get_string('formBuilder_addItemBtnTxt','block_cmanager').'")
-			</script>
-
-
-
-
-			<div id="formdiv" style="width:400px">
-
-
-			</div>
-
-			<a href="preview.php?id=' . $formId . '">'.get_string('formBuilder_previewForm','block_cmanager').'</a>
-			<center><a href="../cmanager_admin.php"><input type="button" value="'.get_string('formBuilder_returntoCM','block_cmanager').'"/></a></center>
-		';
-
-
-
-
-	 	$mform->addElement('html', $htmlOutput);
-
-	}
-}
-
-$mform = new courserequest_form();//name of the form you defined in file above.
-
-if ($mform->is_cancelled()){
-
-
-} else if ($fromform=$mform->get_data()){
-
-
-
-} else {
-
-
-}
-
-		$mform->focus();
-		$mform->display();
-		echo $OUTPUT->footer();
+// ----------------------------------------
 
 
 		// If any fields currently exist, add them to the page for editing
@@ -895,4 +829,13 @@ if ($mform->is_cancelled()){
 			   $recCounter++;
 		}
 
+
+
+
+		echo $OUTPUT->footer();
+
+
+
+
+?>
 

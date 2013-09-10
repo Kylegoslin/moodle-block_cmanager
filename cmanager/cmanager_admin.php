@@ -33,7 +33,12 @@ echo $OUTPUT->header();
 
 $_SESSION['CRMisAdmin'] = true;
 ?>
-
+<style>
+select
+{
+    width:150px;       
+ }
+</style>
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link href="js/jquery/jquery-ui18.css" rel="stylesheet" type="text/css"/>

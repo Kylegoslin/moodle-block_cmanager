@@ -96,6 +96,8 @@ function updateField(){
 	$dataobject->lefttext = $value;
 	$DB->update_record('block_cmanager_formfields', $dataobject);
 	
+	
+
 }
 
 

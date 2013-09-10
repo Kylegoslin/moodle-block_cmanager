@@ -193,14 +193,14 @@ class courserequest_form extends moodleform {
 			$approved_user_email =  $DB->get_record('block_cmanager_config', array('varname'=>'approveduseremail'));
 			$approved_user_email_value = '';
 			if(!empty($approved_user_email)){
-				$approved_user_email_value = $approved_user_email->value;
+				$approved_user_email_value = stripslashes($approved_user_email->value);
 			}
 			
 			// Approved admin email
 			$approved_admin_email =  $DB->get_record('block_cmanager_config', array('varname'=>'approvedadminemail'));
 			$approved_admin_email_value = '';
 			if(!empty($approved_admin_email)){
-			$approved_admin_email_value = $approved_admin_email->value;
+			$approved_admin_email_value = stripslashes($approved_admin_email->value);
 			}
 			
 			
@@ -208,7 +208,7 @@ class courserequest_form extends moodleform {
 			$request_new_module_user =  $DB->get_record('block_cmanager_config', array('varname'=>'requestnewmoduleuser'));
 			$request_new_module_user_value = '';
 			if(!empty($request_new_module_user)){
-			$request_new_module_user_value = $request_new_module_user->value;
+			$request_new_module_user_value = stripslashes($request_new_module_user->value);
 			}
 			
 			
@@ -216,7 +216,7 @@ class courserequest_form extends moodleform {
 			$request_new_module_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'requestnewmoduleadmin'));
 			$request_new_module_admin_value = '';
 			if(!empty($request_new_module_admin)){
-				$request_new_module_admin_value = $request_new_module_admin->value;
+				$request_new_module_admin_value = stripslashes($request_new_module_admin->value);
 			}
 			
 			
@@ -224,14 +224,14 @@ class courserequest_form extends moodleform {
 			$comment_email_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'commentemailadmin'));
 			$comment_email_admin_value = '';
 			if(!empty($comment_email_admin)){
-				$comment_email_admin_value = $comment_email_admin->value;
+				$comment_email_admin_value = stripslashes($comment_email_admin->value);
 			}
 			
 		    // Comment email user
 			$comment_email_user =  $DB->get_record('block_cmanager_config', array('varname'=>'commentemailuser'));
 			$comment_email_user_value = '';
 			if(!empty($comment_email_user)){
-				$comment_email_user_value = $comment_email_user->value;
+				$comment_email_user_value = stripslashes($comment_email_user->value);
 			}
 			
 			
@@ -239,7 +239,7 @@ class courserequest_form extends moodleform {
 			$module_request_denied_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'modulerequestdeniedadmin'));
 			$module_request_denied_admin_value = '';
 			if(!empty($module_request_denied_admin)){
-				$module_request_denied_admin_value = $module_request_denied_admin->value;
+				$module_request_denied_admin_value = stripslashes($module_request_denied_admin->value);
 			}
 		
 			
@@ -248,7 +248,7 @@ class courserequest_form extends moodleform {
 			$module_request_denied_user =  $DB->get_record('block_cmanager_config', array('varname'=>'modulerequestdenieduser'));
 			$module_request_denied_user_value = '';
 			if(!empty($module_request_denied_user)){
-				$module_request_denied_user_value = $module_request_denied_user->value;
+				$module_request_denied_user_value = stripslashes($module_request_denied_user->value);
 			}
 			
 			
@@ -256,14 +256,14 @@ class courserequest_form extends moodleform {
 			$handover_current =  $DB->get_record('block_cmanager_config', array('varname'=>'handovercurrent'));
 			$handover_current_value = '';
 			if(!empty($handover_current)){
-				$handover_current_value = $handover_current->value;
+				$handover_current_value = stripslashes($handover_current->value);
 			}
 			
 			//Handover user
 			$handover_user =  $DB->get_record('block_cmanager_config', array('varname'=>'handoveruser'));
 			$handover_user_value = '';
 			if(!empty($handover_user)){
-				$handover_user_value = $handover_user->value;
+				$handover_user_value = stripslashes($handover_user->value);
 			}
 			
 			
@@ -271,7 +271,7 @@ class courserequest_form extends moodleform {
 			$handover_admin =  $DB->get_record('block_cmanager_config', array('varname'=>'handoveradmin'));
 			$handover_admin_value = '';
 			if(!empty($handover_admin)){
-				$handover_admin_value = $handover_admin->value;
+				$handover_admin_value = stripslashes($handover_admin->value);
 			}
 			
 			
@@ -474,18 +474,6 @@ class courserequest_form extends moodleform {
 	
 			//add the main slider 		
 			$mform->addElement('html', $mainSlider);
-			
-			/*
-			$timestamp_startdate = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'startdate'");	
-			//convert to date
-			$startdate = getdate($timestamp_startdate);
-			//add the date selector and set defaults
-			$date_options = array('format' => 'dMY', 'minYear' => 2012, 'maxYear' => 2020); 
-			
-			$mform->addElement('date', 'course_date', 'Date:', $date_options);
-			$date_defaults = array('d' => $startdate['mday'], 'M' => $startdate['mon'], 'Y' => $startdate['year']);
-			$mform->setDefaults(array('course_date' => $date_defaults));
-		*/
 			
 			
 	}

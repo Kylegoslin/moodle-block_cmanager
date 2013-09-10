@@ -10,8 +10,8 @@ function init() {
 
     $this->title   = 'Course Request Manager';
     $plugin = new stdClass();
-    $plugin->version   = 2013041131;      // The current module version (Date: YYYYMMDDXX)
-    $plugin->requires  = 2012062500;      // Requires this Moodle version
+    $plugin->version   = 2013091034;      // The current module version (Date: YYYYMMDDXX)
+    $plugin->requires  = 2011070110.00;      // Requires this Moodle version
 
 
   }
@@ -69,9 +69,9 @@ if ($admins = get_admins()) {
 
 		$numRequestsPending = $DB->count_records('block_cmanager_records', array('status'=>'PENDING'));
 
-		$adminHTML = '<a href ="'.$CFG->wwwroot. '/blocks/cmanager/cmanager_admin.php' .'">'.get_string('block_admin','block_cmanager').' ['.$numRequestsPending.']</a><br>
-					 <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_confighome.php">'.get_string('block_config','block_cmanager').'</a><br>
-					 <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_admin_arch.php">'.get_string('allarchivedrequests','block_cmanager').'</a>';
+		$adminHTML = ' <img src="../blocks/cmanager/icons/queue.ico"/> <a href ="'.$CFG->wwwroot. '/blocks/cmanager/cmanager_admin.php' .'">'.get_string('block_admin','block_cmanager').' ['.$numRequestsPending.']</a><br>
+					  <img src="../blocks/cmanager/icons/config.ico"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_confighome.php">'.get_string('block_config','block_cmanager').'</a><br>
+					 <img src="../blocks/cmanager/icons/all_arch.ico"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_admin_arch.php">'.get_string('allarchivedrequests','block_cmanager').'</a>';
 
 	}
 
@@ -81,9 +81,9 @@ if((isloggedin())){
 
 	$var1 = "
 	<hr>
-	<a href =\"".$CFG->wwwroot."/blocks/cmanager/course_request.php?new=1\">".get_string('block_request','block_cmanager')."</a><br>
-	<a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager.php\">".get_string('block_manage','block_cmanager')."</a><br>
-	<a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager_history.php\">".get_string('myarchivedrequests','block_cmanager')."</a>
+	 <img src=\"../blocks/cmanager/icons/make_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/course_request.php?new=1\">".get_string('block_request','block_cmanager')."</a><br>
+	 <img src=\"../blocks/cmanager/icons/man_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager.php\">".get_string('block_manage','block_cmanager')."</a><br>
+	  <img src=\"../blocks/cmanager/icons/arch_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager_history.php\">".get_string('myarchivedrequests','block_cmanager')."</a>
 
 	<hr>
 	   $adminHTML

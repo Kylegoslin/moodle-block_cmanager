@@ -1,6 +1,8 @@
-
 Folder: cmanager
-Description: The current release of Course Request Manager, for new installations use this!
+
+Description: 
+
+The current release of Course Request Manager, for new installations use this!
 ---------------------------------------------
 
 This github repo is a mirror of the code available at: https://moodle.org/plugins/view.php?plugin=block_cmanager

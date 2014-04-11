@@ -1,12 +1,23 @@
 <?php
 /* --------------------------------------------------------- 
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
+
 
 require_once("../../config.php");
 global $CFG, $DB;
@@ -38,10 +49,22 @@ if(isset($_GET['id'])){
 ?>
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
+<style>
+	tr:nth-child(odd)		{ background-color:#eee; }
+	tr:nth-child(even)		{ background-color:#fff; }
+ </style>
 
+
+
+
+
+
+<script>
+function goBack(){
+	window.location ="module_manager.php";
+}
+</script>
 <?php
-
-
 class courserequest_form extends moodleform {
  
     function definition() {
@@ -62,8 +85,8 @@ class courserequest_form extends moodleform {
 
 	// Page description text
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-				    <a href="module_manager.php">< '.get_string('back','block_cmanager').'</a>
-				    <p></p>');
+				    <button type="button" value="" onclick="goBack();"><img src="icons/back.png"/>'.get_string('back','block_cmanager').'</button>
+			 <p></p>');
 				    
 
 
@@ -75,7 +98,7 @@ class courserequest_form extends moodleform {
 
 
 
-	$mform->addElement('html', '<center>'. $displayModHTML . '</center>');
+	$mform->addElement('html', ''. $displayModHTML . '');
 
 	$mform->addElement('html', '<p></p>&nbsp;');
 	
@@ -97,18 +120,18 @@ class courserequest_form extends moodleform {
 	}
 
 
-	 $mform->addElement('html', '<p></p><center>
-	 <div align="left" style="border: 1px #000000 solid; width:700px; background:  #E0E0E0">
-	<table width="700px">
-			 <tr>
+	 $mform->addElement('html', '<p></p>
+
+	<table width="700px" style="border: 1px #000000 solid;">
+			 <tr >
 		             <td width="170px">'.get_string('comments_date','block_cmanager').'</td>
 		             <td width="430px">'.get_string('comments_message','block_cmanager').'</td> 
 		             <td width="100px">'.get_string('comments_from','block_cmanager').'</td> 
-		         <tr>
-			 </table>
+		         </tr>
+	 </table>
 
-	</div>
 	
+	<p></p>
 	<table width="700px">
 			 <tr>
 		             <td width="170px"></td>
@@ -117,7 +140,7 @@ class courserequest_form extends moodleform {
 		         <tr>
 			' . $htmlOutput . '
 			 </table>
-	</div>
+	
 
 	<p></p>
 	<p></p>

@@ -1,11 +1,21 @@
 <?php
 /* --------------------------------------------------------- 
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
 
 require_once("../../../config.php");
@@ -31,10 +41,10 @@ if(isset($_GET['id'])){
 	$mid = $_SESSION['mid'];
 }
 
-$type = optional_param('type', '', PARAM_TEXT); 
+$type = optional_param('type', '', PARAM_TEXT);
 if(!empty($type)){
-	$_SESSION['type'] = $type;	
-	
+	$_SESSION['type'] = $type;
+
 } else {
 	$type = '';
 	$type = $_SESSION['type'];
@@ -43,7 +53,7 @@ if(!empty($type)){
 $backLink = '';
 if($type == 'adminarch'){
 	$backLink = '../cmanager_admin_arch.php';
-}  
+}
 else if($type == 'adminq'){
 	$backLink = '../cmanager_admin.php';
 }
@@ -52,8 +62,15 @@ else if($type == 'adminq'){
 
 $PAGE->set_url('/blocks/cmanager/admin/comment.php', array('id'=>$mid));
 
+echo '
+<script>
+function goBack(){
+	window.location ="'.$backLink.'";
+}
+</script>
+';
 class courserequest_form extends moodleform {
- 
+
     function definition() {
     global $CFG;
     global $currentSess;
@@ -63,72 +80,97 @@ class courserequest_form extends moodleform {
 	global $backLink;
 
 	$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-	$mform =& $this->_form; // Don't forget the underscore! 
- 	$mform->addElement('header', 'mainheader','<div><span style="font-size:18px">'. get_string('comments_Header','block_cmanager'). '</span></div>');
+	$mform =& $this->_form; // Don't forget the underscore!
+ 	$mform->addElement('header', 'mainheader','<span style="font-size:18px">'. get_string('comments_Header','block_cmanager'). '</span>');
 
 	// Page description text
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-				    <a href="'.$backLink.'">< Back</a>
+				  <button type="button" value="" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button>
 				    <p></p>
 				    &nbsp;&nbsp;&nbsp;'.get_string('comments_Forward','block_cmanager').'.<p></p>&nbsp;<center>');
 
 
 	// Comment box
-	$mform->addElement('textarea', 'newcomment', '', 'wrap="virtual" rows="5" cols="50"');
-	
-	$buttonarray=array();
-	$buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('comments_PostComment','block_cmanager'));
-	$buttonarray[] = &$mform->createElement('cancel');
-	$mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
 
-	$mform->addElement('html', '<p></p>&nbsp;');
-	
 	$whereQuery = "instanceid = '$mid'  ORDER BY id DESC";
  	$modRecords = $DB->get_recordset_select('block_cmanager_comments', $whereQuery);
 	$htmlOutput = '';
 
+	$htmlOutput .='	<table style="width:100%">';
 
-	
 	foreach($modRecords as $record){
-		
+
 		$createdbyid = $record->createdbyid;
 		$username = $DB->get_field_select('user', 'username', "id = '$createdbyid'");
-		
-		
-	  	$htmlOutput .='	<tr style=" border-bottom:1pt solid black;">';
-		$htmlOutput .=' <td width="150px">' . $record->dt . '</td>';
-		$htmlOutput .=' <td width="300px">' . $record->message . '</td>';
-		$htmlOutput .=' <td width="100px">' . $username .'</td>';
-		$htmlOutput .=' </tr>';
 
+
+
+		$htmlOutput .=' <tr ><td><b>Date:</b> ' . $record->dt . '</td></tr>';
+		$htmlOutput .=' <tr><td><b>Author:</b> ' . $username . '</td></tr>';
+
+		$htmlOutput .=' <tr><td><b>Comment:</b> ' . $record->message .'</td></tr>';
+	  	$htmlOutput .=' <tr style=" border-bottom:1pt solid black;"><td></td></tr>';
+		$htmlOutput .='<tr><td></td></tr> ';
 	}
+	$htmlOutput .='</table>';
+	 $mform->addElement('html', '
+	 <style>
+	 #wrapper {
+    width: 950px;
+    border: 1px solid black;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#left {
+    width: 600px;
+    float:left; /* add this */
 
-	 $mform->addElement('html', '<center><div align="left" style="border: 1px #000000 solid; width:700px;
-		                    background:  #E0E0E0">
-	<table width="700px">
-			 <tr>
-		             <td width="170px">Date / Time</td>
-		             <td width="430px">Message</td> 
-		             <td width="100px">From</td> 
-		         </tr>
-			 </table>
+}
+#right {
+    border: 0px solid green;
+    overflow: hidden; /* if you dont want #second to wrap below #first */
+}
 
-	</div>
+	 </style>
 
-	<table width="700px">
-			 <tr>
-		             <td width="170px"></td>
-		             <td width="430px"></td> 
-		             <td width="100px"></td> 
-		         </tr>
-			' . $htmlOutput . '
-			 </table>
-	</div>
+
+	 <div id="wrapper" style="padding:10px">
+
+	 		<div id="left" style="padding-right:10px">
+
+
+
+						 <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
+						 	Comments
+						 </div>
+
+
+
+
+						' . $htmlOutput . '
+
+				</div>
+
+
+
+
+
+
+			<div id="right">
+				<form action ="comment.php" method ="post">
+				<textarea id="newcomment" name="newcomment" rows="10" cols="55"></textarea>
+				<p></p>
+				<input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
+				</form>
+			</div>
+
+
+	 </div>
+
 
 	<p></p>
 	<p></p>
-	
-	</center>
+
+
 	');
 
 	}
@@ -142,11 +184,26 @@ class courserequest_form extends moodleform {
 
 
    if ($mform->is_cancelled()){
-        
+
 	echo "<script>window.location='" . $backLink."';</script>";
 			die;
 
   } else if ($fromform=$mform->get_data()){
+
+
+  } else {
+
+
+ 	$mform->focus();
+    $mform->set_data($mform);
+    $mform->display();
+
+
+
+	echo $OUTPUT->footer();
+
+}
+if($_POST){
 		global $USER, $CFG, $DB, $mid;
 
 		$userid = $USER->id;
@@ -155,23 +212,23 @@ class courserequest_form extends moodleform {
 		$newrec->instanceid = $mid;
 		$newrec->createdbyid = $userid;
 		$newrec->message = $_POST['newcomment'];
-		$newrec->dt = date("Y-m-d H:i:s");	
+		$newrec->dt = date("Y-m-d H:i:s");
 		$DB->insert_record('block_cmanager_comments', $newrec, false);
-           	
+
 		// Send an email to everyone concerned.
 		require_once('../cmanager_email.php');
 		$message = $_POST['newcomment'];
-		
+
 		// Get all user id's from the record
 		$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
-		
-		
-		
+
+
+
 		$user_ids = ''; // Used to store all the user IDs for the people we need to email.
 		$user_ids = $currentRecord->createdbyid; // Add the current user
-		
+
 		// Get info about the current object.
-		
+
 		// Send email to the user
 		$replaceValues = array();
 	    $replaceValues['[course_code'] = $currentRecord->modcode;
@@ -182,28 +239,15 @@ class courserequest_form extends moodleform {
 	    $replaceValues['[full_link]'] = $CFG->wwwroot.'/blocks/cmanager/comment.php?id=' . $mid;
 	    $replaceValues['[loc]'] = '';
 		$replaceValues['[req_link]'] = $CFG->wwwroot.'/blocks/cmanager/view_summary.php?id=' . $mid;
-	    
-	    
+
+
 		email_comment_to_user($message, $user_ids, $mid, $replaceValues);
-	
+
 		// Send email to admin
 		email_comment_to_admin($message, $mid, $replaceValues);
-		 
+
 		echo "<script> window.location = 'comment.php?type=".$type."&id=$mid';</script>";
-
-  } else {
-        
-	
- 	$mform->focus();
-    $mform->set_data($mform);
-    $mform->display();
-    
-    
-
-	echo $OUTPUT->footer();
-	 
 }
-
 
 
 ?>

@@ -1,20 +1,30 @@
 <?php
-/* -------------------------------------------------------
- * 
- * 
- *  Course Request Manager
- *  by Kyle Goslin, Daniel McSweeney
- * 
- * 
- * -------------------------------------------------------
- * */
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
+
+
 
 global $CFG, $DB;
 
 require_once("../../config.php");
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-require_once('generate_summary.php');
 require_login();
 require_once('lib/displayLists.php');
 
@@ -32,7 +42,7 @@ echo $OUTPUT->header();
 ?>
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
- 
+
 <link href="js/jquery/jquery-ui18.css" rel="stylesheet" type="text/css"/>
 <script src="js/jquery/jquery-1.7.2.min.js"></script>
 <script src="js/jquery/jquery-ui.1.8.min.js"></script>
@@ -43,28 +53,34 @@ function cancelConfirm(id,langString) {
 	//var answer = confirm("Are you sure you want to cancel this request?")
 	var answer = confirm(langString)
 	if (answer){
-		
+
 		window.location = "deleteRequest.php?id=" + id;
 	}
 	else{
-		
+
 	}
 }
+
+
 </script>
 
 
 
+<style>
 
+	tr:nth-child(odd)		{ background-color:#eee; }
+	tr:nth-child(even)		{ background-color:#fff; }
+ </style>
 
 <?php
 
 class courserequest_form extends moodleform {
- 
+
     function definition() {
 
 	global $CFG, $DB, $USER;
- 
-    $mform =& $this->_form; // Don't forget the underscore! 
+
+    $mform =& $this->_form; // Don't forget the underscore!
 	$mform->addElement('header', 'mainheader',' <span style="font-size:18px"> '.get_string('cmanagerExstingTab','block_cmanager').'</span>');
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;'.get_string('cmanagerWelcome','block_cmanager').' &nbsp;
 			<p></p><br>
@@ -72,34 +88,32 @@ class courserequest_form extends moodleform {
 			<p></p><p></p>&nbsp;');
 
 	$uid = $USER->id;
-	
+
 
 	// Get the list of pending requests
    $pendingList = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid" , 'status' => 'PENDING'), 'id ASC');
    $outputHTML = '<div id="pendingrequestcontainer">';
 
 
-   
-   
+
+
  	// Existing Requests
- 	
    	$outputHTML = displayAdminList($pendingList, true, false, false, 'user_manager');
- 	
- 	
- 	$mform->addElement('html', '<center>
+
+
+ 	$mform->addElement('html', '
+
+
 	<p></p>
 	&nbsp;
 	<p></p>
-	<div id="twobordertitle" style="background:transparent">
-		<div style="text-align: left; float: left; font-size:11pt">&nbsp;<b>'.get_string('cmanagerExstingTab','block_cmanager').'</b></div> 
-		<div style="text-align: right; font-size:11pt"><b>'.get_string('cmanagerActions','block_cmanager').'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-	 </div>
 
-			'.$outputHTML.'
+
+		<div style="">	'.$outputHTML.'</div>
 			');
- 		
+
     } // Close the function
-    
+
 } // Close the class
 
 
@@ -112,13 +126,13 @@ class courserequest_form extends moodleform {
 		} else if ($fromform=$mform->get_data()){
 
 		} else {
-			
-		
-		  
-		
+
+
+
+
 		}
 
-	
+
     $mform->display();
 	$mform->focus();
 
@@ -127,4 +141,3 @@ class courserequest_form extends moodleform {
 
 
 ?>
- 

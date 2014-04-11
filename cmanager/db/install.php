@@ -1,4 +1,21 @@
 <?php
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2013-2014 - Institute of Technology Blanchardstown.
+
 
 
 function xmldb_block_cmanager_install() {
@@ -81,8 +98,8 @@ Moodle Administrator
 
 Note: This is a server generated e-mail. Please do not reply to this mail.';
 $DB->insert_record('block_cmanager_config', $newrec, false);
-		
-		
+
+
 $newrec = new stdClass();
 $newrec->varname = 'requestnewmoduleuser';
 $newrec->value = 'Your moodle course request has been logged for approval. The details of the request are shown below:
@@ -298,7 +315,34 @@ $newrec->varname = 'current_active_form_id';
 $newrec->value = $activeFormId;
 $DB->insert_record('block_cmanager_config', $newrec, false);
 
-		
+
+// DENY TEXT FIELD RECORDS
+$newrec = new stdClass();
+$newrec->varname = 'denytext1';
+$newrec->value = 'You may enter a denial reason here.';
+$DB->insert_record('block_cmanager_config', $newrec, false);
+
+$newrec = new stdClass();
+$newrec->varname = 'denytext2';
+$newrec->value = 'You may enter a denial reason here.';
+$DB->insert_record('block_cmanager_config', $newrec, false);
+
+$newrec = new stdClass();
+$newrec->varname = 'denytext3';
+$newrec->value = 'You may enter a denial reason here.';
+$DB->insert_record('block_cmanager_config', $newrec, false);
+
+$newrec = new stdClass();
+$newrec->varname = 'denytext4';
+$newrec->value = 'You may enter a denial reason here.';
+$DB->insert_record('block_cmanager_config', $newrec, false);
+
+$newrec = new stdClass();
+$newrec->varname = 'denytext5';
+$newrec->value = 'You may enter a denial reason here.';
+$DB->insert_record('block_cmanager_config', $newrec, false);
+
+
 $newrec = new stdClass();
 $newrec->type = 'textarea';
 $newrec->lefttext = 'Other Information';

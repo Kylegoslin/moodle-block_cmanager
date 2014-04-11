@@ -2,7 +2,50 @@
 
 		CRM Changelog
 
+
+CRM 4.1
+Date: 11/April/2014
+- Enrollment keys are optional
+- Safari form1.php saving issue solved.
+- Various small bug fixes
 ----------------------------------------------------------------------
+
+CRM Version 4.0
+Date: 1/April/2014
+
+- Updated license information
+- Checked on Moodle 2.6
+- Default form blank value error resolved.
+
+
+----------------------------------------------------------------------
+
+CRM Version 3.9
+Date: 25/Nov/2013
+
+- New Layout for requests
+- Issue with escaping characters resolved
+- New German Language pack added (Thanks to Alexander Kiy )
+- New layout for comment system
+- New pre-defined deny reason capability added
+- Error when creating comment resolved
+- Improvements to layout of pages
+- various bug fixes
+
+
+----------------------------------------------------------------------
+
+CRM Version 3.5
+Date: 20/Sep/2013
+
+
+Self enroll error has been resolved, due to a new field appearing
+in the moodle 2.5 enroll database table.
+
+
+-----------------------------------------
+
+
 
 CRM Version 3.3
 Date: 10/Sep/2013

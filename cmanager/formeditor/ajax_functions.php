@@ -1,10 +1,28 @@
 <?php
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
+
 require_once("../../../config.php");
 global $CFG, $DB;
 
 
-$type = $_POST['type'];
-
+$type = required_param('type', PARAM_TEXT);  
 
 if($type == 'add'){
 	addNewItem();
@@ -41,7 +59,7 @@ function saveSelectedForm(){
 	global $DB;
 	//echo 'saving form';
 	
-	$value = $_POST['value'];
+	$value =  required_param('value', PARAM_TEXT);  
 	$rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'current_active_form_id'");	
 	
 	$dataobject->id = $rowId;
@@ -57,7 +75,7 @@ function addNewForm(){
 	
 	global $DB;
 	
-	$formName = $_POST['value'];
+	$formName = required_param('value', PARAM_TEXT);  
 	
 	
 	$object->id = '';
@@ -74,11 +92,11 @@ function addValueToDropdown(){
 	global $DB;
 	
 	$id = $_POST['id'];
-	$value = $_POST['value'];
+	$value = required_param('value', PARAM_TEXT);  
 	
 	$object->id = '';
 	$object->fieldid = $id;
-	$object->value = $value;
+	$object->value = addslashes($value);
 	
 	
 	$id = $DB->insert_record('block_cmanager_form_data', $object, true); 
@@ -90,10 +108,10 @@ function updateField(){
 	
 	global $CFG, $DB;
 	echo $elementId = $_POST['id'];
-	echo $value = $_POST['value'];
+	echo $value = required_param('value', PARAM_TEXT);  
 	
 	$dataobject->id = $elementId;
-	$dataobject->lefttext = $value;
+	$dataobject->lefttext = addslashes($value);
 	$DB->update_record('block_cmanager_formfields', $dataobject);
 	
 	
@@ -198,7 +216,7 @@ function getDropdownValues(){
 
 function saveChanges(){
 	global $CFG;
-		global $DB;
+	global $DB;
 	
 	$f1t = $_POST['f1t'];
 	$f1d = $_POST['f1d'];
@@ -245,6 +263,8 @@ function saveChanges(){
 	$dataobject->varname['page1_field3status'];
 	$dataobject->value = $dStat;
 	$DB->update_record('block_cmanager_config', $dataobject);
+
+	
 }
 
 function addNewItem(){

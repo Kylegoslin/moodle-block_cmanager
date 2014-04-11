@@ -1,13 +1,24 @@
 <?php
 /* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
 
-     COURSE REQUEST BLOCK FOR MOODLE  
 
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
- --------------------------------------------------------- 
- */
 require_once("../../../config.php");
 
 global $CFG, $DB;
@@ -67,7 +78,7 @@ function createNewCourseByRecordId($mid, $sendMail){
 	
 	
 
-	/** Create an objec to hold our new course information**/
+	//** Create an object to hold our new course information
 	$new_course = new NewCourse();
 	
 	$new_course->format = get_config('moodlecourse', 'format');
@@ -121,16 +132,7 @@ function createNewCourseByRecordId($mid, $sendMail){
 	}
 	
 
-	/*
-	do {
-		$shortNameExists = $DB->record_exists('course', array('shortname'=>$newShortName));
 	
-		if(!empty($shortNameExists)){
-    		$newShortName = $newShortName. ' ' . rand(0,10);
-			
-		}
-	}while(!empty($shortNameExists));
-	*/
 	$new_course->shortname = $newShortName;
 	
 	
@@ -154,19 +156,22 @@ function createNewCourseByRecordId($mid, $sendMail){
 		$new_course->fullname = $rec->modname . ' ('.date("Y").')';
 	}
 	
-	// Enrollment key?
-	//if its set lets use the key thats been set, otherwise auto gen a key
+	// Enrollment key
+	// if the key thats been set, otherwise auto gen a key
 	if(isset($rec->modkey)){
 		$modkey = $rec->modkey;
 	} else{
 		$modkey = rand(999,5000);	
 	}
 	
+	
 	$categoryid = $new_course->category;
 	$category = $DB->get_record('course_categories', array('id'=>$categoryid));
 	$catcontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
 	$contextobject = $catcontext;
-	$editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true, 'content'=>$contextobject);
+	$editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 
+						   'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 
+						   'noclean'=>true, 'content'=>$contextobject);
 	
 	// Create the course
 	$course = create_course($new_course, $editoroptions);
@@ -190,38 +195,53 @@ function createNewCourseByRecordId($mid, $sendMail){
        // deal with course creators - enrol them internally with default role
        enrol_try_internal_enrol($nid, $rec->createdbyid, $CFG->creatornewroleid);
 	}
-	 
-	 // Add enrollnent key
-	$enrollmentRecord = new stdClass();
-	$enrollmentRecord->enrol =  'self';
-	$enrollmentRecord->status = 0;
-	$enrollmentRecord->courseid = $nid;
-	$enrollmentRecord->sortorder = 3;
-	$enrollmentRecord->name = '';
-	$enrollmentRecord->enrolperiod =  0;
-	$enrollmentRecord->enrolenddate = 0;
-	$enrollmentRecord->expirynotify = 0;
-	$enrollmentRecord->expirythreshold =0; 
-	$enrollmentRecord->notifyall = 0;
-	$enrollmentRecord->password = $modkey;
-	$enrollmentRecord->cost = NULL;
-	$enrollmentRecord->currency = NULL;  
-	$enrollmentRecord->roleid =  5 ;
-	$enrollmentRecord->customint1 = 0 ;
-	$enrollmentRecord->customint2 = 0;
-	$enrollmentRecord->customint3 = 0;
-	$enrollmentRecord->customint4 = 1;
-	$enrollmentRecord->customchar1 = NULL;
-	$enrollmentRecord->customchar2 = NULL;
-	$enrollmentRecord->customdec1 = NULL;
-	$enrollmentRecord->customdec2 = NULL;
-	$enrollmentRecord->customtext1 = '';
-	$enrollmentRecord->customtext2 = NULL;
-	$enrollmentRecord->timecreated = time();
-	$enrollmentRecord->timemodified = time();
 	
-	$DB->insert_record('enrol', $enrollmentRecord);
+
+	// Check to see if auto create enrollment keys
+	// is enabled. If this option is set, add an 
+	// enrollment key.
+	$autoKey = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'autoKey'");
 	
+	if($autoKey == 0 || $autoKey == 1){
+
+			 // Add enrollnent key
+			$enrollmentRecord = new stdClass();
+			$enrollmentRecord->enrol =  'self';
+			$enrollmentRecord->status = 0;
+			$enrollmentRecord->courseid = $nid;
+			$enrollmentRecord->sortorder = 3;
+			$enrollmentRecord->name = '';
+			$enrollmentRecord->enrolperiod =  0;
+			$enrollmentRecord->enrolenddate = 0;
+			$enrollmentRecord->expirynotify = 0;
+			$enrollmentRecord->expirythreshold =0; 
+			$enrollmentRecord->notifyall = 0;
+			$enrollmentRecord->password = $modkey;
+			$enrollmentRecord->cost = NULL;
+			$enrollmentRecord->currency = NULL;  
+			$enrollmentRecord->roleid =  5 ;
+			$enrollmentRecord->customint1 = 0 ;
+			$enrollmentRecord->customint2 = 0;
+			$enrollmentRecord->customint3 = 0;
+			$enrollmentRecord->customint4 = 1;
+			
+			
+
+			if($CFG->version >= 2013051400){
+				$enrollmentRecord->customint5 = NULL;
+				$enrollmentRecord->customint6 = 1;
+		    }
+			$enrollmentRecord->customchar1 = NULL;
+			$enrollmentRecord->customchar2 = NULL;
+			$enrollmentRecord->customdec1 = NULL;
+			$enrollmentRecord->customdec2 = NULL;
+			$enrollmentRecord->customtext1 = '';
+			$enrollmentRecord->customtext2 = NULL;
+			$enrollmentRecord->timecreated = time();
+			$enrollmentRecord->timemodified = time();
+			
+			$DB->insert_record('enrol', $enrollmentRecord);
+	} 
 	
 	
 	if($sendMail == true){

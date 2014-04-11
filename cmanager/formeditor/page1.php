@@ -1,4 +1,28 @@
 <?php
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
+php?>
+
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<script src="../js/jquery/jquery-1.7.2.min.js"></script>
+
+<?
 require_once("../../../config.php");
 global $CFG, $DB;
 
@@ -29,11 +53,14 @@ echo $OUTPUT->header();
 ?>
 
 
-<link rel="stylesheet" type="text/css" href="../css/main.css" />
-<script src="../js/jquery/jquery-1.7.2.min.js"></script>
 
   
 <script>
+
+function goBack(){
+	window.location ="../cmanager_confighome.php";
+}
+
 	var num = 1;
 	
 	function addNewField(field){
@@ -73,7 +100,7 @@ echo $OUTPUT->header();
      $.post("ajax_functions.php", { valuetoadd: value, type: 'add'},
    
    		function(data) {
-     		//alert("Data Loaded: " + data);
+     		
 	   });
  
 	 //alert('A new item has been added: ' + value);
@@ -84,6 +111,7 @@ echo $OUTPUT->header();
 	function saveAllChanges(langString){
 		
 		var field1title = document.getElementById('field1title').value;
+
 		var field1desc = document.getElementById('field1desc').value;
 		var field2title = document.getElementById('field2title').value; 
 		var field2desc = document.getElementById('field2desc').value;
@@ -92,13 +120,11 @@ echo $OUTPUT->header();
 		
 		var dropdownStatus = document.getElementById('dropdownstatus').value;
 		
-		
-		$.post("ajax_functions.php", { f1t: field1title, f1d: field1desc, f2t: field2title, f2d: field2desc, f3d: field3desc, type: 'save', dstat: dropdownStatus
-		
-		},
+		jQuery.ajaxSetup({async:false});
+		$.post("ajax_functions.php", { f1t: field1title, f1d: field1desc, f2t: field2title, f2d: field2desc, f3d: field3desc, type: 'save', dstat: dropdownStatus},
    
    		function(data) {
-     		//alert("Changes have been saved");
+     		
 	   });
 		
 		
@@ -150,7 +176,6 @@ class courserequest_form extends moodleform {
 
 	  // Field 3 html
      if($field3status == 'enabled'){
-     	
      	$enabledSelected = 'selected = "yes"';
 		 $disabledSelected = '';
      } else if($field3status == 'disabled'){
@@ -193,7 +218,10 @@ class courserequest_form extends moodleform {
 		&nbsp;
 		<p></p>	
 	 
-	 <a href="../cmanager_confighome.php">< '.get_string('back','block_cmanager').'</a>
+ 	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+	
+
+
      <br><br>
 	 <b>Instructions</b>
 	 <br>

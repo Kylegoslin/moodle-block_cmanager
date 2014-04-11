@@ -1,5 +1,6 @@
 <?php
 $string['pluginname'] = 'Course Request Manager';
+$string['plugindesc'] = 'Course Request Manager';
 
 //block links
 $string['block_admin'] = 'Request Queue';
@@ -18,6 +19,7 @@ $string['Enabled'] = 'Enabled';
 $string['Disabled'] = 'Disabled';
 $string['clickhere'] = 'Click here';
 $string['update'] = 'Update';
+$string['Request'] = 'Request';
 
 //block_cmanager_config.php
 $string['administratorConfig'] = 'Other Settings';
@@ -184,6 +186,7 @@ $string['cmanagernonePending'] = 'Sorry, nothing pending!';
 $string['cmanagerEnrolmentInstruction'] = 'Course Request Manager can generate an automatic enrolment key or you may choose to prompt the user for an enrolment key of their choice.';
 $string['cmanagerEnrolmentOption1'] = 'Automatically generated key';
 $string['cmanagerEnrolmentOption2'] = 'Prompt user for key';
+$string['cmanagerEnrolmentOption3'] = 'Do not ask for key';
 
 $string['deleteAllRequests'] = 'Delete All Current and Archived Requests';
 $string['deleteOnlyArch'] = 'Delete Only Archived Requests';
@@ -243,7 +246,7 @@ $string['comments_PostComment'] = 'Post Comment';
 $string['denyrequest_Title'] = 'Course Request Facility - Deny Request';
 $string['denyrequest_Instructions'] = 'Outline below why the request has been denied';
 $string['denyrequest_Btn'] = 'Deny Request';
-$string['denyrequest_reason'] = 'Outline below why the request has been denied';
+$string['denyrequest_reason'] = 'Outline below why the request has been denied (max 280 chars)';
 
 //approve request
 $string['approverequest_Title'] = 'Course Request Facility - Approve Request';
@@ -370,4 +373,14 @@ $string['displayListWarningTitle'] = 'WARNING';
 $string['displayListWarningSideText'] = 'This shortname already exists in the moodle database. Admin attention required. This request is excluded from bulk actions.';
 
 $string['nocatselected'] = 'Sorry no catgory has been selected for this course';
+
+$string['customdeny'] = 'Denial Text Templates';
+$string['customdenydesc'] = 'Administrators may deny course requests for a number of reasons. Outlining the reason for a denial in an email can be time consuming. This feature lets you create up to five reasons which can be quickly selected during the denial process. Max 250 chars';
+$string['customdenyfiller'] = 'You may enter a denial reason here (max 250 chars)';
+$string['denytext1'] = 'Reason 1';
+$string['denytext2'] = 'Reason 2';
+$string['denytext3'] = 'Reason 3';
+$string['denytext4'] = 'Reason 4';
+$string['denytext5'] = 'Reason 5';
+
 ?>

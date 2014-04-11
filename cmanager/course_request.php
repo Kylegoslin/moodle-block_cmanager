@@ -1,15 +1,23 @@
 <?php
 /* --------------------------------------------------------- 
-
-
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-
-
-
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
+
 require_once("../../config.php");
 global $CFG, $USER, $DB;
 require_once("$CFG->libdir/formslib.php");
@@ -58,9 +66,14 @@ else if (isset($_GET['edit'])){ // If we are editing the mod
 }
 
 
-$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess), '*', IGNORE_MULTIPLE);
-		
 
+$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess), '*', IGNORE_MULTIPLE);
+	
+// Quick hack to stop guests from making requests!		
+if($USER->id == 1){
+	echo print_error('Sorry no guest access, please login.');
+	die;
+}
 
 class courserequest_form extends moodleform {
  
@@ -70,19 +83,15 @@ class courserequest_form extends moodleform {
         global $currentSess, $DB, $currentRecord;
 		
         $mform =& $this->_form; // Don't forget the underscore! 
- 		$mform->addElement('html', '<style>
-		#content {
-		
-		left:200px;
-		}
-		
-		</style>
-			');
+ 		
+		 
 
 
 	$mform->addElement('header', 'mainheader','<span style="font-size:18px">'.  get_string('modrequestfacility','block_cmanager'). '</span>');
   
-    
+    $field1desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
+	$field2desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);
+	
    
 	// Get the field values
 	$field1title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname1'), IGNORE_MULTIPLE);
@@ -104,17 +113,21 @@ class courserequest_form extends moodleform {
 	// Programme Code
 	$attributes = array();
 	$attributes['value'] = $currentRecord->modcode;
-	$mform->addElement('text', 'programmecode', $field1title, $attributes, 'sdfdsf');
+	$mform->addElement('text', 'programmecode', $field1title, $attributes, '');
 	$mform->addRule('programmecode', get_string('request_rule1','block_cmanager'), 'required', null, 'server', false, false);
     
-     $mform->addElement('html', '<p>&nbsp;');
+
+	$mform->addElement('static', 'description', '', $field1desc);
+	$mform->addElement('html', '<p></p>');
+
+
 	// Programme Title	
 	$attributes = array();
 	$attributes['value'] = $currentRecord->modname;
 	$mform->addElement('text', 'programmetitle', $field2title, $attributes);
 	$mform->addRule('programmetitle', get_string('request_rule1','block_cmanager'), 'required', null, 'server', false, false);
    
-   
+   	$mform->addElement('static', 'description', '', $field2desc);
 	$mform->addElement('html', '<p>&nbsp;<br>');
 	 
 	 
@@ -176,7 +189,7 @@ class courserequest_form extends moodleform {
 	    $mform->addElement('html', '<p></p>&nbsp<p></p>');
 	    $buttonarray=array();
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('Continue','block_cmanager'));
-        $buttonarray[] = &$mform->createElement('cancel');
+        $buttonarray[] = &$mform->createElement('cancel', 'cancel', get_string('cancel','block_cmanager'));
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false); 
 	
 	}
@@ -256,69 +269,6 @@ class courserequest_form extends moodleform {
 	$mform->display();
 	
 
-$field1desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
-$field2desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);
-		
-?>
-
-
-<style>
-div.fcontainer.clearfix {
- position:relative;
- top:20px;
- left:300px;
- 
-}
-
-div.fdescription.required {
-	
-	position:relative;
-	
-	right:400px;
-}
-
-div.catname {
-	
-	position:relative;
-	
-	left:120px;
-}
-
-		
-</style>
-
-<script>
-		
-	// Field 1 desc
-	var theDiv = document.getElementById("fitem_id_programmecode");
-	var div = document.createElement("div");
-	div.style.width = "300px";
-	div.style.height = "20px";
-	div.style.position = "relative";
-	div.style.left = "200px";
-	div.style.top = "2px";
-	div.style.background = "transparent";
-	div.style.color = "#888";
-	div.innerHTML = "<?php echo $field1desc; ?>";
-	theDiv.appendChild(div);
-	
-	
-	// Field 1 desc
-	var theDiv = document.getElementById("fitem_id_programmetitle");
-	var div = document.createElement("div");
-	div.style.width = "300px";
-	div.style.height = "40px";
-	div.style.position = "relative";
-	div.style.left = "200px";
-	div.style.top = "2px";
-	div.style.background = "transparent";
-	div.style.color = "#888";
-	div.innerHTML = "<?php echo $field2desc; ?>";
-	theDiv.appendChild(div);
-
-</script>
-
-<?php
 
 	if(!empty($currentRecord->cate)){
 		echo '<script> document.getElementById("menucategory").value = '.$currentRecord->cate.'; </script> ';

@@ -1,11 +1,21 @@
- <?php
-/* --------------------------------------------------------- 
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
+<?php
+/* ---------------------------------------------------------
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2013-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
 
 require_once("../../../config.php");
@@ -31,16 +41,23 @@ echo $OUTPUT->header();
 
 
 <script language="javascript" type="text/javascript">
-<!--
+
 function popitup(url) {
-	newwindow=window.open(url,'name','height=400,width=350');
+	newwindow=window.open(url,'name','height=600,width=400');
 	if (window.focus) {newwindow.focus()}
 	return false;
 }
 
-// -->
-</script>
 
+function goBack(){
+	window.location ="../cmanager_admin.php";
+}
+
+</script>
+<style>
+	tr:nth-child(odd)		{ background-color:#eee; }
+	tr:nth-child(even)		{ background-color:#fff; }
+ </style>
 <?php
 
 
@@ -55,51 +72,32 @@ if(isset($_GET['id'])){
 
 
 class courserequest_form extends moodleform {
- 
+
     function definition() {
     global $CFG, $currentSess, $mid, $USER, $DB;
 
 
-	
+
  	$rec =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
 
 
-	$mform =& $this->_form; // Don't forget the underscore! 
+	$mform =& $this->_form; // Don't forget the underscore!
 	$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('courserequestadmin','block_cmanager'). '</span>');
 
 	// Page description text
-	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-				    <a href="../cmanager_admin.php">< '.get_string('back','block_cmanager').'</a>
-				    <p></p>');
-				    
-	
-
-
+	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button type="button" ><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>');
 
 	$rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
    	$displayModHTML = displayAdminList($rec, false, false, false, '');
-	
 
-
-	$outputHTML = '
-	<center>
-	<div style="width:300px; height:500px">
-	'.$displayModHTML.'
-	</div>
-	<p></p>
-	&nbsp;
-	<p></p>
-	<a href="#" onclick="return popitup(\'showcoursedetails.php?id='.$mid.'\')"
-	>[' . get_string('requestReview_OpenDetails','block_cmanager'). ']</a> - <a href="approve_course_new.php">' . get_string('requestReview_ApproveRequest','block_cmanager'). '</a>	
-	
-	</center>
-		';
-
+	$outputHTML = '<div>'.$displayModHTML.'</div>';
 
 	$mform->addElement('html', $outputHTML);
+	$mform->addElement('html', '<button type="button" onclick="window.location.href=\'approve_course_new.php\'">'.get_string('requestReview_ApproveRequest','block_cmanager').'</button>');
+	$mform->addElement('html', '<button type="button" onclick="return popitup(\'showcoursedetails.php?id='.$mid.'\')">'.get_string('requestReview_OpenDetails','block_cmanager').'</button>');
 
-   
+
 	}
 }
 
@@ -107,23 +105,16 @@ class courserequest_form extends moodleform {
    $mform = new courserequest_form();//name of the form you defined in file above.
 
    	if ($mform->is_cancelled()){
-     
-	} 
-	
-	else if ($fromform=$mform->get_data()){
-	
+	}
 
-  	} 
-  
+	else if ($fromform=$mform->get_data()){
+ 	}
   	else {
-        
- 	
-	
-	
-	$mform->set_data($mform);
-	$mform->display();
-	
-	
+
+ 		$mform->set_data($mform);
+		$mform->display();
+
+
 	echo $OUTPUT->footer();
 	}
 

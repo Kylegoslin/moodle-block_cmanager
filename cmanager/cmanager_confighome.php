@@ -1,4 +1,22 @@
 <?php
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
 
 require_once("../../config.php");
 require_once("$CFG->libdir/formslib.php");
@@ -18,27 +36,42 @@ $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
 class courserequest_form extends moodleform {
- 
+
 	function definition() {
-	
-		$mform =& $this->_form; // Don't forget the underscore! 
+
+		$mform =& $this->_form; // Don't forget the underscore!
 		$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('configurecoursemanagersettings','block_cmanager'). '</span>');
-		
-		$mainSlider = "<div style=\"text-indent: -2em; padding-left: 2em;\">
+
+		$mainSlider = "
 		<p></p>
-		<a href=\"cmanager_adminsettings.php\">".get_string('configureadminsettings','block_cmanager')."</a><br>".get_string('configureadminsettings_desc','block_cmanager')."<p></p><br>	
-		
-		<p></p>
-		<a href=\"cmanager_config.php\">".get_string('configureemailsettings','block_cmanager')."</a><br>".get_string('configureemailsettings_desc','block_cmanager')."<p></p><br>	
-		
-	
-		
-		<p></p>
-		<a href=\"formeditor/page1.php\">".get_string('configurecourseformfields','block_cmanager')."</a><br>".get_string('configure_instruction2','block_cmanager')."<p></p><br>
-		<p></p>
-		<a href=\"formeditor/form_builder.php\">".get_string('informationform','block_cmanager')."</a><br>".get_string('configure_instruction3','block_cmanager')."<p></p><br>
-		</div>";
-		
+		<table style=\"width:100%; \">
+		<tr>
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/admin.png\"></td>
+		<td><b><a href=\"cmanager_adminsettings.php\">".get_string('configureadminsettings','block_cmanager')."</a></b><br>".get_string('configureadminsettings_desc','block_cmanager')."</td>
+	</tr>
+
+	<tr>
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/email.png\"></td>
+
+		<td><b><a href=\"cmanager_config.php\">".get_string('configureemailsettings','block_cmanager')."</a></b><br>".get_string('configureemailsettings_desc','block_cmanager')."</td>
+
+	</tr>
+
+	<tr>
+
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"> </td>
+		<td><b><a href=\"formeditor/page1.php\">".get_string('configurecourseformfields','block_cmanager')."</a></b><br>".get_string('configure_instruction2','block_cmanager')."</td>
+	</tr>
+
+	<tr>
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"></td>
+		<td><b><a href=\"formeditor/form_builder.php\">".get_string('informationform','block_cmanager')."</a></b><br>".get_string('configure_instruction3','block_cmanager')."
+		</td>
+
+	</tr>
+
+		</table>";
+
 		$mform->addElement('html', $mainSlider);
 
     } // Close the function
@@ -52,19 +85,19 @@ class courserequest_form extends moodleform {
 $mform = new courserequest_form();
 
 if ($mform->is_cancelled()){
-    
-} 
+
+}
 
 else if ($fromform=$mform->get_data()){
- 
-} 
+
+}
 
 else {
-	
+
 	$mform->focus();
 	$mform->display();
 	echo $OUTPUT->footer();
- 
+
 }
 
-?>		
+?>

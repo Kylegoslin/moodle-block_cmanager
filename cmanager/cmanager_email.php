@@ -1,11 +1,21 @@
 <?php
 /* --------------------------------------------------------- 
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
 
 //get the default email address from config
@@ -295,7 +305,7 @@ $message
 $additionalSignature
 ";
 		
-		$headers = get_string('emailSubj_From','block_cmanager') . $from;
+		//$headers = get_string('emailSubj_From','block_cmanager') . $from;
 		
 		
 			 

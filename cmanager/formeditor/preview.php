@@ -1,4 +1,22 @@
 <?php
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
 
 require_once("../../../config.php");
 global $CFG, $DB;
@@ -28,7 +46,13 @@ if(isset($_GET['id'])){
 	die;
 }
 
-
+?>
+<script>
+	function goBack(){
+	window.location ="form_builder.php";
+}
+</script>
+<?php
 class courserequest_form extends moodleform {
  
     function definition() {
@@ -40,10 +64,11 @@ class courserequest_form extends moodleform {
         $fieldnameCounter = 1; // This counter is used to increment the naming conventions of each field.
 		
 		// Back Button
-		$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;<a href="form_builder.php">&lt ' . get_string('back','block_cmanager') . '</a><p></p>');
-		
+	
 	   	$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('formBuilder_previewHeader','block_cmanager'). '</span>');
 		
+		$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+	');
 
 	         
 		// Page description text
@@ -66,17 +91,17 @@ class courserequest_form extends moodleform {
 			
 			   if($field->type == 'textfield'){
 			   	
-				   createTextField($field->lefttext, $mform, $fieldName, $field->reqfield);
+				   createTextField(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'textarea'){
-			  		createTextArea($field->lefttext, $mform, $fieldName, $field->reqfield);
+			  		createTextArea(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'dropdown'){
-			   		createDropdown($field->lefttext, $field->id, $mform, $fieldName, $field->reqfield);
+			   		createDropdown(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   else if($field->type == 'radio'){
-			        createRadio($field->lefttext, $field->id, $mform, $fieldName, $field->reqfield);
+			        createRadio(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   

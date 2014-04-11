@@ -1,11 +1,21 @@
 <?php
 /* --------------------------------------------------------- 
-
-     COURSE REQUEST BLOCK FOR MOODLE  
-
-     2012 Kyle Goslin & Daniel McSweeney
-     Institute of Technology Blanchardstown
-     Dublin 15, Ireland
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
  --------------------------------------------------------- */
 
 require_once("../../config.php");
@@ -86,9 +96,9 @@ class courserequest_form extends moodleform {
 				  		$fieldValue = $currentRecord->$fname;
 						
 						
-				  		createTextField($field->lefttext, $mform, $fieldName, $fieldValue, $field->reqfield);
+				  		createTextField(stripslashes($field->lefttext), $mform, $fieldName, $fieldValue, $field->reqfield);
 				  } else {
-				   createTextField($field->lefttext, $mform, $fieldName, '', $field->reqfield);
+				   createTextField(stripslashes($field->lefttext), $mform, $fieldName, '', $field->reqfield);
 				  }
 				  
 			   }
@@ -97,9 +107,9 @@ class courserequest_form extends moodleform {
 					  	
 					  		$fname = 'c' . $fieldnameCounter;
 					  		$fieldValue = $currentRecord->$fname;
-							createTextArea($field->lefttext, $mform, $fieldName, $fieldValue, $field->reqfield);
+							createTextArea(stripslashes($field->lefttext), $mform, $fieldName, $fieldValue, $field->reqfield);
 					} else {
-				  		createTextArea($field->lefttext, $mform, $fieldName, '', $field->reqfield);
+				  		createTextArea(stripslashes($field->lefttext), $mform, $fieldName, '', $field->reqfield);
 						
 				  	}
 			   }
@@ -110,10 +120,10 @@ class courserequest_form extends moodleform {
 					  	
 					  		$fname = 'c' . $fieldnameCounter;
 					  		$fieldValue = $currentRecord->$fname;
-							createDropdown($field->lefttext, $field->id, $mform, $fieldName, $fieldValue, $field->reqfield);
+							createDropdown(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $fieldValue, $field->reqfield);
 							
 					} else  {
-			   			createDropdown($field->lefttext, $field->id, $mform, $fieldName, '', $field->reqfield); 
+			   			createDropdown(stripslashes($field->lefttext), $field->id, $mform, $fieldName, '', $field->reqfield); 
 					}
 			   }
 			   
@@ -122,10 +132,10 @@ class courserequest_form extends moodleform {
 			  	 	if($inEditingMode == true){
 					  	 $fname = 'c' . $fieldnameCounter;
 					  	 $fieldValue = $currentRecord->$fname;
-						 createRadio($field->lefttext, $field->id, $mform, $fieldName, $fieldValue, $field->reqfield);
+						 createRadio(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $fieldValue, $field->reqfield);
 						
 					} else {
-						 createRadio($field->lefttext, $field->id, $mform, $fieldName, '', $field->reqfield);
+						 createRadio(stripslashes($field->lefttext), $field->id, $mform, $fieldName, '', $field->reqfield);
 					}
 			   
 			       
@@ -142,7 +152,7 @@ class courserequest_form extends moodleform {
 	    $mform->addElement('html', '<p></p>&nbsp<p></p>');
 	    $buttonarray=array();
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('Continue','block_cmanager'));
-        $buttonarray[] = &$mform->createElement('cancel');
+        $buttonarray[] = &$mform->createElement('cancel', 'cancel', get_string('requestReview_CancelRequest','block_cmanager'));
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
         $mform->addElement('html', '<p></p>&nbsp<p></p>');
 	}
@@ -157,8 +167,10 @@ class courserequest_form extends moodleform {
 
   //default 'action' for form is strip_querystring(qualified_me())
   if ($mform->is_cancelled()){
-        
+
+
 	echo '<script>window.location="module_manager.php";</script>';
+	die;
 
   } else if ($fromform=$mform->get_data()){
 
@@ -323,25 +335,6 @@ function createDropdown($leftText, $id, $form, $fieldName, $selectedValue, $reqf
 }
  
    echo $OUTPUT->header();
-?>
-<title>Course Manager</title>
-
-<style>
-div.fcontainer.clearfix {
- position:relative;
- top:20px;
- left:300px;
- 
-}
-div.fdescription.required {
-	
-	position:relative;
-	
-	right:400px;
-}
-	
-</style>
-<?php
 
    $mform->focus();
    $mform->set_data($mform);

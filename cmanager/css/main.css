@@ -12,11 +12,12 @@ div.statusblock {
 #twobordertitle {
 
 
-border-top:1px solid black; 
-border-bottom: 1px solid black;
-width: 700px;
+
+width: 100%;
 height:20px;
+padding-left: 20px;
 }
+
 
 
 
@@ -25,7 +26,8 @@ height:20px;
 
 border-top:1px solid black; 
 border-bottom: 1px solid black;
-width: 800px;
+width: 80%;
+
 height:20px;
 }
 #singleborderwide {
@@ -40,17 +42,11 @@ font-size: 12px;
 
 }
 
-
-
-
 #existingrequest {
 
-background-color: white; 
-width: 700px;
-height:200px;
-padding-bottom:80px;
 padding-top:10px;
 font-size: 12px;
+
 
 }
 

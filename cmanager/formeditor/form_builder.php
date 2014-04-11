@@ -1,15 +1,23 @@
 <?php
-/* ------------------------------------------------------------
- * 
- * 
- *  COURSE REQUEST MANAGER
- *  2012 - 2013
- * 
- *  Kyle Goslin, Daniel McSweeney
- * 
- * 
- * ---------------------------------------------------------------
- * */
+/* --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+ --------------------------------------------------------- */
+
 
 require_once("../../../config.php");
 global $CFG, $DB;
@@ -39,7 +47,7 @@ echo $OUTPUT->header();
 
 <script>
 	
-	
+
 	function saveSelectedForm(){
 		
 		 var value = document.getElementById('selectform').value;
@@ -68,7 +76,9 @@ echo $OUTPUT->header();
 		
 		
 	}
-	
+	function goBack(){
+	window.location ="../cmanager_confighome.php";
+}
 </script>
 <?php
 
@@ -103,6 +113,10 @@ if(isset($_GET['del'])){
 	    }
 	}
 	
+	
+	
+
+
 </script>
 	
 
@@ -126,9 +140,9 @@ class courserequest_form extends moodleform {
  
    	$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage2','block_cmanager').'</span>');
    
-	//<a href="../block_cmanager_confighome.php">< '.get_string('back','block_cmanager').'</a>   
-	$mform->addElement('html', $headingTab . "<br><a href=\"../cmanager_confighome.php\">< ".get_string('back','block_cmanager')."</a><br>");
-     
+ 	$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+	');
+	
 	// Page description text
 	$mform->addElement('html', '<br>'.get_string('formBuilder_instructions','block_cmanager').'<ul><li>'.get_string('formBuilder_instructions1','block_cmanager').'</li><li>'.get_string('formBuilder_instructions2','block_cmanager').'</li><li>'.get_string('formBuilder_instructions3','block_cmanager').'</li><li>'.get_string('formBuilder_instructions4','block_cmanager').'</li><li>'.get_string('formBuilder_instructions5','block_cmanager').'</li><li>'.get_string('formBuilder_instructions6','block_cmanager').'</li><p></p><p></p>');
 

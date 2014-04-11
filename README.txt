@@ -7,7 +7,8 @@ The current release of Course Request Manager, for new installations use this!
 
 This github repo is a mirror of the code available at: https://moodle.org/plugins/view.php?plugin=block_cmanager
 
-Latest available version 3.9.
+Latest Available Version: 4.1
+Released Date: 11/April/2014
 
 
 ----------------------------------------------

@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../config.php");
 require_once("$CFG->libdir/formslib.php");
 
@@ -30,12 +36,29 @@ $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_u
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'));
 
 $PAGE->set_url('/blocks/cmanager/block_cmanager_confighome.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
-class courserequest_form extends moodleform {
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:viewconfig',$context)) {
+} else {
+  print_error(get_string('cannotviewconfig', 'block_cmanager'));
+}
+
+
+
+/**
+ * Config home
+ *
+ * Listing of config options
+ * @package    block_socialbookmark
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_cmanager_confighome_form extends moodleform {
 
 	function definition() {
 
@@ -48,27 +71,27 @@ class courserequest_form extends moodleform {
 		<tr>
 		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/admin.png\"></td>
 		<td><b><a href=\"cmanager_adminsettings.php\">".get_string('configureadminsettings','block_cmanager')."</a></b><br>".get_string('configureadminsettings_desc','block_cmanager')."</td>
-	</tr>
+	    </tr>
 
-	<tr>
+	    <tr>
 		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/email.png\"></td>
 
 		<td><b><a href=\"cmanager_config.php\">".get_string('configureemailsettings','block_cmanager')."</a></b><br>".get_string('configureemailsettings_desc','block_cmanager')."</td>
 
-	</tr>
+	    </tr>
 
-	<tr>
+    	<tr>
 
 		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"> </td>
 		<td><b><a href=\"formeditor/page1.php\">".get_string('configurecourseformfields','block_cmanager')."</a></b><br>".get_string('configure_instruction2','block_cmanager')."</td>
-	</tr>
+	    </tr>
 
-	<tr>
+	    <tr>
 		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"></td>
 		<td><b><a href=\"formeditor/form_builder.php\">".get_string('informationform','block_cmanager')."</a></b><br>".get_string('configure_instruction3','block_cmanager')."
 		</td>
 
-	</tr>
+	    </tr>
 
 		</table>";
 
@@ -79,19 +102,14 @@ class courserequest_form extends moodleform {
 
 
 
+$mform = new block_cmanager_confighome_form();
 
-
-
-$mform = new courserequest_form();
-
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
 
 }
-
-else if ($fromform=$mform->get_data()){
+else if ($fromform=$mform->get_data()) {
 
 }
-
 else {
 
 	$mform->focus();
@@ -100,4 +118,4 @@ else {
 
 }
 
-?>
+

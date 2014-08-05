@@ -1,13 +1,11 @@
 <?php
-
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
+// --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// block_cmanager is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -15,17 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
 //
-// Thanks to Alexander Kiy for this translation.
-//
+// A special thanks to Alexander Kiy for this translation.
+// --------------------------------------------------------- 
 /**
- * Strings for component 'block_cmanager', language 'de', branch 'MOODLE_23_STABLE'
- *
- * @package   block_cmanager
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 $string['actions'] = 'Aktionen';
@@ -295,7 +295,19 @@ $string['sureOnlyArch'] = 'Sind Sie sicher, dass Sie nur alle archivierten Eintr
 $string['totalRequests'] = 'Gesamte Anzahl von Anfragen';
 $string['update'] = 'Aktualisieren';
 $string['view'] = 'Ansicht';
-$string['viewMore'] = 'Mehr ansehen';
+$string['viewmore'] = 'Mehr ansehen';
 $string['viewsummary'] = 'Zusammenfassung ansehen';
 $string['withselectedrequests'] = 'mit ausgewählten Anfragen';
 $string['yesDeleteRecords'] = 'Ja, löschen!';
+
+
+
+$string['cannotrequestcourse'] = 'Leider kann man einen Kurs nicht anfordern';
+$string['cannotviewrecords'] = 'Leider kann man nicht Datensätze anzeigen';
+$string['cannotapproverecord'] = 'Leider kann man nicht genehmigen Aufzeichnungen';
+$string['cannoteditrequest'] = 'Es tut uns leid Sie können eine Aufzeichnung nicht bearbeiten';
+$string['cannotcomment'] = 'Leider haben Sie nicht kommentieren kann';
+$string['cannotdelete'] = 'Es tut uns leid Sie können eine Aufzeichnung nicht löschen';
+$stirng['cannotdenyrecord'] = 'Es tut uns leid Sie können eine Aufzeichnung nicht leugnen';
+$string['cannotviewconfig'] = 'Leider können Sie die Konfiguration nicht anzeigen';
+

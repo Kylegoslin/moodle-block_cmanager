@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,22 +16,21 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
-
-
-/*
- * 
- *
- *    verison.php
- *
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$plugin->version = 2014041041;      // The current module version (Date: YYYYMMDDXX)
+
+$plugin->version = 2014072542;      // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2011070110.00;      // Requires this Moodle version
 
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.1';
-?>
+$plugin->release = '4.2';
+
 
 
 

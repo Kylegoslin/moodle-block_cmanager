@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/label/db" VERSION="20060905" COMMENT="XMLDB file for Moodle mod/label"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+
+<TABLE NAME="block_cmanager_comments" COMMENT="block_cmanager_comments table retrofitted from MySQL" NEXT="block_cmanager_config">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="instanceid"/>
+        <FIELD NAME="instanceid" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"  PREVIOUS="id" NEXT="createdbyid"/>
+        <FIELD NAME="createdbyid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="instanceid" NEXT="dt"/>
+        <FIELD NAME="dt" TYPE="datetime" NOTNULL="false" SEQUENCE="false"  PREVIOUS="createdbyid" NEXT="message"/>
+        <FIELD NAME="message" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false"  PREVIOUS="dt"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+
+ <TABLE NAME="block_cmanager_config" COMMENT="block_cmanager_config table retrofitted from MySQL" PREVIOUS="block_cmanager_comments" NEXT="block_cmanager_formfields">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="varname"/>
+        <FIELD NAME="varname" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"  PREVIOUS="id" NEXT="value"/>
+        <FIELD NAME="value" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false"  PREVIOUS="varname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+ <TABLE NAME="block_cmanager_formfields" COMMENT="block_cmanager_formfields table retrofitted from MySQL" PREVIOUS="block_cmanager_config" NEXT="block_cmanager_form_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="type"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"  PREVIOUS="id" NEXT="lefttext"/>
+        <FIELD NAME="lefttext" TYPE="char" LENGTH="250" NOTNULL="true" SEQUENCE="false"  PREVIOUS="type" NEXT="position"/>
+        <FIELD NAME="position" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="lefttext" NEXT="formid"/>
+        <FIELD NAME="formid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="position" NEXT="reqfield"/>
+        <FIELD NAME="reqfield" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="formid"/>
+      
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+
+ <TABLE NAME="block_cmanager_form_data" COMMENT="block_cmanager_form_data table retrofitted from MySQL" PREVIOUS="block_cmanager_formfields" NEXT="block_cmanager_records">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="id" NEXT="value"/>
+        <FIELD NAME="value" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"  PREVIOUS="fieldid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+
+<TABLE NAME="block_cmanager_records" COMMENT="block_cmanager_records table retrofitted from MySQL" PREVIOUS="block_cmanager_form_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="createdbyid"/>
+        <FIELD NAME="createdbyid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="id" NEXT="modname"/>
+        <FIELD NAME="modname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"  PREVIOUS="createdbyid" NEXT="modcode"/>
+        <FIELD NAME="modcode" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"  PREVIOUS="modname" NEXT="modmode"/>
+        <FIELD NAME="modmode" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"  PREVIOUS="modcode" NEXT="modkey"/>
+		<FIELD NAME="modkey" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"  PREVIOUS="modmode" NEXT="cate"/>
+        <FIELD NAME="cate" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"  PREVIOUS="modkey" NEXT="status"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"  PREVIOUS="cate" NEXT="req_type"/>
+        <FIELD NAME="req_type" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"  PREVIOUS="status" NEXT="req_values"/>
+        <FIELD NAME="req_values" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"  PREVIOUS="req_type" NEXT="createdate"/>
+        <FIELD NAME="createdate" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"  PREVIOUS="req_values" NEXT="formid"/>
+        <FIELD NAME="formid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="createdate" NEXT="c1"/>
+        <FIELD NAME="c1" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="formid" NEXT="c2"/>
+        <FIELD NAME="c2" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c1" NEXT="c3"/>
+        <FIELD NAME="c3" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c2" NEXT="c4"/>
+        <FIELD NAME="c4" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c3" NEXT="c5"/>
+        <FIELD NAME="c5" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c4" NEXT="c6"/>
+        <FIELD NAME="c6" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c5" NEXT="c7"/>
+        <FIELD NAME="c7" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c6" NEXT="c8"/>
+        <FIELD NAME="c8" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c7" NEXT="c9"/>
+        <FIELD NAME="c9" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c8" NEXT="c10"/>
+        <FIELD NAME="c10" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c9" NEXT="c11"/>
+        <FIELD NAME="c11" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c10" NEXT="c12"/>
+        <FIELD NAME="c12" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c11" NEXT="c13"/>
+        <FIELD NAME="c13" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c12" NEXT="c14"/>
+        <FIELD NAME="c14" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c13" NEXT="c15"/>
+        <FIELD NAME="c15" TYPE="char" LENGTH="300" NOTNULL="true" SEQUENCE="false"  PREVIOUS="c14"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+
+  </TABLES>
+  
+</XMLDB>
+

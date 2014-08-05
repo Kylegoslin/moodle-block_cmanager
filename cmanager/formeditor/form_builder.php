@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once("../../../config.php");
 global $CFG, $DB;
@@ -31,12 +37,21 @@ $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_u
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage2builder', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/formeditor/form_builder.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
+
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:viewconfig',$context)) {
+} else {
+  print_error(get_string('cannotviewrecords', 'block_cmanager'));
+}
+
+
 ?>
 
 
@@ -46,8 +61,6 @@ echo $OUTPUT->header();
 
 
 <script>
-	
-
 	function saveSelectedForm(){
 		
 		 var value = document.getElementById('selectform').value;
@@ -123,7 +136,7 @@ if(isset($_GET['del'])){
 <?php
 
 
-class courserequest_form extends moodleform {
+class block_cmanager_builder_form extends moodleform {
  
     function definition() {
         global $CFG, $USER, $DB;
@@ -140,7 +153,7 @@ class courserequest_form extends moodleform {
  
    	$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage2','block_cmanager').'</span>');
    
- 	$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+ 	$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
 	');
 	
 	// Page description text
@@ -204,11 +217,11 @@ class courserequest_form extends moodleform {
 }
 
 
-$mform = new courserequest_form();//name of the form you defined in file above.
+$mform = new block_cmanager_builder_form();//name of the form you defined in file above.
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
     
-} else if ($fromform=$mform->get_data()){
+} else if ($fromform=$mform->get_data()) {
 
 			
 		   

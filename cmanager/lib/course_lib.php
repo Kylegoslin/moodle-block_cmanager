@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,18 +16,23 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once("../../../config.php");
 
 global $CFG, $DB;
 
-
-
-
-
-class NewCourse {
+/** 
+* Building up the new course object
+*/
+class block_cmanager_new_course {
 
      	public $returnto = 'topcat';
 	 	public $category = 1;
@@ -64,12 +69,12 @@ class NewCourse {
 		public $role_9 = '';
 	}
 
-/* 
+/** 
  *  Create a new Module on the Moodle installation based
  * upon the ID of the record in the course request system.
  * 
  */
-function createNewCourseByRecordId($mid, $sendMail){
+function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	
 	global $CFG, $DB;
 	require_once("$CFG->libdir/formslib.php");
@@ -78,40 +83,40 @@ function createNewCourseByRecordId($mid, $sendMail){
 	
 	
 
-	//** Create an object to hold our new course information
-	$new_course = new NewCourse();
-	
-	$new_course->format = get_config('moodlecourse', 'format');
-	//Get the default timestamp for new courses
-	$timestamp_startdate = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'startdate'), IGNORE_MULTIPLE);
-	$new_course->startdate = $timestamp_startdate;
+    //** Create an object to hold our new course information
+    $new_course = new block_cmanager_new_course();
 
-	$new_course->newsitems = get_config('moodlecourse','newsitems');
-	$new_course->showgrades = get_config('moodlecourse','showgrades');
-	$new_course->showreports = get_config('moodlecourse','showreports');
-	$new_course->maxbytes = get_config('moodlecourse','maxbytes');
-	
-	//Formatting
-	$new_course->numsections = get_config('moodlecourse','numsections');
-	$new_course->hiddensections = get_config('moodlecourse','hiddensections');
-	
-	// Groups
-	$new_course->groupmode = get_config('moodlecourse','groupmode');
-	$new_course->groupmodeforce = get_config('moodlecourse','groupmodeforce');
-	
-	
-	// Visible
-	$new_course->visible = get_config('moodlecourse','visible');
-	$new_course->lang = get_config('moodlecourse','lang');
-	
-	//is course mode enabled (page 1 optional dropdown)
-	$mode = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_field3status'));
-	// what naming mode is operating
-	$naming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'naming'), IGNORE_MULTIPLE);
- 	//what short naming format is operating
-	$snaming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'snaming'), IGNORE_MULTIPLE);
-	//get the record for the request
-	$rec =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
+    $new_course->format = get_config('moodlecourse', 'format');
+    //Get the default timestamp for new courses
+    $timestamp_startdate = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'startdate'), IGNORE_MULTIPLE);
+    $new_course->startdate = $timestamp_startdate;
+
+    $new_course->newsitems = get_config('moodlecourse','newsitems');
+    $new_course->showgrades = get_config('moodlecourse','showgrades');
+    $new_course->showreports = get_config('moodlecourse','showreports');
+    $new_course->maxbytes = get_config('moodlecourse','maxbytes');
+
+    //Formatting
+    $new_course->numsections = get_config('moodlecourse','numsections');
+    $new_course->hiddensections = get_config('moodlecourse','hiddensections');
+
+    // Groups
+    $new_course->groupmode = get_config('moodlecourse','groupmode');
+    $new_course->groupmodeforce = get_config('moodlecourse','groupmodeforce');
+
+
+    // Visible
+    $new_course->visible = get_config('moodlecourse','visible');
+    $new_course->lang = get_config('moodlecourse','lang');
+
+    //is course mode enabled (page 1 optional dropdown)
+    $mode = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_field3status'));
+    // what naming mode is operating
+    $naming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'naming'), IGNORE_MULTIPLE);
+    	//what short naming format is operating
+    $snaming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'snaming'), IGNORE_MULTIPLE);
+    //get the record for the request
+    $rec =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
     // Build up a course record based on the request.
     
@@ -140,38 +145,38 @@ function createNewCourseByRecordId($mid, $sendMail){
 	$p_key = $rec->modkey;
 	
 	//course naming
-	if ($naming == 1){
+	if ($naming == 1) {
 		$new_course->fullname = $rec->modname;
 	}
-	else if($naming ==2){
+	else if ($naming ==2) {
 		$new_course->fullname = $rec->modcode . ' - '. $rec->modname;	
 	}
-	else if($naming == 3){
+	else if ($naming == 3) {
 		$new_course->fullname = $rec->modname . ' ('. $rec->modcode . ')'; // Fullname, shortname
 	}
-	else if($naming == 4){
+	else if ($naming == 4) {
 		$new_course->fullname = $rec->modcode . ' - '. $rec->modname . ' ('.date("Y").')';	// Shortname, fullname (year)
 	}
-	else if($naming == 5){
+	else if ($naming == 5) {
 		$new_course->fullname = $rec->modname . ' ('.date("Y").')';
 	}
 	
 	// Enrollment key
 	// if the key thats been set, otherwise auto gen a key
-	if(isset($rec->modkey)){
+	if (isset($rec->modkey)) {
 		$modkey = $rec->modkey;
 	} else{
 		$modkey = rand(999,5000);	
 	}
 	
 	
-	$categoryid = $new_course->category;
-	$category = $DB->get_record('course_categories', array('id'=>$categoryid));
-	$catcontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
-	$contextobject = $catcontext;
-	$editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 
-						   'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 
-						   'noclean'=>true, 'content'=>$contextobject);
+    $categoryid = $new_course->category;
+    $category = $DB->get_record('course_categories', array('id'=>$categoryid));
+    $catcontext = context_coursecat::instance($category->id);
+    $contextobject = $catcontext;
+    $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 
+    					   'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 
+    					   'noclean'=>true, 'content'=>$contextobject);
 	
 	// Create the course
 	$course = create_course($new_course, $editoroptions);
@@ -180,7 +185,7 @@ function createNewCourseByRecordId($mid, $sendMail){
 	// any changes to the course
 	$nid = $course->id;
 	
-	if($nid == null){
+	if ($nid == null) {
 		return $nid;
 	}
 	 
@@ -202,50 +207,50 @@ function createNewCourseByRecordId($mid, $sendMail){
 	// enrollment key.
 	$autoKey = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'autoKey'");
 	
-	if($autoKey == 0 || $autoKey == 1){
+	if ($autoKey == 0 || $autoKey == 1){
 
-			 // Add enrollnent key
-			$enrollmentRecord = new stdClass();
-			$enrollmentRecord->enrol =  'self';
-			$enrollmentRecord->status = 0;
-			$enrollmentRecord->courseid = $nid;
-			$enrollmentRecord->sortorder = 3;
-			$enrollmentRecord->name = '';
-			$enrollmentRecord->enrolperiod =  0;
-			$enrollmentRecord->enrolenddate = 0;
-			$enrollmentRecord->expirynotify = 0;
-			$enrollmentRecord->expirythreshold =0; 
-			$enrollmentRecord->notifyall = 0;
-			$enrollmentRecord->password = $modkey;
-			$enrollmentRecord->cost = NULL;
-			$enrollmentRecord->currency = NULL;  
-			$enrollmentRecord->roleid =  5 ;
-			$enrollmentRecord->customint1 = 0 ;
-			$enrollmentRecord->customint2 = 0;
-			$enrollmentRecord->customint3 = 0;
-			$enrollmentRecord->customint4 = 1;
+         // Add enrollnent key
+        $enrollmentRecord = new stdClass();
+        $enrollmentRecord->enrol =  'self';
+        $enrollmentRecord->status = 0;
+        $enrollmentRecord->courseid = $nid;
+        $enrollmentRecord->sortorder = 3;
+        $enrollmentRecord->name = '';
+        $enrollmentRecord->enrolperiod =  0;
+        $enrollmentRecord->enrolenddate = 0;
+        $enrollmentRecord->expirynotify = 0;
+        $enrollmentRecord->expirythreshold =0; 
+        $enrollmentRecord->notifyall = 0;
+        $enrollmentRecord->password = $modkey;
+        $enrollmentRecord->cost = NULL;
+        $enrollmentRecord->currency = NULL;  
+        $enrollmentRecord->roleid =  5 ;
+        $enrollmentRecord->customint1 = 0 ;
+        $enrollmentRecord->customint2 = 0;
+        $enrollmentRecord->customint3 = 0;
+        $enrollmentRecord->customint4 = 1;
 			
 			
 
-			if($CFG->version >= 2013051400){
-				$enrollmentRecord->customint5 = NULL;
-				$enrollmentRecord->customint6 = 1;
-		    }
-			$enrollmentRecord->customchar1 = NULL;
-			$enrollmentRecord->customchar2 = NULL;
-			$enrollmentRecord->customdec1 = NULL;
-			$enrollmentRecord->customdec2 = NULL;
-			$enrollmentRecord->customtext1 = '';
-			$enrollmentRecord->customtext2 = NULL;
-			$enrollmentRecord->timecreated = time();
-			$enrollmentRecord->timemodified = time();
-			
-			$DB->insert_record('enrol', $enrollmentRecord);
+        if ($CFG->version >= 2013051400) {
+        	$enrollmentRecord->customint5 = NULL;
+        	$enrollmentRecord->customint6 = 1;
+        }
+        $enrollmentRecord->customchar1 = NULL;
+        $enrollmentRecord->customchar2 = NULL;
+        $enrollmentRecord->customdec1 = NULL;
+        $enrollmentRecord->customdec2 = NULL;
+        $enrollmentRecord->customtext1 = '';
+        $enrollmentRecord->customtext2 = NULL;
+        $enrollmentRecord->timecreated = time();
+        $enrollmentRecord->timemodified = time();
+
+        $DB->insert_record('enrol', $enrollmentRecord);
 	} 
 	
 	
-	if($sendMail == true){
-		sendEmails($nid, $new_course->shortname, $new_course->fullname, $modkey, $mid);
+	if ($sendMail == true) {
+        block_cmanager_send_emails($nid, $new_course->shortname, $new_course->fullname, $modkey, $mid);
 	}
 	
 	return $nid;
@@ -256,11 +261,11 @@ function createNewCourseByRecordId($mid, $sendMail){
 }
 
 
-/*
+/**
  * Send emails to everyone that is related to this module.
  * 
  */
-function sendEmails($courseid, $modcode, $modname, $modkey, $mid){
+function block_cmanager_send_emails($courseid, $modcode, $modname, $modkey, $mid){
 
 	global $USER, $CFG, $DB;
 
@@ -282,8 +287,8 @@ function sendEmails($courseid, $modcode, $modname, $modkey, $mid){
 	    $replaceValues['[req_link]'] = $CFG->wwwroot .'/blocks/cmanager/view_summary.php?id=' . $courseid;
 	    
 		//mail the user
-		new_course_approved_mail_user($user_ids, $replaceValues);
+		block_cmanager_new_course_approved_mail_user($user_ids, $replaceValues);
 		//mail the admin
-		new_course_approved_mail_admin($replaceValues);
+		block_cmanager_new_course_approved_mail_admin($replaceValues);
   
 }

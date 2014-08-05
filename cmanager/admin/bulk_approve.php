@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,34 +16,41 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG; $DB;
-$formPath = "$CFG->libdir/formslib.php";
-require_once($formPath);
+require_once("$CFG->libdir/formslib.php");
 require_login();
 require_once('../validate_admin.php');
 /** Navigation Bar **/
-
+$PAGE->set_context(context_system::instance());
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('bulkapprove', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/admin/bulk_approve.php');
-$PAGE->set_context(get_system_context());
+
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
-?>
 
 
-<?php
+$context = context_system::instance();
+if (has_capability('block/cmanager:approverecord',$context)) {
+} else {
+  print_error(get_string('cannotapproverecord', 'block_cmanager'));
+}
 
 
-
-if(isset($_GET['mul'])){
+if (isset($_GET['mul'])) {
 	$_SESSION['mul'] = required_param('mul', PARAM_TEXT);
 }
 
-class courserequest_form extends moodleform {
+class block_cmanager_bulk_approve_form extends moodleform {
  
     function definition() {
         global $CFG;
@@ -70,20 +77,18 @@ class courserequest_form extends moodleform {
 		
 		$denyIds = explode(',',$_SESSION['mul']);
 		    
-			foreach($denyIds as $cid){
+			foreach ($denyIds as $cid) {
 			
 				// If the id isn't blank
-				if($cid != 'null'){
+				if ($cid != 'null') {
 				
-						//echo $cid . '-';
-						$mid = createNewCourseByRecordId($cid, true);
-							
-							
+						$mid = block_cmanager_create_new_course_by_record_id($cid, true);
+									
 				}
 			
 		
 			}	
-		
+	
 		$_SESSION['mul'] = '';
 		echo "<script> window.location = '../cmanager_admin.php';</script>";
 		
@@ -94,25 +99,22 @@ class courserequest_form extends moodleform {
 
 
 
-   $mform = new courserequest_form();//name of the form you defined in file above.
+   $mform = new block_cmanager_bulk_approve_form();//name of the form you defined in file above.
 
 
 
-   if ($mform->is_cancelled()){
+   if ($mform->is_cancelled()) {
         
 	echo "<script>window.location='../cmanager_admin.php';</script>";
-			die;
+	die;
 
-  } else if ($fromform=$mform->get_data()){
+  } else if ($fromform=$mform->get_data()) {
 	
 
 
   } else {
-    //    echo $OUTPUT->header();
-     //   $mform->focus();
-	 //   $mform->set_data($mform);
 	    $mform->display();
-//	  	echo $OUTPUT->footer();
+
 }
 
 

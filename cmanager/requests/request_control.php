@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 require_once("$CFG->libdir/formslib.php");
 global $CFG, $DB;
@@ -30,7 +36,7 @@ $PAGE->navbar->add(get_string('requestcontrol', 'block_cmanager'));
 require_login();
 
 $PAGE->set_url('/blocks/cmanager/requests/request_control.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 $currentSess = '00';
@@ -49,7 +55,7 @@ if(isset($_GET['id'])){
 
 <?php
 
-class courserequest_form extends moodleform {
+class block_cmanager_request_control_form extends moodleform {
  
     function definition() {
         global $CFG;
@@ -67,8 +73,6 @@ class courserequest_form extends moodleform {
 		$mform->addElement('html', '<center><b>' . get_string('sendrequestforcontrol','block_cmanager'). '</b></center>');
 		$mform->addElement('html', '<p></p><center><p>' . get_string('emailswillbesent','block_cmanager'). '</p>&nbsp; ');
         
-        
-        
         // Comment box
 		$mform->addElement('textarea', 'customrequestmessage', '', 'wrap="virtual" rows="8" cols="50"');
 	
@@ -82,15 +86,7 @@ class courserequest_form extends moodleform {
 		$mform->addElement('html', '<p></p>&nbsp;</center>');
 	
         
-/*
 
-	// Page description text
-	$mform->addElement('html', '<center><b>A request has been  made</b></center>');
-	$mform->addElement('html', '<p></p><center>E-mails have been sent to the owner of the module. Please wait for a response.<p></p>&nbsp; </center>');
-	$mform->addElement('html', '<p></p><center><a href="../../cmanager/module_manager.php">Click here to return to the module manager</a> </center>');
-	$mform->closeHeaderBefore('buttonar');
-
-	*/
 	}
 }
 
@@ -102,7 +98,7 @@ class courserequest_form extends moodleform {
 
 
 
-  $mform = new courserequest_form();
+  $mform = new block_cmanager_request_control_form();
   
 
   
@@ -117,7 +113,7 @@ class courserequest_form extends moodleform {
   		// Send Email
 		$custommessage = $_POST['customrequestmessage'];
   		require_once('../cmanager_email.php');
-		handover_email_lecturers($_SESSION['mid'], $USER->id, $custommessage);
+		block_cmanager_handover_email_lecturers($_SESSION['mid'], $USER->id, $custommessage);
 		
   		echo "<script>window.location='../module_manager.php'; </script>";
         die;

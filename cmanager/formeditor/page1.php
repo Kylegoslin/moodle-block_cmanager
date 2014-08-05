@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,16 +16,17 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-php?>
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-<link rel="stylesheet" type="text/css" href="../css/main.css" />
-<script src="../js/jquery/jquery-1.7.2.min.js"></script>
-
-<?
 require_once("../../../config.php");
 global $CFG, $DB;
-
 require_login();
 require_once('../validate_admin.php');
 
@@ -35,44 +36,40 @@ $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_u
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage1', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/formeditor/page1.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
  if(isset($_GET['del'])){
- 	
-	
-	$deleteId = required_param('del', PARAM_INT);
- 	$DB->delete_records('block_cmanager_config', array('id'=>$deleteId));
+	$deleteid = required_param('del', PARAM_INT);
+ 	$DB->delete_records('block_cmanager_config', array('id'=>$deleteid));
     
  }
  
  
-
- 
+$context = context_system::instance();
+if (has_capability('block/cmanager:viewconfig',$context)) {
+} else {
+  print_error(get_string('cannotviewrecords', 'block_cmanager'));
+}
 ?>
 
-
-
-  
+<link rel="stylesheet" type="text/css" href="../css/main.css" />
+<script src="../js/jquery/jquery-1.7.2.min.js"></script>
 <script>
 
 function goBack(){
 	window.location ="../cmanager_confighome.php";
 }
 
-	var num = 1;
+var num = 1;
 	
-	function addNewField(field){
+function addNewField(field){
 		alert(field.value);
 		
-		
-		num++;
-		
+		num++;		
 		var ni = document.getElementById('formdiv');
    
-       
-
 		var newdiv = document.createElement('div');
 		//newdiv.style.backgroundColor = "gray";
 		newdiv.style.borderWidth = 1;
@@ -90,103 +87,103 @@ function goBack(){
 
 
 
-	}
+}
 	
 	
-	function addNewItem(){
+function addNewItem(){
 	
-	jQuery.ajaxSetup({async:false});
-     var value = document.getElementById('newitem').value;
-     $.post("ajax_functions.php", { valuetoadd: value, type: 'add'},
+    jQuery.ajaxSetup({async:false});
+    var value = document.getElementById('newitem').value;
+    $.post("ajax_functions.php", { valuetoadd: value, type: 'add'},
    
-   		function(data) {
+   	function(data) {
      		
-	   });
+	});
  
-	 //alert('A new item has been added: ' + value);
-	}
+	//alert('A new item has been added: ' + value);
+}
 	
 	
 	
-	function saveAllChanges(langString){
+function saveAllChanges(langString){
 		
-		var field1title = document.getElementById('field1title').value;
+    var field1title = document.getElementById('field1title').value;
 
-		var field1desc = document.getElementById('field1desc').value;
-		var field2title = document.getElementById('field2title').value; 
-		var field2desc = document.getElementById('field2desc').value;
-		var field3desc = document.getElementById('field3desc').value;
+	var field1desc = document.getElementById('field1desc').value;
+	var field2title = document.getElementById('field2title').value; 
+	var field2desc = document.getElementById('field2desc').value;
+	var field3desc = document.getElementById('field3desc').value;
 		
 		
-		var dropdownStatus = document.getElementById('dropdownstatus').value;
+	var dropdownStatus = document.getElementById('dropdownstatus').value;
 		
-		jQuery.ajaxSetup({async:false});
-		$.post("ajax_functions.php", { f1t: field1title, f1d: field1desc, f2t: field2title, f2d: field2desc, f3d: field3desc, type: 'save', dstat: dropdownStatus},
+	jQuery.ajaxSetup({async:false});
+	    $.post("ajax_functions.php", { f1t: field1title, f1d: field1desc, f2t: field2title, f2d: field2desc, f3d: field3desc, type: 'save', dstat: dropdownStatus},
    
-   		function(data) {
+   	function(data) {
      		
-	   });
+	});
 		
 		
-		alert(langString);
+	alert(langString);
 		
-	}
+}
 </script>
 <?php
-
-$formPath = "$CFG->libdir/formslib.php";
-require_once($formPath);
+require_once("$CFG->libdir/formslib.php");
 
 
-class courserequest_form extends moodleform {
+/**
+ * Page 1 form
+ *
+ *  Page 1 form
+ * @package    block_socialbookmark
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_cmanager_page1_form extends moodleform {
  
     function definition() {
         global $CFG, $USER, $DB;
         $mform =& $this->_form; // Don't forget the underscore! 
  
- 
-       // Get the field values
-       $field1title = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fieldname1'");
-       $field1desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc1'");
-       $field2title = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fieldname2'");
-       $field2desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc2'");
-	   $field3desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc3'");
-	   
-  
-        $field3status = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_field3status'");
-  
-	   $mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage1','block_cmanager').'</span>');
+        // Get the field values
+        $field1title = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fieldname1'");
+        $field1desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc1'");
+        $field2title = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fieldname2'");
+        $field2desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc2'");
+	    $field3desc = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc3'");
+	    $field3status = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_field3status'"); 
+	    $mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage1','block_cmanager').'</span>');
 
 		
-
-
      // Field 3 items
-     $field3ItemsHTML = '';
+     $field3itemshtml = '';
      $selectQuery = "varname = 'page1_field3value'";
 	 $field3Items = $DB->get_recordset_select('block_cmanager_config', $select=$selectQuery);
 	
-				$field3ItemsHTML .= '<table width="200px">';							  
+				$field3itemshtml .= '<table width="200px">';							  
 							  foreach($field3Items as $item){
-							  	$field3ItemsHTML .= '<tr>';
-							  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td> [<a href="page1.php?del=' . $item->id . '">Delete Item]</a></td>';
-								$field3ItemsHTML .= '</tr>';
+							  	$field3itemshtml .= '<tr>';
+							  	$field3itemshtml .= '<td>' . $item->value . '</td> <td> [<a href="page1.php?del=' . $item->id . '">Delete Item]</a></td>';
+								$field3itemshtml .= '</tr>';
 							  } 
-				$field3ItemsHTML .= '</table>';
+				$field3itemshtml .= '</table>';
      
 
 	  // Field 3 html
-     if($field3status == 'enabled'){
-     	$enabledSelected = 'selected = "yes"';
-		 $disabledSelected = '';
-     } else if($field3status == 'disabled'){
-     	$disabledSelected = 'selected = "yes"';
-		$enabledSelected = '';
+     if ($field3status == 'enabled') {
+     	$enabledselected = 'selected = "yes"';
+		$disabledselected = '';
+     } else if ($field3status == 'disabled') {
+     	$disabledselected = 'selected = "yes"';
+		$enabledselected = '';
      }
 
-		$field3HTML = '
+		$field3html = '
 	   <select id = "dropdownstatus">
-	          <option '. $enabledSelected .' value="enabled">'.get_string('Enabled','block_cmanager').'</option>
-	          <option ' . $disabledSelected .' value="disabled">'.get_string('Disabled','block_cmanager').'</option>
+	          <option '. $enabledselected .' value="enabled">'.get_string('Enabled','block_cmanager').'</option>
+	          <option ' . $disabledselected .' value="disabled">'.get_string('Disabled','block_cmanager').'</option>
 	   </select>
 	    ';
 	 
@@ -213,7 +210,7 @@ class courserequest_form extends moodleform {
 	 	//$mform->addElement('html', $htmlOutput);
  
  
-     $fieldsHTML = '
+     $fieldshtml = '
 		<p></p> 
 		&nbsp;
 		<p></p>	
@@ -335,7 +332,7 @@ class courserequest_form extends moodleform {
 		</td>
 		
 		 <td>  
-	      ' . $field3HTML.'
+	      ' . $field3html.'
 	
 	    </td>
 		</tr>
@@ -345,7 +342,7 @@ class courserequest_form extends moodleform {
 		   <td>
 		      Values:
 		   </td>
-		       ' . $field3ItemsHTML. '
+		       ' . $field3itemshtml. '
 		   <td>
 		<p></p>
 		&nbsp;
@@ -381,7 +378,7 @@ class courserequest_form extends moodleform {
 	 
 	 
 	 
-	 $mform->addElement('html', $fieldsHTML);
+	 $mform->addElement('html', $fieldshtml);
 
 	}
 }
@@ -389,9 +386,9 @@ class courserequest_form extends moodleform {
  
  
  
-$mform = new courserequest_form();//name of the form you defined in file above.
+$mform = new block_cmanager_page1_form();//name of the form you defined in file above.
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
 
 
 } else if ($fromform=$mform->get_data()){

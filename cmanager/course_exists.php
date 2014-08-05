@@ -1,6 +1,5 @@
-<link rel="stylesheet" type="text/css" href="css/main.css" />
-<?php
-/* --------------------------------------------------------- 
+<?php 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -17,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once("../../config.php");
 require_once("$CFG->libdir/formslib.php");
@@ -32,7 +37,7 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
 $PAGE->navbar->add(get_string('courseexists', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/course_exists.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 
@@ -40,9 +45,12 @@ $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 // Main variable for storing the current session id.
 $currentSess = '00';
 $currentSess = $_SESSION['cmanager_session'];
+?>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
 
+<?php
 
-class courserequest_form extends moodleform {
+class block_cmanager_course_exists_form extends moodleform {
  
     function definition() {
     	
@@ -106,7 +114,7 @@ foreach($allRecords as $record){
 	$categoryName = $DB->get_record('course_categories', array('id'=>$record->category));
 	
      // Get lecturer info
- 	$lecturerHTML = getLecturerInfo($record->id);
+ 	$lecturerHTML = block_cmanager_get_lecturer_info($record->id);
 
 	// Check if the category name is blank
 	if(!empty($categoryName->name)){
@@ -126,7 +134,7 @@ foreach($allRecords as $record){
 	<div style="text-align: left; float: left; width:160px">' . $lecturerHTML. ' </div> 
 	<div style="text-align: left; float: left; width:160px"><span style="font-size: 10px;"><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager').'</a>
 								<p></p>
-								<a href="mailto:' .  getListOfLecturerEmails($record->id). '">'.get_string('emailSubj_requester','block_cmanager').'</a></span></div> 
+								<a href="mailto:' .  block_cmanager_get_list_of_lecturer_emails($record->id). '">'.get_string('emailSubj_requester','block_cmanager').'</a></span></div> 
 	</div>
        ');
         }
@@ -147,7 +155,7 @@ foreach($allRecords as $record){
 }
 
 
-$mform = new courserequest_form();//name of the form you defined in file above.
+$mform = new block_cmanager_course_exists_form();//name of the form you defined in file above.
 
   
   if ($mform->is_cancelled()){

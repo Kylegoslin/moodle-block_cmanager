@@ -1,4 +1,29 @@
 <?php
+// --------------------------------------------------------- 
+// block_cmanager is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// block_cmanager is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// COURSE REQUEST MANAGER BLOCK FOR MOODLE
+// by Kyle Goslin & Daniel McSweeney
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 $string['pluginname'] = 'Course Request Manager';
 $string['plugindesc'] = 'Course Request Manager';
 
@@ -281,13 +306,13 @@ $string['edit'] = 'Edit';
 $string['cancel'] = 'Cancel';
 $string['delete'] = 'Delete';
 $string['view'] = 'View';
-$string['viewMore'] = 'View More';
+$string['viewmore'] = 'View More';
 $string['addviewcomments'] = 'Add / View Comments';
 $string['configurecoursemanagersettings'] = ' Configure Course Request Manager Settings';
 $string['configurecourseformfields'] = '  Configure Request Form - Page 1';
 $string['informationform'] = ' Configure Request Form - Page 2';
 $string['modrequestfacility'] = 'Course Request Facility';
-$string['step1text'] = 'Step 1: Course Reqeust Details';
+$string['step1text'] = 'Step 1: Course Request Details';
 $string['modexists'] = 'It looks like the course you are requesting already exists on the server.';
 $string['modcode'] = 'Course Code';
 $string['modname'] = 'Course Name';
@@ -382,5 +407,27 @@ $string['denytext2'] = 'Reason 2';
 $string['denytext3'] = 'Reason 3';
 $string['denytext4'] = 'Reason 4';
 $string['denytext5'] = 'Reason 5';
+
+
+// Error messages
+$string['cannotrequestcourse'] = 'Sorry you cannot request a course';
+$string['cannotviewrecords'] = 'Sorry you cannot view records';
+$string['cannotapproverecord'] = 'Sorry you cannot approve records';
+$string['cannoteditrequest'] = 'Sorry you cannot edit a record';
+$string['cannotcomment'] = 'Sorry you cannot comment';
+$string['cannotdelete'] = 'Sorry you cannot delete a record';
+$stirng['cannotdenyrecord'] = 'Sorry you cannot deny a record';
+$string['cannotviewconfig'] = 'Sorry you cannot view the config';
+
+$string['cmanager:addcomment'] = 'Add comment';
+$string['cmanager:addrecord'] = 'Add Record';
+$string['cmanager:approverecord'] = 'Approve Record';
+$string['cmanager:deleterecord'] = 'Delete Record';
+$string['cmanager:denyrecord'] = 'Deny Record';
+$string['cmanager:editrecord'] = 'Edit Record';
+$string['cmanager:viewrecord'] = 'View Record';
+$string['cmanager:viewconfig'] = 'View Config';
+
+
 
 ?>

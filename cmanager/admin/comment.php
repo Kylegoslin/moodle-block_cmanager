@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,16 +16,22 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-require_once('../validate_admin.php');
 require_login();
+require_once('../validate_admin.php');
 $PAGE->set_url('/blocks/cmanager/admin/comment.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
@@ -33,6 +39,14 @@ $PAGE->navbar->add(get_string('addviewcomments', 'block_cmanager'));
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:addcomment',$context)) {
+} else {
+  print_error(get_string('cannotcomment', 'block_cmanager'));
+}
+
+
 
 if(isset($_GET['id'])){
 	$mid = required_param('id', PARAM_INT);
@@ -69,7 +83,7 @@ function goBack(){
 }
 </script>
 ';
-class courserequest_form extends moodleform {
+class block_cmanager_comment_form extends moodleform {
 
     function definition() {
     global $CFG;
@@ -179,7 +193,7 @@ class courserequest_form extends moodleform {
 
 
 
-   $mform = new courserequest_form();//name of the form you defined in file above.
+   $mform = new block_cmanager_comment_form();//name of the form you defined in file above.
 
 
 
@@ -241,10 +255,8 @@ if($_POST){
 		$replaceValues['[req_link]'] = $CFG->wwwroot.'/blocks/cmanager/view_summary.php?id=' . $mid;
 
 
-		email_comment_to_user($message, $user_ids, $mid, $replaceValues);
-
-		// Send email to admin
-		email_comment_to_admin($message, $mid, $replaceValues);
+		block_cmanager_email_comment_to_user($message, $user_ids, $mid, $replaceValues);
+    	block_cmanager_email_comment_to_admin($message, $mid, $replaceValues);
 
 		echo "<script> window.location = 'comment.php?type=".$type."&id=$mid';</script>";
 }

@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../config.php");
 global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
@@ -27,17 +33,21 @@ require_once($formPath);
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
 $PAGE->navbar->add(get_string('addviewcomments', 'block_cmanager'));
-
+$context = context_system::instance();
 $PAGE->set_url('/blocks/cmanager/comment.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
+if (has_capability('block/cmanager:addcomment',$context)) {
+} else {
+  print_error(get_string('cannotcomment', 'block_cmanager'));
+}
+
 $type = optional_param('type', '', PARAM_TEXT);
 if(!empty($type)){
 	$_SESSION['type'] = $type;
-
 } else {
 	$type = '';
 	$type = $_SESSION['type'];
@@ -45,53 +55,53 @@ if(!empty($type)){
 
 
 
-$backLink = '';
+$backlink = '';
 if($type == 'userarch'){
-	$backLink = 'module_manager_history.php';
+	$backlink = 'module_manager_history.php';
 }
 else if($type == 'userq'){
-	$backLink = 'module_manager.php';
+	$backlink = 'module_manager.php';
 }
 else if($type == 'adminq'){
-	$backLink = 'cmanager_admin.php';
+	$backlink = 'cmanager_admin.php';
 }
 
 
-
-?>
-
-
-
-<?php
 if(isset($_GET['id'])){
 	$mid = required_param('id', PARAM_INT);
 	$_SESSION['mid'] = $mid;
 } else {
-
 	$mid = $_SESSION['mid'];
 }
 
 echo '
 <script>
 function goBack(){
-	window.location ="'.$backLink.'";
+	window.location ="'.$backlink.'";
 }
 </script>
 ';
 
-
-class courserequest_form extends moodleform {
+/**
+ * cmanager comment form
+ *
+ * Comment form
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_cmanager_comment_form extends moodleform {
 
     function definition() {
 
-    global $CFG, $currentSess, $mid, $USER, $DB, $backLink;
+    global $CFG, $currentsess, $mid, $USER, $DB, $backlink;
 
     $mform =& $this->_form; // Don't forget the underscore!
  	$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('comments_Header','block_cmanager'). '</span>');
 
 	// Page description text
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-			  <button type="button" value="" onclick="goBack();"><img src="icons/back.png"/>'.get_string('back','block_cmanager').'</button>
+			  <button type="button" value="" onclick="goBack();"><img src="icons/back.png"/> '.get_string('back','block_cmanager').'</button>
 
 				    <p></p>
 				    &nbsp;&nbsp;&nbsp;'.get_string('comments_Forward','block_cmanager').'<p></p>&nbsp;<center>');
@@ -99,27 +109,27 @@ class courserequest_form extends moodleform {
 
 	$mform->addElement('html', '<p></p>&nbsp;');
 
-	$whereQuery = "instanceid = '$mid' ORDER BY id DESC";
- 	$modRecords = $DB->get_recordset_select('block_cmanager_comments', $whereQuery);
-	$htmlOutput = '';
+	$wherequery = "instanceid = '$mid' ORDER BY id DESC";
+ 	$modrecords = $DB->get_recordset_select('block_cmanager_comments', $wherequery);
+	$htmloutput = '';
 
-	$htmlOutput .='	<table style="width:100%">';
+	$htmloutput .='	<table style="width:100%">';
 
-	foreach($modRecords as $record){
+	foreach($modrecords as $record){
 
 		$createdbyid = $record->createdbyid;
 		$username = $DB->get_field_select('user', 'username', "id = '$createdbyid'");
 
 
 
-		$htmlOutput .=' <tr ><td><b>Date:</b> ' . $record->dt . '</td></tr>';
-		$htmlOutput .=' <tr><td><b>Author:</b> ' . $username . '</td></tr>';
+		$htmloutput .=' <tr ><td><b>Date:</b> ' . $record->dt . '</td></tr>';
+		$htmloutput .=' <tr><td><b>Author:</b> ' . $username . '</td></tr>';
 
-		$htmlOutput .=' <tr><td><b>Comment:</b> ' . $record->message .'</td></tr>';
-	  	$htmlOutput .=' <tr style=" border-bottom:1pt solid black;"><td></td></tr>';
-		$htmlOutput .='<tr><td></td></tr> ';
+		$htmloutput .=' <tr><td><b>Comment:</b> ' . $record->message .'</td></tr>';
+	  	$htmloutput .=' <tr style=" border-bottom:1pt solid black;"><td></td></tr>';
+		$htmloutput .='<tr><td></td></tr> ';
 	}
-	$htmlOutput .='</table>';
+	$htmloutput .='</table>';
 
 	?>
 	<style>
@@ -156,7 +166,7 @@ class courserequest_form extends moodleform {
 
 
 
-						' . $htmlOutput . '
+						' . $htmloutput . '
 
 				</div>
 
@@ -183,13 +193,13 @@ class courserequest_form extends moodleform {
 
 
 
-   $mform = new courserequest_form();//name of the form you defined in file above.
+   $mform = new block_cmanager_comment_form();//name of the form you defined in file above.
 
 
 
-   if ($mform->is_cancelled()){
+   if ($mform->is_cancelled()) {
 
-	echo "<script>window.location='".$backLink."';</script>";
+	echo "<script>window.location='".$backlink."';</script>";
 			die;
 
   } else if ($fromform=$mform->get_data()){
@@ -222,46 +232,37 @@ global $USER, $CFG, $DB;
 		$newrec->dt = date("Y-m-d H:i:s");
 		$DB->insert_record('block_cmanager_comments', $newrec, false);
 
-
-
-
 		// Send an email to everyone concerned.
 		require_once('cmanager_email.php');
 		$message = $_POST['newcomment'];
 		// Get all user id's from the record
-		$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
+		$currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
 
 		$user_id = '';
-		$user_id = $currentRecord->createdbyid; // Add the current user
+		$user_id = $currentrecord->createdbyid; // Add the current user
 
 		// Get info about the current object.
-		$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
-
+		$currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
 		// Send email to the user
 		$replaceValues = array();
-	    $replaceValues['[course_code'] = $currentRecord->modcode;
-	    $replaceValues['[course_name]'] = $currentRecord->modname;
-	    //$replaceValues['[p_code]'] = $currentRecord->progcode;
-	    //$replaceValues['[p_name]'] = $currentRecord->progname;
+	    $replaceValues['[course_code'] = $currentrecord->modcode;
+	    $replaceValues['[course_name]'] = $currentrecord->modname;
+	    //$replaceValues['[p_code]'] = $currentrecord->progcode;
+	    //$replaceValues['[p_name]'] = $currentrecord->progname;
 	    $replaceValues['[e_key]'] = '';
 	    $replaceValues['[full_link]'] = $CFG->wwwroot .'/blocks/cmanager/comment.php?id=' . $mid;
 	    $replaceValues['[loc]'] = '';
 		$replaceValues['[req_link]'] = $CFG->wwwroot .'/blocks/cmanager/view_summary.php?id=' . $mid;
 
 
-
-		email_comment_to_user($message, $user_id, $mid, $replaceValues);
-
-
-		email_comment_to_admin($message, $mid, $replaceValues);
-
-
+		block_cmanager_email_comment_to_user($message, $user_id, $mid, $replaceValues);
+		block_cmanager_email_comment_to_admin($message, $mid, $replaceValues);
 
 		echo "<script> window.location = 'comment.php?type=".$type."&id=$mid';</script>";
 
 }
 
 
-?>
+

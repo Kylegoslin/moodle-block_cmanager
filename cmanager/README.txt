@@ -27,9 +27,9 @@ by Kyle Goslin & Daniel McSweeney
 
 
 
-  CRM Current Version 4.1
+  CRM Current Version 4.2
   For Moodle: 2.5+
-  Tested on: Moodle 2.5 / 2.6
+  Tested on: Moodle 2.7
 
 
 ------------------------------------------------

@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,26 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG, $DB;
 
+
 require_login();
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:viewconfig',$context)) {
+} else {
+  print_error(get_string('cannotviewrecords', 'block_cmanager'));
+}
+
 require_once('../validate_admin.php');
 
 $formPath = "$CFG->libdir/formslib.php";
@@ -34,7 +48,7 @@ $PAGE->navbar->add(get_string('formpage2builder', 'block_cmanager'), new moodle_
 $PAGE->navbar->add(get_string('previewform', 'block_cmanager'));
 
 $PAGE->set_url('/blocks/cmanager/formeditor/preview.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
@@ -53,7 +67,15 @@ if(isset($_GET['id'])){
 }
 </script>
 <?php
-class courserequest_form extends moodleform {
+/**
+ * cmanager new course form
+ *
+ * Preview form
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_cmanager_preview_form extends moodleform {
  
     function definition() {
         global $CFG;
@@ -66,8 +88,7 @@ class courserequest_form extends moodleform {
 		// Back Button
 	
 	   	$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('formBuilder_previewHeader','block_cmanager'). '</span>');
-		
-		$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+		$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
 	');
 
 	         
@@ -90,18 +111,17 @@ class courserequest_form extends moodleform {
 			  $fieldName = 'f' . $fieldnameCounter; // Give each field an incremented fieldname.
 			
 			   if($field->type == 'textfield'){
-			   	
-				   createTextField(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
+			       block_cmanager_create_textfield(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'textarea'){
-			  		createTextArea(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
+			  	   block_cmanager_create_textarea(stripslashes($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'dropdown'){
-			   		createDropdown(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
+			       block_cmanager_create_dropdown(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   else if($field->type == 'radio'){
-			        createRadio(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
+			        block_cmanager_create_radio(stripslashes($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   
@@ -118,17 +138,21 @@ class courserequest_form extends moodleform {
  
  
 
- 
-function createTextField($leftText, $form, $fieldName, $reqfield){
+/** 
+* Create a text field
+*/ 
+function block_cmanager_create_textfield($leftText, $form, $fieldName, $reqfield) {
 	
 	$form->addElement('text', $fieldName, $leftText, '');
-	if($reqfield == 1){
+	if ($reqfield == 1) {
 		$form->addRule($fieldName, '', 'required', null, 'server', false, false);
 	}
 }
 
-
-function createTextArea($leftText, $form, $fieldName, $reqfield){
+/** 
+* Create text area
+*/
+function block_cmanager_create_textarea($leftText, $form, $fieldName, $reqfield) {
 			
 		
 	$form->addElement('textarea', $fieldName, $leftText, 'wrap="virtual" rows="5" cols="60"');
@@ -139,8 +163,10 @@ function createTextArea($leftText, $form, $fieldName, $reqfield){
 	
 }
 
-
-function createRadio($leftText, $id, $form, $fieldName, $reqfield){
+/** 
+* Create a radio button
+*/
+function block_cmanager_create_radio($leftText, $id, $form, $fieldName, $reqfield) {
 		
 	global $DB;
 		
@@ -148,46 +174,41 @@ function createRadio($leftText, $id, $form, $fieldName, $reqfield){
 	 $field3Items = $DB->get_recordset_select('block_cmanager_form_data', $select=$selectQuery);
 	
 	
-	
-	  $counter = 1;		
-	  $attributes = '';							  
-	  foreach($field3Items as $item){
-	  	
-		if($counter == 1){
-			
-			$radioarray=array();
-			$radioarray[] = $form->createElement('radio', $fieldName, $leftText, $item->value,  $item->value, $attributes);
-			$form->addGroup($radioarray, $fieldName, $leftText, array(' '), false);
-			if($reqfield == 1){
-				$form->addRule($fieldName, '', 'required', null, 'server', false, false);
-			}
-			
-		    $counter++;
-		} else {
-			$radioarray=array();
-			$radioarray[] = $form->createElement('radio', $fieldName, '', $item->value, $item->value, $attributes);
-			//$form->addGroup($radioarray, $fieldName . $counter, '', array(' '), false);
-			$form->addGroup($radioarray, $fieldName, '', array(' '), false);
-			
-		    $counter++;
-		}
-		
-	  } 
-			
-	
-	
-	
-	
+
+    $counter = 1;		
+    $attributes = '';							  
+    foreach ($field3Items as $item) {
+
+        if ($counter == 1){
+
+            $radioarray=array();
+            $radioarray[] = $form->createElement('radio', $fieldName, $leftText, $item->value,  $item->value, $attributes);
+            $form->addGroup($radioarray, $fieldName, $leftText, array(' '), false);
+            if($reqfield == 1){
+            	$form->addRule($fieldName, '', 'required', null, 'server', false, false);
+            }
+
+            $counter++;
+    } else {
+        $radioarray=array();
+        $radioarray[] = $form->createElement('radio', $fieldName, '', $item->value, $item->value, $attributes);
+        //$form->addGroup($radioarray, $fieldName . $counter, '', array(' '), false);
+        $form->addGroup($radioarray, $fieldName, '', array(' '), false);
+
+        $counter++;
+    }
+
+    } 
 	
 }
 
 
-/*
+/**
  * Create a Moodle form dropdown menu
  * 
  * 
  */
-function createDropdown($leftText, $id, $form, $fieldName, $reqfield){
+function block_cmanager_create_dropdown($leftText, $id, $form, $fieldName, $reqfield){
 	
 	global $DB;
 	
@@ -218,12 +239,12 @@ function createDropdown($leftText, $id, $form, $fieldName, $reqfield){
 
 
 <?php
-$mform = new courserequest_form();//name of the form you defined in file above.
+$mform = new block_cmanager_preview_form();//name of the form you defined in file above.
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
 
 
-} else if ($fromform=$mform->get_data()){
+} else if ($fromform=$mform->get_data()) {
 
 
 	   
@@ -234,14 +255,11 @@ if ($mform->is_cancelled()){
 }
 
 
-	
-	$mform->focus();
-	$mform->display();
-	echo $OUTPUT->footer();
 
+$mform->focus();
+$mform->display();
+echo $OUTPUT->footer();
 
-
-?>
 
   
 	

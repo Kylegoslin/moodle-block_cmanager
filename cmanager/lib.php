@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,111 +16,104 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-
-
-/*
+/**
  * Return HTML displaying the names of lecturers
  * 
  */
-function getLecturerInfo($courseId){
+function block_cmanager_get_lecturer_info($courseid){
 							
-						
-	global $DB, $CFG;
-	
-					
-	if (! $course = $DB->get_record("course", array("id"=>$courseId))) {
-		echo 'Error: invalid course id';
-		die;
-	}
-	
+global $DB, $CFG;
 
-	$contextId = $DB->get_field('context', 'id', array ('instanceid'=>$courseId, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
-	$userIds = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextId));
-
-
-	$lecturerHTML = '';
-
-	foreach($userIds as $singleUser){
-	
-		$user_record = $DB->get_record('user', array('id'=>$singleUser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
-		$lecturerHTML .=  $user_record->firstname . ' ' . $user_record->lastname . '<br>' ;
-	}	
-
-
-	
-	return $lecturerHTML;
-	
+			
+if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
+	echo 'Error: invalid course id';
+	die;
 }
 
 
-/*
+$contextid = $DB->get_field('context', 'id', array ('instanceid'=>$courseid, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
+$userids = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextid));
+
+
+$lecturerhtml = '';
+
+foreach ($userids as $singleuser) {
+	$user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	$lecturerhtml .=  $user_record->firstname . ' ' . $user_record->lastname . '<br>' ;
+}	
+
+
+return $lecturerhtml;
+
+}
+
+
+/**
  * Get a collection of teacher ids (role 3)
  *  
  * for a specific course, separated by spaces.
  */
-function getLecturerIdsSpaceSep($courseId){
+function block_cmanager_get_lecturer_ids_space_sep($courseid) {
 							
-						
-	global $DB, $CFG;
+    global $DB, $CFG;
 	
 					
-	if (! $course = $DB->get_record("course", array("id"=>$courseId))) {
-		echo 'Error: invalid course id';
-		die;
+    if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
+        echo 'Error: invalid course id';
+	    die;
 	}
 	
-
-	$contextId = $DB->get_field('context', 'id', array ('instanceid'=>$courseId, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
-	$userIds = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextId));
-
-
-	$lecturerHTML = '';
-
-	foreach($userIds as $singleUser){
-	
-		$user_record = $DB->get_record('user', array('id'=>$singleUser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
-		$lecturerHTML .=  $user_record->id . ' ' ;
-	}	
+	$contextid = $DB->get_field('context', 'id', array ('instanceid'=>$courseid, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
+	$userids = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextid));
 
 
-	
-	return $lecturerHTML;
+	$lecturerhtml = '';
+
+	foreach ($userids as $singleuser) {
+	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	    $lecturerhtml .=  $user_record->id . ' ' ;
+    }	
+
+    return $lecturerhtml;
 	
 }
 
 
-/*
+/**
  * 
  * 
  * Return a list of admin emails for a course, separated
  * by a comma.
  * */
- function getListOfLecturerEmails($courseId){
+function block_cmanager_get_list_of_lecturer_emails($courseid) {
  	
 	global $DB, $CFG;
-	
 					
-	if (! $course = $DB->get_record("course", array("id"=>$courseId))) {
-		echo 'Error: invalid course id';
-		die;
+	if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
+        echo 'Error: invalid course id';
+        die;
 	}
+
+
+    $contextid = $DB->get_field('context', 'id', array ('instanceid'=>$courseid, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
+    $userids = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextid));
+
+
+    $lecturerinfo = '';
 	
+    foreach ($userids as $singleuser) {
+	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	    $lecturerinfo .=  $user_record->email . ', ' ;
+    }	
 
-	$contextId = $DB->get_field('context', 'id', array ('instanceid'=>$courseId, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
-	$userIds = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextId));
-
-
-	$lecturerInfo = '';
-
-	foreach($userIds as $singleUser){
-	
-		$user_record = $DB->get_record('user', array('id'=>$singleUser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
-		$lecturerInfo .=  $user_record->email . ', ' ;
-	}	
-
-
-	
-	return $lecturerInfo;
+    return $lecturerinfo;
  }

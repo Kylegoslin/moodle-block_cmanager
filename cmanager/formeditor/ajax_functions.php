@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG, $DB;
 
@@ -25,36 +31,36 @@ global $CFG, $DB;
 $type = required_param('type', PARAM_TEXT);  
 
 if($type == 'add'){
-	addNewItem();
+	block_cmanager_delete_formaddNewItem();
 }
 else if($type == 'save'){
-	saveChanges();
+	block_cmanager_delete_formsaveChanges();
 }
 else if($type == 'page2addfield'){
-	addField();
+	block_cmanager_add_field();
 }
 else if($type == 'updatefield'){
-	updateField();
+	block_cmanager_update_field();
 }
 else if($type == 'addvaluetodropdown'){
-	addValueToDropdown();
+	block_cmanager_add_value_to_dropdown();
 }
 else if($type == 'getdropdownvalues'){
-	getDropdownValues();
+	block_cmanager_get_dropdown_values();
 }
 else if($type == 'addnewform'){
-	addNewForm();
+	block_cmanager_add_new_form();
 }
 else if($type == 'saveselectedform'){
-	saveSelectedForm();
+	block_cmanager_save_selected_form();
 }
 else if($type == 'saveoptionalvalue'){
-	saveOptionalValue();
+	block_cmanager_save_optional_value();
 }
 
 
-
-function saveSelectedForm(){
+/** Save a selected form */
+function block_cmanager_save_selected_form(){
 	
 	global $DB;
 	//echo 'saving form';
@@ -70,8 +76,8 @@ function saveSelectedForm(){
 	
 }
 
-
-function addNewForm(){
+/** Add a new form */
+function block_cmanager_add_new_form(){
 	
 	global $DB;
 	
@@ -86,8 +92,11 @@ function addNewForm(){
 	$id = $DB->insert_record('block_cmanager_config', $object, true); 
 }
 
-
-function addValueToDropdown(){
+/** 
+*
+* Add a value to a dropdown menu 
+*/
+function block_cmanager_add_value_to_dropdown(){
 		
 	global $DB;
 	
@@ -104,7 +113,10 @@ function addValueToDropdown(){
 	
 }
 
-function updateField(){
+/**
+* Update a field 
+*/
+function block_cmanager_update_field(){
 	
 	global $CFG, $DB;
 	echo $elementId = $_POST['id'];
@@ -118,8 +130,10 @@ function updateField(){
 
 }
 
-
-function addField(){
+/** 
+* Add a new field 
+*/
+function block_cmanager_add_field(){
  
     global $CFG, $DB;
    
@@ -190,31 +204,35 @@ function addField(){
 	 
 }
 
+/** 
+* Get a collection of dropdown menu values
+*/
+function block_cmanager_get_dropdown_values(){
+	
+	$id = $_POST['id'];
+	global $DB;
+	$field3ItemsHTML = '';	
+	$selectQuery = "fieldid = '$id'";
+	$formid = $_SESSION['formid'];
+	$field3Items = $DB->get_recordset_select('block_cmanager_form_data', $select=$selectQuery);
+	
+	$field3ItemsHTML .= '<table width="300px">';							  
+				  foreach($field3Items as $item){
+				  	$field3ItemsHTML .= '<tr>';
+				  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
+					$field3ItemsHTML .= '</tr>';
+				  } 
+	$field3ItemsHTML .= '</table>';
 
-function getDropdownValues(){
-	
-	 $id = $_POST['id'];
-	 global $DB;
-	 $field3ItemsHTML = '';	
-	 $selectQuery = "fieldid = '$id'";
-	 $formid = $_SESSION['formid'];
-	 $field3Items = $DB->get_recordset_select('block_cmanager_form_data', $select=$selectQuery);
-	
-				$field3ItemsHTML .= '<table width="300px">';							  
-							  foreach($field3Items as $item){
-							  	$field3ItemsHTML .= '<tr>';
-							  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
-								$field3ItemsHTML .= '</tr>';
-							  } 
-				$field3ItemsHTML .= '</table>';
-		
-		echo $field3ItemsHTML;
+	echo $field3ItemsHTML;
 	
 	
 }
 
-
-function saveChanges(){
+/** 
+* Save changes that have been made
+*/
+function block_cmanager_save_changes(){
 	global $CFG;
 	global $DB;
 	
@@ -266,8 +284,10 @@ function saveChanges(){
 
 	
 }
-
-function addNewItem(){
+/** 
+* Add a new item
+*/
+function block_cmanager_add_new_item(){
 	global $CFG, $DB;
 
 	$newValue = $_POST['valuetoadd'];
@@ -279,8 +299,10 @@ function addNewItem(){
 
 
 }
-
-function saveOptionalValue(){
+/** 
+* Save an optional value
+*/
+function block_cmanager_save_optional_value(){
 	
 	
 		

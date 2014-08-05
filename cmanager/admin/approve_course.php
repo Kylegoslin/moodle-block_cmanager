@@ -1,5 +1,5 @@
 <?php
-/* ---------------------------------------------------------
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,9 +15,15 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2013-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
@@ -32,10 +38,19 @@ require_login();
 require_once('../validate_admin.php');
 
 $PAGE->set_url('/blocks/cmanager/admin/approve_course.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:approverecord',$context)) {
+} else {
+  print_error(get_string('cannotapproverecord', 'block_cmanager'));
+}
+
+
+
 ?>
 
 
@@ -71,16 +86,12 @@ if(isset($_GET['id'])){
 
 
 
-class courserequest_form extends moodleform {
+class block_cmanager_approve_course_form extends moodleform {
 
     function definition() {
     global $CFG, $currentSess, $mid, $USER, $DB;
 
-
-
  	$rec =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
-
-
 
 	$mform =& $this->_form; // Don't forget the underscore!
 	$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('courserequestadmin','block_cmanager'). '</span>');
@@ -89,7 +100,7 @@ class courserequest_form extends moodleform {
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button type="button" ><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>');
 
 	$rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
-   	$displayModHTML = displayAdminList($rec, false, false, false, '');
+   	$displayModHTML = block_cmanager_display_admin_list($rec, false, false, false, '');
 
 	$outputHTML = '<div>'.$displayModHTML.'</div>';
 
@@ -102,21 +113,18 @@ class courserequest_form extends moodleform {
 }
 
 
-   $mform = new courserequest_form();//name of the form you defined in file above.
+$mform = new block_cmanager_approve_course_form();//name of the form you defined in file above.
 
-   	if ($mform->is_cancelled()){
-	}
-
-	else if ($fromform=$mform->get_data()){
- 	}
-  	else {
-
- 		$mform->set_data($mform);
-		$mform->display();
-
-
-	echo $OUTPUT->footer();
-	}
+if ($mform->is_cancelled()) {
+}
+else if ($fromform=$mform->get_data()) {
+	
+}
+else {
+	$mform->set_data($mform);
+	$mform->display();
+    echo $OUTPUT->footer();
+}
 
 
 

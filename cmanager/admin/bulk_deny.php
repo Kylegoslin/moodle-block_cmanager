@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../../config.php");
 global $CFG; $DB;
 $formPath = "$CFG->libdir/formslib.php";
@@ -30,7 +36,7 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('bulkdeny', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/admin/bulk_deny.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
@@ -40,6 +46,12 @@ echo $OUTPUT->header();
 <SCRIPT LANGUAGE="JavaScript" SRC="http://code.jquery.com/jquery-1.6.min.js">
 </SCRIPT>
 <?php
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:denyrecord',$context)) {
+} else {
+  print_error(get_string('cannotdenyrecord', 'block_cmanager'));
+}
 
 if(isset($_GET['id'])){
 	$mid = required_param('id', PARAM_INT);
@@ -53,7 +65,7 @@ if(isset($_GET['mul'])){
 	$_SESSION['mul'] = required_param('mul', PARAM_TEXT);
 }
 
-class courserequest_form extends moodleform {
+class block_cmanager_bulk_deny extends moodleform {
  
     function definition() {
         global $CFG;
@@ -89,7 +101,7 @@ class courserequest_form extends moodleform {
 
 
 
-   $mform = new courserequest_form();//name of the form you defined in file above.
+   $mform = new block_cmanager_bulk_deny();//name of the form you defined in file above.
 
 
 
@@ -108,10 +120,10 @@ class courserequest_form extends moodleform {
 			$message = $_POST['newcomment'];
 			$denyIds = explode(',',$_SESSION['mul']);
 		    
-			foreach($denyIds as $cid){
+			foreach ($denyIds as $cid) {
 			
 				// If the id isn't blank
-				if($cid != 'null'){
+				if ($cid != 'null') {
 				
 							$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$cid));
 		
@@ -142,9 +154,9 @@ class courserequest_form extends moodleform {
 							$newrec->dt = date("Y-m-d H:i:s");	
 							$DB->insert_record('block_cmanager_comments', $newrec);
 					
-							send_deny_email_admin($message, $cid, $replaceValues);
+							block_cmanager_send_deny_email_admin($message, $cid, $replaceValues);
 								
-							send_deny_email_user($message, $userid, $cid, $replaceValues);
+							block_cmanager_send_deny_email_user($message, $userid, $cid, $replaceValues);
 							
 							$_SESSION['mul'] = '';
 							

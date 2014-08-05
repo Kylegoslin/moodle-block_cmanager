@@ -1,5 +1,5 @@
 <?php
-/* --------------------------------------------------------- 
+// --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,14 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
- --------------------------------------------------------- */
-
+// --------------------------------------------------------- 
+/**
+ * COURSE REQUEST MANAGER
+  *
+ * @package    block_cmanager
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once("../../config.php");
 global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
@@ -32,13 +38,23 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 
 $PAGE->set_url('/blocks/cmanager/cmanager_admin.php');
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
 
 $_SESSION['CRMisAdmin'] = true;
+
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:viewconfig',$context)) {
+} else {
+  print_error(get_string('cannotviewconfig', 'block_cmanager'));
+}
+
+
+
 ?>
 
 
@@ -73,29 +89,28 @@ var checkedIds  = ['null'];
 //
 // List of currently selected Ids
 //
-function addIdToList(id){
+function addIdToList(id) {
 	var i = checkedIds.length;
 	var found = false;
 
 	while (i--) {
-
-	    if (checkedIds[i] === id) {
+        if (checkedIds[i] === id) {
 	      	checkedIds[i] = 'null';
 			found = true;
 	    }
 	}
 
-	if(found === false){
-		checkedIds.push(id);
+    if (found === false) {
+        checkedIds.push(id);
 	}
 }
 
 
-/*
+/**
  * This function is used to save the text from the
  * categories when they are changed.
  */
-function saveChangedCategory(recordId){
+function saveChangedCategory(recordId) {
 
    var fieldvalue = document.getElementById('menucat' + recordId).value;
 
@@ -129,55 +144,61 @@ tr:nth-child(even)		{ background-color:#fff; }
 <?php
 
 
-class courserequest_form extends moodleform {
+/**
+ * Admin console
+ *
+ * Admin console interface
+ * @package    block_socialbookmark
+ * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_cmanager_admin_form extends moodleform {
 
-	function definition() {
+function definition() {
     global $CFG;
     global $USER, $DB;
     $mform =& $this->_form; // Don't forget the underscore!
 
 
- 	$selectQuery = "status = 'PENDING' ORDER BY id ASC";
+    $selectQuery = "status = 'PENDING' ORDER BY id ASC";
 
- 	// If search is enabled then use the
- 	// search parameters
- 	if($_POST && isset($_POST['search'])){
+    // If search is enabled then use the
+    // search parameters
+    if ($_POST && isset($_POST['search'])) {
+        $searchText = required_param('searchtext', PARAM_TEXT);
+        $searchType = required_param('searchtype', PARAM_TEXT);
 
- 		$searchText = required_param('searchtext', PARAM_TEXT);
-		$searchType = required_param('searchtype', PARAM_TEXT);
+        if (!empty($searchText) && !empty($searchType)) {
+            if ($searchType == 'code') {
+                $selectQuery = "`modcode` LIKE '%{$searchText}%'";
+            }
+            else if($searchType == 'title') {
+	        $selectQuery = "`modname` LIKE '%{$searchText}%'";
+        }
+       else if ($searchType == 'requester') {
+	        $selectQuery = "`createdbyid` IN (Select id from ".$CFG->prefix.
+            "user where `firstname` LIKE '%{$searchText}%' OR `lastname` 
+            LIKE '%{$searchText}%' OR `username` LIKE '%{$searchText}%')";
+       }
+   }
 
-		if(!empty($searchText) && !empty($searchType)){
-
-
-			if($searchType == 'code'){
-				$selectQuery = "`modcode` LIKE '%{$searchText}%'";
-			}
-			else if($searchType == 'title'){
-				$selectQuery = "`modname` LIKE '%{$searchText}%'";
-			}
-			else if($searchType == 'requester'){
-				$selectQuery = "`createdbyid` = (Select id from ".$CFG->prefix."user where `firstname` LIKE '%{$searchText}%' OR `lastname` LIKE '%{$searchText}%' OR `username` LIKE '%{$searchText}%')";
-			}
-		}
-	}
-
-
-
-
-
-	// Get the list of records
-	$pendingList = $DB->get_recordset_select('block_cmanager_records', $select=$selectQuery);
-   	$outputHTML = displayAdminList($pendingList, true, true, true, 'admin_queue');
+  //  if ($searchType != 'requester'){
+        $selectQuery .= " AND status = 'PENDING' ORDER BY id ASC";
+  //  }
+}
 
 
+// Get the list of records
+$pendingList = $DB->get_recordset_select('block_cmanager_records', $select=$selectQuery);
+$outputHTML = block_cmanager_display_admin_list($pendingList, true, true, true, 'admin_queue');
 
-   $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('currentrequests','block_cmanager').'</span>');
+$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_string('currentrequests','block_cmanager').'</span>');
 
 
-	$bulkActions = "<p></p>
-			<div style=\"width: 200px; text-align:left; padding:10px; font-size:11pt; background-color: #eee\">
+$bulkActions = "<p></p>
+			    <div style=\"width: 200px; text-align:left; padding:10px; font-size:11pt; background-color: #eee\">
 
-			<b>".get_string('bulkactions','block_cmanager')."</b>
+                <b>".get_string('bulkactions','block_cmanager')."</b>
 			<br>
 			<input type=\"checkbox\" onClick=\"toggle(this)\" /> Select All<br/>
 
@@ -192,11 +213,11 @@ class courserequest_form extends moodleform {
 
 
 
-	$page1_fieldname1 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname1'");
-	$page1_fieldname2 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname2'");
+$page1_fieldname1 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname1'");
+$page1_fieldname2 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname2'");
 
-	$searchHTML = '
-	   <div style="width: 200px; background-color:#eee; padding:10px; ">
+$searchHTML = '
+        <div style="width: 200px; background-color:#eee; padding:10px; ">
 	 	<form action="cmanager_admin.php?search=1" method="post">
 
 	 	<b><span style="font-size:11pt">'.get_string('search_side_text', 'block_cmanager').'</span></b>
@@ -216,15 +237,15 @@ class courserequest_form extends moodleform {
 
 		';
 
-		if($_POST && isset($_POST['search'])){
+		if ($_POST && isset($_POST['search'])) {
 			$searchHTML .= '<br><p></p><a href="cmanager_admin.php">[Clear Search]</a>';
 		}
-	$searchHTML .= '</div>';
+$searchHTML .= '</div>';
 
 
 
 
-	$mainBody ='
+$mainBody ='
 
 	<div id="pagemain">
 		<div id="leftpanel" style="padding-right:10px; width:200px; float:left; height:100%">' .$searchHTML .''. $bulkActions . '</div>
@@ -232,12 +253,11 @@ class courserequest_form extends moodleform {
 
 					<div id="wrapper">'. $outputHTML .'</div>
 
-			</div>
+		</div>
+    </div>';
 
-   		</div>';
 
-
-	$mform->addElement('html', $mainBody);
+$mform->addElement('html', $mainBody);
 
 
 
@@ -290,12 +310,12 @@ function bulkaction(){
 </script>";
 
 
-$mform = new courserequest_form();
+$mform = new block_cmanager_admin_form();
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
 
 
-} else if ($fromform=$mform->get_data()){
+} else if ($fromform=$mform->get_data()) {
 
 
 } else {
@@ -307,32 +327,29 @@ if ($mform->is_cancelled()){
 
 
 
-		if($_POST && isset($_POST['search'])){
-
-			$searchText = required_param('searchtext', PARAM_TEXT);
-			$searchType = required_param('searchtype', PARAM_TEXT);
-
-			echo "<script>document.getElementById('searchtext').value = '$searchText'; ";
-			echo "
-				var desiredValue = '$searchType';
-				var el = document.getElementById('searchtype');
-				for(var i=0; i<el.options.length; i++) {
-				  if ( el.options[i].value == desiredValue ) {
-				    el.selectedIndex = i;
-				    break;
-				  }
-				}
-				</script>
-				";
-
-
- 		}
 
 
 $mform->focus();
 $mform->display();
 echo $OUTPUT->footer();
-?>
 
 
 
+if ($_POST && isset($_POST['search'])) {
+    $searchText = required_param('searchtext', PARAM_TEXT);
+    $searchType = required_param('searchtype', PARAM_TEXT);
+
+    echo "<script>document.getElementById('searchtext').value = '$searchText'; ";
+    echo "
+    var desiredValue = '$searchType';
+    var el = document.getElementById('searchtype');
+    for(var i=0; i<el.options.length; i++) {
+      if ( el.options[i].value == desiredValue ) {
+        el.selectedIndex = i;
+        break;
+      }
+    }
+    </script>
+    ";
+
+}

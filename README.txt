@@ -1,14 +1,18 @@
-Folder: cmanager
 
-Description: 
 
-The current release of Course Request Manager, for new installations use this!
----------------------------------------------
+Latest version of CRM is called "cmanager". Download this
+folder and drop it into your moodle/blocks folder
 
-This github repo is a mirror of the code available at: https://moodle.org/plugins/view.php?plugin=block_cmanager
+Teachers MUST have a teacher role on your Moodle for this to work correctly, to
+differentiate between students and teachers.
+
+Older versions are kept for legacy.
+
 
 Latest Available Version: 4.2
 Released Date: 5/Aug/2014
+
+
 
 
 ----------------------------------------------

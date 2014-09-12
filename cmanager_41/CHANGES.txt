@@ -3,6 +3,19 @@
 		CRM Changelog
 
 
+
+CRM 4.2
+Date: 5/Aug/2014
+- Question marks not accepted during request process. Question marks
+are now allowed.
+- Editing issue during course request resolved.
+- Bulk approve updated
+- Saving form page 1 issue resolved.
+See Github for full log!
+
+
+
+----------------------------------------------------------------------
 CRM 4.1
 Date: 11/April/2014
 - Enrollment keys are optional

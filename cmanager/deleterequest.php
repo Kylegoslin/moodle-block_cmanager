@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,15 +26,17 @@
  */
 
 
-
 /*
  * Delete request.php
- * 
+ *
  * This page is called through AJAX to delete a specific
  * request and all associated comments.
  */
 require_once("../../config.php");
 global $CFG, $DB;
+require_login();
+
+
 $context = context_system::instance();
 if (has_capability('block/cmanager:deleterecord',$context)) {
 } else {
@@ -42,9 +44,9 @@ if (has_capability('block/cmanager:deleterecord',$context)) {
 }
 
 
-$deleteId = required_param('id', PARAM_INT);    
-$type = optional_param('t', '', PARAM_TEXT);    
-	
+$deleteId = required_param('id', PARAM_INT);
+$type = optional_param('t', '', PARAM_TEXT);
+
 // Delete the record
 $deleteQuery = "id = $deleteId";
 $DB->delete_records('block_cmanager_records', array('id'=>$deleteId));
@@ -55,13 +57,10 @@ $DB->delete_records('block_cmanager_comments', array('instanceid'=>$deleteId));
 if ($type == 'a') {
 	echo "<script>window.location='cmanager_admin.php';</script>";
 
-} 
+}
 else if ($type =='adminarch') {
 	echo "<script>window.location='cmanager_admin_arch.php';</script>";
 }
 else {
 	echo "<script>window.location='module_manager.php';</script>";
-}	
-	
-
-
+}

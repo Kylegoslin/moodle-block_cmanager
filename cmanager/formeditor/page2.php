@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,17 +26,17 @@
  */
 require_once("../../../config.php");
 global $CFG, $DB;
+require_login();
+
+
 require_once("$CFG->libdir/formslib.php");
 
-require_login();
-require_once('../validate_admin.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage2', 'block_cmanager'));
-
 $PAGE->set_url('/blocks/cmanager/formeditor/page2.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
@@ -61,16 +61,16 @@ else {
 	echo get_string('formBuilder_p2_error','block_cmanager');
 	die;
 }
-	
-	
+
+
 	$htmloutput = '<br>
-	<script>		
+	<script>
 		var num = 1; // Used to count the number of fields added.
        var formid = '.$formid .';
 
        var movedownEnabled = 1;
 	   var numberoffields = 0;
-    
+
 
 	//onscreen language variables and default values
 	var dropdownTxt = "";
@@ -81,7 +81,7 @@ else {
 	var saveTxt = "";
 	var addedItemsTxt = "";
 	var addItemBtnTxt = "";
-	
+
 		//Accept values for onscreen language variables from PHP
 	function setLangStrings(lang_dropdownTxt,lang_radioTxt,lang_textAreaTxt,lang_textFieldTxt,lang_leftTxt,lang_saveTxt,lang_addedItemsTxt,lang_addItemBtnTxt)
 	{
@@ -97,16 +97,16 @@ else {
 
 	}
 				setLangStrings("'.get_string('formBuilder_dropdownTxt','block_cmanager').'","'.get_string('formBuilder_radioTxt','block_cmanager').'","'.get_string('formBuilder_textAreaTxt','block_cmanager').'","'.get_string('formBuilder_textFieldTxt','block_cmanager').'","'.get_string('formBuilder_leftTxt','block_cmanager').'","'.get_string('formBuilder_saveTxt','block_cmanager').'","'.get_string('formBuilder_addedItemsTxt','block_cmanager').'","'.get_string('formBuilder_addItemBtnTxt','block_cmanager').'")
-	
-	
+
+
 function goBack(){
 	window.location ="form_builder.php";
 }
 
 			</script>
-			
+
 	<button type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
-	
+
 			<br>
 			<br><b>'.get_string('formBuilder_editingForm','block_cmanager').':</b> ' .$formname.'<br><br>
 			'.get_string('formBuilder_p2_instructions','block_cmanager').'
@@ -143,8 +143,8 @@ function goBack(){
 			<a href="preview.php?id=' . $formid . '">'.get_string('formBuilder_previewForm','block_cmanager').'</a>
 			<center><a href="../cmanager_admin.php"><input type="button" value="'.get_string('formBuilder_returntoCM','block_cmanager').'"/></a></center>
 		';
-		
-	echo $htmloutput;	
+
+	echo $htmloutput;
 ?>
 
 
@@ -163,15 +163,15 @@ function goBack(){
 // Deleting dropdown menus
 if(isset($_GET['t']) && isset($_GET['del'])){
 
-  
+
 	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
 		$itemid = $_GET['del'];
 		$fieldid = $_GET['fid'];
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
 	}
-	
+
 	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
-	
+
 		$fieldid = $_GET['del'];
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
 	}
@@ -338,13 +338,13 @@ function createTextField(){
      $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textfield', formid: formid},
 			function(data) {
 
-	
+
 
 	   });
 
-	
+
 		num++;
-	window.location = 'page2.php?id=' + formid; 
+	window.location = 'page2.php?id=' + formid;
 
 
 
@@ -420,7 +420,7 @@ function recreateTextField(uniqueId, leftText, requiredFieldValue){
 			       	}
 				    else {
 				    	 newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '">'+
-				    	 '<img src="../icons/move_up.gif" width="20" height="20" alt="move up" /></a>'+ 
+				    	 '<img src="../icons/move_up.gif" width="20" height="20" alt="move up" /></a>'+
 				    	 ' <a href="page2.php?id=' + formid + '&down=' + uniqueId + '">'+
 				    	 ' <img src="../icons/move_down.gif" width="20" height="20" alt="move down" /></a>'+
 				    	 ' <a href="page2.php?id=' + formid + '&del=' + uniqueId + '">'+
@@ -464,7 +464,7 @@ function createTextArea(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textarea', formid: formid},
 				function(data) {
 
-					
+
 		   });
 
 
@@ -493,9 +493,9 @@ var value = document.getElementById('newitem'+id).value;
 
  //alert('A new item has been added: ' + value);
    window.location = 'page2.php?id=' + formid;
-   
-   
-   
+
+
+
 }
 
 
@@ -587,7 +587,7 @@ function createDropdown(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'dropdown', formid: formid},
 				function(data) {
 	     		uniqueId = data;
-	     		
+
 
 		   });
 
@@ -696,7 +696,7 @@ function createRadio(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'radio', formid: formid},
 				function(data) {
 	     		uniqueId = data;
-	     		
+
 
 		   });
 
@@ -789,9 +789,9 @@ function saveFieldValue(id){
 	var value = document.getElementById('x' + id).value;
 
 	//alert("value: " +value);
-    
+
     var currentid = id;
-    
+
    $.ajaxSetup({async:false});
     $.post("ajax_functions.php", { type: 'updatefield', id: currentid, value: value},
 				function(data) {

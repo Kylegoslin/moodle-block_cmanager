@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,16 +26,20 @@
  */
 require_once("../../../config.php");
 global $CFG, $DB;
+require_login();
+
 
 require_once("$CFG->libdir/formslib.php");
 require_once('../../../course/lib.php');
 require_once($CFG->libdir.'/completionlib.php');
 require_once('../lib/course_lib.php');
-require_login();
-require_once('../validate_admin.php');
+
+
+/** Navigation Bar **/
 $PAGE->set_url('/blocks/cmanager/admin/approve_course_new.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+
 
 $context = context_system::instance();
 if (has_capability('block/cmanager:approverecord',$context)) {
@@ -53,21 +57,15 @@ if(isset($_GET['id'])){
 }
 
 
-	// Create the course by record ID      
-	$nid = block_cmanager_create_new_course_by_record_id($mid, true);
-	
-	
-  if(empty($nid)){
-  	
+// Create the course by record ID
+$nid = block_cmanager_create_new_course_by_record_id($mid, true);
+
+
+if(empty($nid)){
 	echo 'New Mod ID Not set';
 	die;
-	  
-	  
-  } else {
-	
+} else {
 	echo '<script> window.location ="../../../course/edit.php?id=' .$nid . '";</script>';
-  }
-
-
+}
 
 ?>

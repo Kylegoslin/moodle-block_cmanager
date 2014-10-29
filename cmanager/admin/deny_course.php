@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,10 +26,12 @@
  */
 require_once("../../../config.php");
 global $CFG;
+require_login();
+
+
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-require_login();
-require_once('../validate_admin.php');
+
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -48,12 +50,6 @@ if (has_capability('block/cmanager:denyrecord',$context)) {
   print_error(get_string('cannotdenyrecord', 'block_cmanager'));
 }
 
-
-?>
-
-
-
-<?php
 
 if(isset($_GET['id'])){
 	$mid = required_param('id', PARAM_INT);
@@ -120,101 +116,66 @@ class block_cmanager_deny_form extends moodleform {
 
 	 </style>
 	 <center>
-
-	 <div id="wrapper" style="padding:10px">
-
-
-		<div id="left">
-		<p></p><br>
-		<form>
-		<table width="300">
-			 <tr>
-
-
-		 		<td><textarea id="cusvalue1" rows="5"cols="60">'.$denytext1.'</textarea></td>
-				<td>
-
-
-							<button type="button" onclick="addSelectedText(1); return false;"> >> </button>
-
-		 		</td>
-		 	</tr>
-		 	<tr>
-		 	<td>
-		 			<textarea type="text" id="cusvalue2" rows="5"cols="60">'.$denytext2.'</textarea>
-		 		</td>
-		 		<td>
-		 			<button type="button" onclick="addSelectedText(2); return false;"> >> </button>
-
-
-		 		</td>
-
-
-		 	</tr>
-		 	<tr>
-
-		 	<td>
-				<textarea type="text" id="cusvalue3" rows="5"cols="60">'.$denytext3.'</textarea>
-				</td>
-
-		 		<td>
-		 			<button type="button" onclick="addSelectedText(3); return false;"> >> </button>
-
-		 		</td>
-
-
-
-		 	</tr>
-		 	<tr>
-
-		 	<td>
-				<textarea type="text" id="cusvalue4" rows="5"cols="60">'.$denytext4.'</textarea>
-				</td>
-		 		<td>
-		 			<button type="button" onclick="addSelectedText(4); return false;"> >> </button>
-
-		 		</td>
-
-		 	</tr>
-		 	<tr>
-
-		 	<td>
-					<textarea type="text" id="cusvalue5" rows="5"cols="60">'.$denytext5.'</textarea>
-		 		</td>
-		 		<td>
-		 			<button type="button" onclick="addSelectedText(5); return false;"> >> </button>
-
-		 		</td>
-
-
-		 	</tr>
-	 		</table>
-	      </form>
-		</div>
-		<div id="right">
- 			'.get_string('denyrequest_reason','block_cmanager').'.
- 			<p></p>
-		<textarea id="newcomment" name="newcomment" rows="30" cols="70" maxlength="280"></textarea>
-		<p></p>
-	</div>
-		<input type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
-
-
-
-
-		</div>
+		 <div id="wrapper" style="padding:10px">
+			<div id="left">
+				<p></p><br />
+				<form>
+					<table width="300">
+						<tr>
+					 		<td><textarea id="cusvalue1" rows="5"cols="60">'.$denytext1.'</textarea></td>
+							<td>
+								<button type="button" onclick="addSelectedText(1); return false;"> >> </button>
+					 		</td>
+					 	</tr>
+					 	<tr>
+					 		<td>
+					 			<textarea type="text" id="cusvalue2" rows="5"cols="60">'.$denytext2.'</textarea>
+					 		</td>
+					 		<td>
+					 			<button type="button" onclick="addSelectedText(2); return false;"> >> </button>
+					 		</td>
+					 	</tr>
+					 	<tr>
+						 	<td>
+								<textarea type="text" id="cusvalue3" rows="5"cols="60">'.$denytext3.'</textarea>
+							</td>
+					 		<td>
+					 			<button type="button" onclick="addSelectedText(3); return false;"> >> </button>
+					 		</td>
+					 	</tr>
+					 	<tr>
+						 	<td>
+								<textarea type="text" id="cusvalue4" rows="5"cols="60">'.$denytext4.'</textarea>
+							</td>
+					 		<td>
+					 			<button type="button" onclick="addSelectedText(4); return false;"> >> </button>
+					 		</td>
+					 	</tr>
+					 	<tr>
+						 	<td>
+								<textarea type="text" id="cusvalue5" rows="5"cols="60">'.$denytext5.'</textarea>
+					 		</td>
+					 		<td>
+					 			<button type="button" onclick="addSelectedText(5); return false;"> >> </button>
+					 		</td>
+					 	</tr>
+				 		</table>
+		      		</form>
+				</div>
+				<div id="right">
+		 			'.get_string('denyrequest_reason','block_cmanager').'.
+		 			<p></p>
+					<textarea id="newcomment" name="newcomment" rows="30" cols="70" maxlength="280"></textarea>
+					<p></p>
+				</div>
+				<input type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
+			</div>
 		</center>
 	');
-
-
-
-
-
-
 	}
 }
 
-/** 
+/**
 * Get custom text
 */
 function customText(){
@@ -255,7 +216,6 @@ function customText(){
    $mform = new block_cmanager_deny_form();//name of the form you defined in file above.
 
 
-
    if ($mform->is_cancelled()){
 
 	echo "<script>window.location='../cmanager_admin.php';</script>";
@@ -265,9 +225,6 @@ function customText(){
 		global $USER;
 
   } else {
-
-
-
 
 		$mform->focus();
 	    $mform->set_data($mform);
@@ -292,10 +249,7 @@ if($_POST){
 		// Send Email to all concerned about the request deny.
 		require_once('../cmanager_email.php');
 
-
 		$message = $_POST['newcomment'];
-
-
 
 		// update the request record
 		$newrec = new stdClass();
@@ -311,7 +265,6 @@ if($_POST){
 		$newrec->message = $message;
 		$newrec->dt = date("Y-m-d H:i:s");
 		$DB->insert_record('block_cmanager_comments', $newrec, false);
-
 
 
 		$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));

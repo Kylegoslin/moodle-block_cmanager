@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,19 +26,23 @@
  */
 require_once("../../../config.php");
 global $CFG;
+require_login();
+
+
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-require_login();
-require_once('../validate_admin.php');
-$PAGE->set_url('/blocks/cmanager/admin/comment.php');
-$PAGE->set_context(context_system::instance());
+
+
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('addviewcomments', 'block_cmanager'));
+$PAGE->set_url('/blocks/cmanager/admin/comment.php');
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
+
 
 $context = context_system::instance();
 if (has_capability('block/cmanager:addcomment',$context)) {

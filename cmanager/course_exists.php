@@ -1,5 +1,5 @@
-<?php 
-// --------------------------------------------------------- 
+<?php
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,10 +26,12 @@
  */
 
 require_once("../../config.php");
+global $CFG, $DB, $USER;
+require_login();
+
+
 require_once("$CFG->libdir/formslib.php");
 require_once("lib.php");
-require_login();
-global $CFG, $DB, $USER;
 
 
 /** Navigation Bar **/
@@ -51,13 +53,13 @@ $currentSess = $_SESSION['cmanager_session'];
 <?php
 
 class block_cmanager_course_exists_form extends moodleform {
- 
+
     function definition() {
-    	
+
         global $CFG, $DB, $currentSess;
-		
+
         $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-        $mform =& $this->_form; // Don't forget the underscore! 
+        $mform =& $this->_form; // Don't forget the underscore!
         $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('modrequestfacility','block_cmanager') . '</span>');
 
 
@@ -68,51 +70,51 @@ class block_cmanager_course_exists_form extends moodleform {
 
 		 $mform->addElement('html', '<center>
 				<div id="twobordertitlewide" style="background:transparent; width:820px">
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('modcode','block_cmanager'). '</b></div> 
+					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('modcode','block_cmanager'). '</b></div>
 					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('modname','block_cmanager'). '</b></div>
 					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('catlocation','block_cmanager'). '</b></div>
 
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('lecturingstaff','block_cmanager'). '</b></div> 
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('actions','block_cmanager'). '</b></div> 
-	
+					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('lecturingstaff','block_cmanager'). '</b></div>
+					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('actions','block_cmanager'). '</b></div>
+
 				</div>
 				');
 
-   
+
 
 
 	// Get out record
 	$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-	
+
 
 	$modCode = $currentRecord->modcode;
 	$modTitle = $currentRecord->modname;
 	$modMode = $currentRecord->modmode;
-	   
+
 	$spaceCheck =  substr($modCode, 0, 4) . ' ' . substr($modCode, 4, strlen($modCode));
-	
-	$selectQuery = "shortname LIKE '%$modCode%' 
-					
-				    OR (shortname LIKE '%$spaceCheck%' 
+
+	$selectQuery = "shortname LIKE '%$modCode%'
+
+				    OR (shortname LIKE '%$spaceCheck%'
 					AND shortname LIKE '%$modMode%')
 					OR shortname LIKE '%$spaceCheck%'";
-	
+
 	$recordsExist = $DB->record_exists_select('course', $selectQuery);
-	
-	
-	
+
+
+
 	$allRecords = $DB->get_recordset_select('course', $select=$selectQuery);
 
 
 
-	
+
 foreach($allRecords as $record){
-		
+
 
 	$lecturerHTML = '';
 	// Get the full category name
 	$categoryName = $DB->get_record('course_categories', array('id'=>$record->category));
-	
+
      // Get lecturer info
  	$lecturerHTML = block_cmanager_get_lecturer_info($record->id);
 
@@ -127,28 +129,28 @@ foreach($allRecords as $record){
  	$mform->addElement('html', '
 
 	<div id="singleborderwide" style="background:transparent">
-	<div style="text-align: left; float: left; width:160px">' . $record->shortname . '</div> 
+	<div style="text-align: left; float: left; width:160px">' . $record->shortname . '</div>
 	<div style="text-align: left; float: left; width:160px">' . $record->fullname .'</div>
 	<div style="text-align: left; float: left; width:160px"> ' . $catLocation . '</div>
 
-	<div style="text-align: left; float: left; width:160px">' . $lecturerHTML. ' </div> 
+	<div style="text-align: left; float: left; width:160px">' . $lecturerHTML. ' </div>
 	<div style="text-align: left; float: left; width:160px"><span style="font-size: 10px;"><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager').'</a>
 								<p></p>
-								<a href="mailto:' .  block_cmanager_get_list_of_lecturer_emails($record->id). '">'.get_string('emailSubj_requester','block_cmanager').'</a></span></div> 
+								<a href="mailto:' .  block_cmanager_get_list_of_lecturer_emails($record->id). '">'.get_string('emailSubj_requester','block_cmanager').'</a></span></div>
 	</div>
        ');
         }
 
 
 	echo '<script>function noneOfThese(){
-		
-		
+
+
 		window.location="course_new.php?status=None";
 	}</script>';
  	$mform->addElement('html', '</center>');
 	// Page description text
 	$mform->addElement('html', '<p></p><center>' . get_string('noneofthese','block_cmanager'). ', <input type="button" value="'.get_string('clickhere','block_cmanager').'" onclick="noneOfThese()"><p></p></center>');
- 	
+
 
 	$mform->closeHeaderBefore('buttonar');
 	}
@@ -157,21 +159,17 @@ foreach($allRecords as $record){
 
 $mform = new block_cmanager_course_exists_form();//name of the form you defined in file above.
 
-  
+
   if ($mform->is_cancelled()){
 
   } else if ($fromform=$mform->get_data()){
-  	
+
   } else {
  	  	echo $OUTPUT->header();
 	    $mform->focus();
 	    $mform->set_data($mform);
 	    $mform->display();
 	    echo $OUTPUT->footer();
-	  
- 
 }
-
-
 
 ?>

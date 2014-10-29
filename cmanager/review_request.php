@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -27,10 +27,12 @@
 
 require_once("../../config.php");
 global $CFG;
+require_login();
+
+
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 require_once('lib/displayLists.php');
-require_login();
 
 
 /** Navigation Bar **/
@@ -43,13 +45,6 @@ $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
-if (isset($_GET['id'])) {
-	$mid = required_param('id', PARAM_INT);
-	$_SESSION['mid'] = $mid;
-} else {
-	$mid = $_SESSION['mid'];
-}
-
 
 $context = context_system::instance();
 if (has_capability('block/cmanager:addrecord',$context)) {
@@ -57,6 +52,12 @@ if (has_capability('block/cmanager:addrecord',$context)) {
   print_error(get_string('cannotrequestcourse', 'block_cmanager'));
 }
 
+if (isset($_GET['id'])) {
+	$mid = required_param('id', PARAM_INT);
+	$_SESSION['mid'] = $mid;
+} else {
+	$mid = $_SESSION['mid'];
+}
 
 ?>
 
@@ -64,8 +65,8 @@ if (has_capability('block/cmanager:addrecord',$context)) {
 <style>
 tr:nth-child(odd)		{ background-color:#eee; }
 tr:nth-child(even)		{ background-color:#fff; }
-
 </style>
+
 <?php
 
 /**
@@ -100,7 +101,6 @@ class block_cmanager_review_request_form extends moodleform {
 $mform = new block_cmanager_review_request_form();
 
 
-
 if ($mform->is_cancelled()) {
     // Delete the record
 	$DB->delete_records_select('block_cmanager_records', "id = $mid");
@@ -116,9 +116,7 @@ if ($mform->is_cancelled()) {
 
     require_once('cmanager_email.php');
 
-    global $mid;
-    global $CFG;
-    global $USER;
+    global $mid, $CFG, $USER;
 
 
     $rec = $DB->get_record('block_cmanager_records', array('id'=>$mid));

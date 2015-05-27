@@ -1,5 +1,5 @@
-<?php 
-// --------------------------------------------------------- 
+<?php
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,16 +26,18 @@
  */
 require_once("../../../config.php");
 global $CFG, $DB;
+require_login();
+
+
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-require_login();
-require_once('../validate_admin.php');
 require_once('../lib/displayLists.php');
+
 
 $context = context_system::instance();
 if (has_capability('block/cmanager:viewrecord',$context)) {
 } else {
-  print_error(get_string('cannotviewrecord', 'block_cmanager'));
+	print_error(get_string('cannotviewrecord', 'block_cmanager'));
 }
 
 $mid = required_param('id', PARAM_INT);

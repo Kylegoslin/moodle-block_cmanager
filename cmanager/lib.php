@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -27,13 +27,13 @@
 
 /**
  * Return HTML displaying the names of lecturers
- * 
+ *
  */
 function block_cmanager_get_lecturer_info($courseid){
-							
+
 global $DB, $CFG;
 
-			
+
 if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
 	echo 'Error: invalid course id';
 	die;
@@ -47,9 +47,9 @@ $userids = $DB->get_records('role_assignments',array('roleid' => '3' , 'contexti
 $lecturerhtml = '';
 
 foreach ($userids as $singleuser) {
-	$user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	$user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);
 	$lecturerhtml .=  $user_record->firstname . ' ' . $user_record->lastname . '<br>' ;
-}	
+}
 
 
 return $lecturerhtml;
@@ -59,19 +59,19 @@ return $lecturerhtml;
 
 /**
  * Get a collection of teacher ids (role 3)
- *  
+ *
  * for a specific course, separated by spaces.
  */
 function block_cmanager_get_lecturer_ids_space_sep($courseid) {
-							
+
     global $DB, $CFG;
-	
-					
+
+
     if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
         echo 'Error: invalid course id';
 	    die;
 	}
-	
+
 	$contextid = $DB->get_field('context', 'id', array ('instanceid'=>$courseid, 'contextlevel'=>50), $strictness=IGNORE_MULTIPLE);
 	$userids = $DB->get_records('role_assignments',array('roleid' => '3' , 'contextid' => $contextid));
 
@@ -79,25 +79,25 @@ function block_cmanager_get_lecturer_ids_space_sep($courseid) {
 	$lecturerhtml = '';
 
 	foreach ($userids as $singleuser) {
-	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);
 	    $lecturerhtml .=  $user_record->id . ' ' ;
-    }	
+    }
 
     return $lecturerhtml;
-	
+
 }
 
 
 /**
- * 
- * 
+ *
+ *
  * Return a list of admin emails for a course, separated
  * by a comma.
  * */
 function block_cmanager_get_list_of_lecturer_emails($courseid) {
- 	
+
 	global $DB, $CFG;
-					
+
 	if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
         echo 'Error: invalid course id';
         die;
@@ -109,11 +109,11 @@ function block_cmanager_get_list_of_lecturer_emails($courseid) {
 
 
     $lecturerinfo = '';
-	
+
     foreach ($userids as $singleuser) {
-	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);	
+	    $user_record = $DB->get_record('user', array('id'=>$singleuser->userid), $fields='*', $strictness=IGNORE_MULTIPLE);
 	    $lecturerinfo .=  $user_record->email . ', ' ;
-    }	
+    }
 
     return $lecturerinfo;
  }

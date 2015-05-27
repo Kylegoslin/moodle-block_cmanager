@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,13 +26,10 @@
  */
 require_once("../../config.php");
 global $CFG, $DB;
-require_once("$CFG->libdir/formslib.php");
-
 require_login();
-require_once('validate_admin.php');
 
-$PAGE->set_url('/blocks/cmanager/cmanager_config.php');
-$PAGE->set_context(context_system::instance());
+
+require_once("$CFG->libdir/formslib.php");
 
 
 /** Navigation Bar **/
@@ -40,16 +37,17 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('emailConfig', 'block_cmanager'));
+$PAGE->set_url('/blocks/cmanager/cmanager_config.php');
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
 
-
 $context = context_system::instance();
 if (has_capability('block/cmanager:viewconfig',$context)) {
 } else {
-  print_error(get_string('cannotviewconfig', 'block_cmanager'));
+    print_error(get_string('cannotviewconfig', 'block_cmanager'));
 }
 
 
@@ -106,7 +104,7 @@ function saveChangedText(object, idname, langString){
 // If any records were set to be deleted.
 if (isset($_GET['t']) && isset($_GET['id'])) {
     if (required_param('t', PARAM_TEXT) == 'd') {
-        $deleteId = required_param('id', PARAM_INT);  
+        $deleteId = required_param('id', PARAM_INT);
         // Delete the record
         $deleteQuery = "id = $deleteId";
         $DB->delete_records_select('block_cmanager_config', $deleteQuery);
@@ -116,7 +114,7 @@ if (isset($_GET['t']) && isset($_GET['id'])) {
 
 
 //did we make a change to the course name, enrolment key or date?
-if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date']) 
+if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date'])
     && isset($_POST['defaultmail']) &&isset($_POST['snaming'])) {
 
     //update autoKey
@@ -300,7 +298,7 @@ class block_cmanager_config_form extends moodleform {
     }
 
 
-    $statsCode = get_string('totalRequests','block_cmanager').':'; 
+    $statsCode = get_string('totalRequests','block_cmanager').':';
     $whereQuery = "varname = 'admin_email'";
     $modRecords = $DB->get_recordset_select('block_cmanager_config', $whereQuery);
 
@@ -326,7 +324,7 @@ class block_cmanager_config_form extends moodleform {
    <input type="text" name="newemail" id="newemail"/>
    <input type="submit" name="addemailbutton" id="addemailbutton" value="'.get_string('SaveEMail','block_cmanager').'"/>
    </div>
-   <p></p> 
+   <p></p>
    &nbsp;
    <p></p>
    <table>';

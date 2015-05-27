@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -26,12 +26,10 @@
  */
 require_once("../../config.php");
 global $CFG, $DB;
-require_once("$CFG->libdir/formslib.php");
 require_login();
-require_once('validate_admin.php');
 
-$PAGE->set_url('/blocks/cmanager/cmanager_othersettings.php');
-$PAGE->set_context(context_system::instance());
+
+require_once("$CFG->libdir/formslib.php");
 
 
 /** Navigation Bar **/
@@ -39,6 +37,8 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('configureadminsettings', 'block_cmanager'));
+$PAGE->set_url('/blocks/cmanager/cmanager_othersettings.php');
+$PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
@@ -47,7 +47,7 @@ echo $OUTPUT->header();
 $context = context_system::instance();
 if (has_capability('block/cmanager:viewconfig',$context)) {
 } else {
-  print_error(get_string('cannotviewconfig', 'block_cmanager'));
+    print_error(get_string('cannotviewconfig', 'block_cmanager'));
 }
 
 ?>
@@ -110,7 +110,7 @@ if (isset($_GET['t']) && isset($_GET['id'])) {
 
 
 //did we make a change to the course name, enrolment key or date?
-if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date']) && isset($_POST['defaultmail']) 
+if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date']) && isset($_POST['defaultmail'])
     && isset($_POST['snaming'])) {
 
         //update autoKey
@@ -597,5 +597,3 @@ function block_cmanager_validate_email($email) {
 if (!empty($naming)) {
 	echo '<script> document.getElementById("naming").value = '.$naming.'; </script> ';
 }
-
-

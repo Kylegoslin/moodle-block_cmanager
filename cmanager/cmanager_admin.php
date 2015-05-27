@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -69,7 +69,7 @@ function cancelConfirm(id,langString) {
 	var answer = confirm(langString)
 	if (answer){
 
-		window.location = "deleteRequest.php?t=a&&id=" + id;
+		window.location = "deleterequest.php?t=a&&id=" + id;
 	}
 
 }
@@ -177,7 +177,7 @@ function definition() {
         }
        else if ($searchType == 'requester') {
 	        $selectQuery = "`createdbyid` IN (Select id from ".$CFG->prefix.
-            "user where `firstname` LIKE '%{$searchText}%' OR `lastname` 
+            "user where `firstname` LIKE '%{$searchText}%' OR `lastname`
             LIKE '%{$searchText}%' OR `username` LIKE '%{$searchText}%')";
        }
    }

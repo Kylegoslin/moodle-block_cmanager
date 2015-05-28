@@ -410,14 +410,14 @@ $string['denytext5'] = 'Reason 5';
 
 
 // Error messages
-$string['cannotrequestcourse'] = 'Sorry you cannot request a course';
-$string['cannotviewrecords'] = 'Sorry you cannot view records';
-$string['cannotapproverecord'] = 'Sorry you cannot approve records';
-$string['cannoteditrequest'] = 'Sorry you cannot edit a record';
-$string['cannotcomment'] = 'Sorry you cannot comment';
-$string['cannotdelete'] = 'Sorry you cannot delete a record';
-$stirng['cannotdenyrecord'] = 'Sorry you cannot deny a record';
-$string['cannotviewconfig'] = 'Sorry you cannot view the config';
+$string['cannotrequestcourse'] = ' Sorry your account does not have sufficient privelages to request a course. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotviewrecords'] = ' Sorry your account does not have sufficient privelages to view records. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotapproverecord'] = ' Sorry your account does not have sufficient privelages to approve records. You need to be assigned to a system role with sufficient privileges.';
+$string['cannoteditrequest'] = ' Sorry your account does not have sufficient privelages to edit a record. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotcomment'] = ' Sorry yyour account does not have sufficient privelages to comment. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotdelete'] = ' Sorry your account does not have sufficient privelages to delete a record. You need to be assigned to a system role with sufficient privileges.';
+$stirng['cannotdenyrecord'] = ' Sorry your account does not have sufficient privelages to deny a record. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotviewconfig'] = ' Sorry your account does not have sufficient privelages to view the config. You need to be assigned to a system role with sufficient privileges.';
 
 $string['cmanager:addcomment'] = 'Add comment';
 $string['cmanager:addrecord'] = 'Add Record';

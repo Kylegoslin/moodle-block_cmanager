@@ -35,7 +35,6 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('approvecourse', 'block_cmanager'));
 require_login();
-require_once('../validate_admin.php');
 
 $PAGE->set_url('/blocks/cmanager/admin/approve_course.php');
 $PAGE->set_context(context_system::instance());

@@ -29,7 +29,7 @@ global $CFG;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 require_login();
-require_once('../validate_admin.php');
+
 $PAGE->set_url('/blocks/cmanager/admin/comment.php');
 $PAGE->set_context(context_system::instance());
 /** Navigation Bar **/

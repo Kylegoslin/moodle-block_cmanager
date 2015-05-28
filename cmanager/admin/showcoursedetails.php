@@ -29,7 +29,7 @@ global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 require_login();
-require_once('../validate_admin.php');
+
 require_once('../lib/displayLists.php');
 
 $context = context_system::instance();

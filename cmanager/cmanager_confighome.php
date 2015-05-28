@@ -28,7 +28,6 @@ require_once("../../config.php");
 require_once("$CFG->libdir/formslib.php");
 
 require_login();
-require_once('validate_admin.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -82,12 +81,12 @@ class block_cmanager_confighome_form extends moodleform {
 
     	<tr>
 
-		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"> </td>
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config1.png\"> </td>
 		<td><b><a href=\"formeditor/page1.php\">".get_string('configurecourseformfields','block_cmanager')."</a></b><br>".get_string('configure_instruction2','block_cmanager')."</td>
 	    </tr>
 
 	    <tr>
-		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config.png\"></td>
+		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/config2.png\"></td>
 		<td><b><a href=\"formeditor/form_builder.php\">".get_string('informationform','block_cmanager')."</a></b><br>".get_string('configure_instruction3','block_cmanager')."
 		</td>
 

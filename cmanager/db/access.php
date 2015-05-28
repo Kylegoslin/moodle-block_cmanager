@@ -32,6 +32,7 @@ $capabilities = array(
         'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW
             
         ),
@@ -47,6 +48,7 @@ $capabilities = array(
         'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
  
@@ -57,88 +59,112 @@ $capabilities = array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 	'block/cmanager:denyrecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 	'block/cmanager:editrecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+	
+	'block/cmanager:deleterecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 	'block/cmanager:addrecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 
+ 	'block/cmanager:viewrecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 	'block/cmanager:addcomment' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
+ 
+ 	'block/cmanager:viewconfig' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
             'teacher'        => CAP_PREVENT,
             'editingteacher' => CAP_PREVENT,
             'manager'          => CAP_PREVENT,
-            'student'        => CAP_PREVENT
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
         ),
-),
- 'block/cmanager:denyrecord' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_PREVENT,
-            'editingteacher' => CAP_PREVENT,
-            'manager'          => CAP_PREVENT,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:editrecord' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager'          => CAP_ALLOW,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:deleterecord' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager'          => CAP_ALLOW,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:addrecord' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager'          => CAP_ALLOW,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:viewrecord' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager'          => CAP_ALLOW,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:addcomment' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager'          => CAP_ALLOW,
-            'student'        => CAP_PREVENT
-        ),
-),
- 'block/cmanager:viewconfig' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher'        => CAP_PREVENT,
-            'editingteacher' => CAP_PREVENT,
-            'manager'          => CAP_PREVENT,
-            'student'        => CAP_PREVENT
-        ),
-),
+	),
+
 );

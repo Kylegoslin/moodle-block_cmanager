@@ -39,6 +39,7 @@
 class block_cmanager extends block_base {
 
 
+    
     /** Init for the block */
     function init() {
 
@@ -51,7 +52,7 @@ class block_cmanager extends block_base {
 
     /** Get the content for the block */
     function get_content() {
-
+		require_login();
         global $CFG;
         global $COURSE;
         global $DB;
@@ -77,37 +78,28 @@ class block_cmanager extends block_base {
     function block_cmanager_get_html_content(){
 
         global $USER, $DB, $CFG;
-
+		$context = context_system::instance();
         $adminHTML = '';
-        if ($admins = get_admins()) {
+        $numRequestsPending = 0;
+        $numRequestsPending = $DB->count_records('block_cmanager_records', array('status'=>'PENDING'));
 
-            $loginIsValid = False;
+         	if (has_capability('block/cmanager:approverecord',$context)) {
+           
+            $adminHTML = '<br> <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/queue.png"/> <a href ="'.$CFG->wwwroot. '/blocks/cmanager/cmanager_admin.php' .'">'.get_string('block_admin','block_cmanager').' ['.$numRequestsPending.']</a><br>
+            <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/config.png"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_confighome.php">'.get_string('block_config','block_cmanager').'</a><br>
+            <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/all_arch.png"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_admin_arch.php">'.get_string('allarchivedrequests','block_cmanager').'</a>';
 
-        foreach ($admins as $admin) {
-            if ($admin->id == $USER->id) {
-            $loginIsValid = True;
-            }
-
-        }
-
-        if ($loginIsValid == True) {
-            $numRequestsPending = 0;
-            $numRequestsPending = $DB->count_records('block_cmanager_records', array('status'=>'PENDING'));
-            $adminHTML = '<br> <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/queue.ico"/> <a href ="'.$CFG->wwwroot. '/blocks/cmanager/cmanager_admin.php' .'">'.get_string('block_admin','block_cmanager').' ['.$numRequestsPending.']</a><br>
-                      <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/config.ico"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_confighome.php">'.get_string('block_config','block_cmanager').'</a><br>
-                     <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/all_arch.ico"/> <a href ="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_admin_arch.php">'.get_string('allarchivedrequests','block_cmanager').'</a>';
-
-        }
-    }
+        	}
+    	
 
 
     $var1 = '';
     if ((isloggedin() && $USER->id != 1)) {
         $var1 = "
         <hr>
-        <img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/make_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/course_request.php?mode=1\">".get_string('block_request','block_cmanager')."</a><br>
-        <img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/man_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager.php\">".get_string('block_manage','block_cmanager')."</a><br>
-        <img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/arch_req.ico\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager_history.php\">".get_string('myarchivedrequests','block_cmanager')."</a>
+        <a href =\"".$CFG->wwwroot."/blocks/cmanager/course_request.php?mode=1\"><img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/makereq.png\"/> ".get_string('block_request','block_cmanager')."</a><br>
+        <img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/man_req.png\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager.php\">".get_string('block_manage','block_cmanager')."</a><br>
+        <img src=\"".$CFG->wwwroot."/blocks/cmanager/icons/arch_req.png\"/> <a href =\"".$CFG->wwwroot."/blocks/cmanager/module_manager_history.php\">".get_string('myarchivedrequests','block_cmanager')."</a>
 
         <hr>
         $adminHTML

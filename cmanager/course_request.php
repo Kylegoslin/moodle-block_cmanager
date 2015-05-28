@@ -200,7 +200,7 @@ class block_cmanager_courserequest_form extends moodleform {
         // to select a category location for the course.
         if ($selfcat == 'yes') {
           //  $movetocategories = array();
-            $options = coursecat::make_categories_list('moodle/category:manage'); 
+            $options = coursecat::make_categories_list(); 
             $mform->addElement('select', 'menucategory', 'Category', $options);
             
             if ($_SESSION['editingmode'] == 'true') {

@@ -3,6 +3,22 @@
 		CRM Changelog
 
 
+CRM 4.3
+Date: 25/May/2015
+- Fixed permissions in access.php.
+- Updated readme.txt with quick guide on permissions
+- Changed block_cmanager to work on permissions rather than admin privs
+- Deleted duplicate cmanager folder
+- Updated icon set
+- Display database record ID for each request rather than counter
+- Course Creator and Manager roles (system) can now manage approval process
+- Fix for course categories not displaying for users on page 1 of form
+- Minor fixes and improvements
+- Tested with 2.8 & 2.9
+
+See Github for full log!
+
+----------------------------------------------------------------------
 
 CRM 4.2
 Date: 5/Aug/2014
@@ -12,8 +28,6 @@ are now allowed.
 - Bulk approve updated
 
 See Github for full log!
-
-
 
 ----------------------------------------------------------------------
 CRM 4.1

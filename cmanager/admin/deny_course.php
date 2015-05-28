@@ -29,7 +29,6 @@ global $CFG;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 require_login();
-require_once('../validate_admin.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();

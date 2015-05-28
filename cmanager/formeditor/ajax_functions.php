@@ -31,10 +31,10 @@ global $CFG, $DB;
 $type = required_param('type', PARAM_TEXT);  
 
 if($type == 'add'){
-	block_cmanager_delete_formaddNewItem();
+	block_cmanager_add_new_item();
 }
 else if($type == 'save'){
-	block_cmanager_delete_formsaveChanges();
+	block_cmanager_save_changes();
 }
 else if($type == 'page2addfield'){
 	block_cmanager_add_field();

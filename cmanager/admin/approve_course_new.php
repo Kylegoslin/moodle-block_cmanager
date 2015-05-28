@@ -32,7 +32,7 @@ require_once('../../../course/lib.php');
 require_once($CFG->libdir.'/completionlib.php');
 require_once('../lib/course_lib.php');
 require_login();
-require_once('../validate_admin.php');
+
 $PAGE->set_url('/blocks/cmanager/admin/approve_course_new.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));

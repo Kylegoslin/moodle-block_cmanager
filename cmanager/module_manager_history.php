@@ -114,7 +114,7 @@ class block_cmanager_module_manager_history_form extends moodleform {
 
 
 	$outputHTML .= '<center><div id="existingrequest" style="border-bottom:1px solid black; height:300px; background:transparent"></div></center> ';
-	$outputHTML = '<center>' . $modsHTML . '</center>';
+	$outputHTML = $modsHTML;
 	$mform->addElement('html', $outputHTML);
 
 	

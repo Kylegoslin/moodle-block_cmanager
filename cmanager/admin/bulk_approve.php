@@ -28,7 +28,6 @@ require_once("../../../config.php");
 global $CFG; $DB;
 require_once("$CFG->libdir/formslib.php");
 require_login();
-require_once('../validate_admin.php');
 /** Navigation Bar **/
 $PAGE->set_context(context_system::instance());
 $PAGE->navbar->ignore_active();

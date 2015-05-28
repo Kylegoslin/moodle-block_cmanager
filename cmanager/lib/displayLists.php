@@ -131,7 +131,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 			$outputhtml .= '
 			<div id="existingrequest" style="background: transparent;">
 			<div style="float:left; padding-bottom:20px; width:100%">
-			<p style="font-size:16px;"><br><b>[' . get_string('Request','block_cmanager'). ' #'.$counter.']</b></p>
+			<p style="font-size:16px;"><br><b>[' . get_string('Request','block_cmanager'). ' ID #'.$rec->id.']</b></p>
 
 
 			';
@@ -146,9 +146,9 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 				if ($rightpaneltype == 'admin_queue') {
 						$outputhtml .= '
 						<div style="font-size:14px; padding-bottom:5px">
-								<a href="#" onclick="quickApproveConfirm('. $rec->id .',\''.get_string('quickapprove_desc','block_cmanager').'\')"><img src="icons/list/tick.png"/> ' . get_string('quickapprove','block_cmanager'). '</a>
+								<a href="#" onclick="quickApproveConfirm('. $rec->id .',\''.get_string('quickapprove_desc','block_cmanager').'\')"><img src="icons/list/quick.png"/> ' . get_string('quickapprove','block_cmanager'). '</a>
 
-								<a href="admin/approve_course.php?id=' . $rec->id .'"><img src="icons/list/tick.png"/> ' . get_string('approve','block_cmanager'). '</a>
+								<a href="admin/approve_course.php?id=' . $rec->id .'"><img src="icons/list/approve.png"/> ' . get_string('approve','block_cmanager'). '</a>
 
 
 								<a href="admin/deny_course.php?id=' . $rec->id .'"><img src="icons/list/deny.png"/> ' . get_string('deny','block_cmanager'). '</a>
@@ -156,7 +156,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 								<a href="course_request.php?mode=2&edit=' . $rec->id .'"><img src="icons/list/edit.png"/> ' . get_string('edit','block_cmanager'). '</a>
 
 								<a href="#" onclick="cancelConfirm('. $rec->id .',\''.get_string('configure_delete','block_cmanager').'\')" href="#"><img src="icons/list/delete.png"/> ' . get_string('delete','block_cmanager'). '</a>
-								<img src="icons/list/comment.png"/><a href="admin/comment.php?type=adminq&id=' . $rec->id . '">' . get_string('addviewcomments','block_cmanager'). '</a>
+								<a href="admin/comment.php?type=adminq&id=' . $rec->id . '"><img src="icons/list/comment.png"/> ' . get_string('addviewcomments','block_cmanager'). '</a>
 						</div>
 
 						';
@@ -178,13 +178,13 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
     					$outputhtml .= '
     			<div style="float: left; font-size:14px; padding-bottom:5px">
 
-    					<A href="view_summary.php?id=' . $rec->id .'"><img src="icons/list/open.png"/>'.get_string('view','block_cmanager').'</a>
+    					<A href="view_summary.php?id=' . $rec->id .'"><img src="icons/list/open.png"/> '.get_string('view','block_cmanager').'</a>
 
-    					<A href="course_request.php?mode=2&edit=' . $rec->id .'"><img src="icons/list/edit.png"/>'.get_string('edit','block_cmanager').'</a>
+    					<A href="course_request.php?mode=2&edit=' . $rec->id .'"><img src="icons/list/edit.png"/> '.get_string('edit','block_cmanager').'</a>
 
-    					<a onclick="cancelConfirm('. $rec->id .',\''.get_string('cmanagerConfirmCancel','block_cmanager').'\')" href="#"><img src="icons/list/deny.png"/>'.get_string('cancel','block_cmanager').'</a>
+    					<a onclick="cancelConfirm('. $rec->id .',\''.get_string('cmanagerConfirmCancel','block_cmanager').'\')" href="#"><img src="icons/list/deny.png"/> '.get_string('cancel','block_cmanager').'</a>
 
-    					<A href="comment.php?type=userq&id=' . $rec->id . '"><img src="icons/list/comment.png"/>'.get_string('addviewcomments','block_cmanager').'</a>
+    					<A href="comment.php?type=userq&id=' . $rec->id . '"><img src="icons/list/comment.png"/> '.get_string('addviewcomments','block_cmanager').'</a>
 
 
     			</div>		';
@@ -290,7 +290,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 	if ($editcatavailable == true) {
 		$movetocategories = array();
         $notused = array();
-        $movetocategories += coursecat::make_categories_list('moodle/category:manage');
+        $movetocategories += coursecat::make_categories_list();
       	$cateDrop =  html_writer::select($movetocategories, 'cat'.$rec->id, $rec->cate, null);
  	    $catlisthtml .= '<div id="catname" class="catname">'.$cateDrop . '';
 		$catlisthtml .=  '<input id="clickMe" type="button" value="'.get_string('update','block_cmanager').'" onclick="saveChangedCategory(\''.$rec->id.'\')" /></div>';

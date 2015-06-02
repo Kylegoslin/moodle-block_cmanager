@@ -30,7 +30,3 @@ $plugin->requires  = 2011070100.00;      // Requires this Moodle version
 
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '4.3';
-
-
-
-

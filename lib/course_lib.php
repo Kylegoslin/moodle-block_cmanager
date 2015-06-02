@@ -104,6 +104,8 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
     $new_course->groupmode = get_config('moodlecourse','groupmode');
     $new_course->groupmodeforce = get_config('moodlecourse','groupmodeforce');
 
+	//completion
+	$new_course->enablecompletion = get_config('moodlecourse','enablecompletion');
 
     // Visible
     $new_course->visible = get_config('moodlecourse','visible');

@@ -68,7 +68,7 @@ function cancelConfirm(id,langString) {
 	var answer = confirm(langString)
 	if (answer){
 
-		window.location = "deleteRequest.php?t=a&&id=" + id;
+		window.location = "deleterequest.php?t=a&&id=" + id;
 	}
 
 }

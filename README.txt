@@ -27,8 +27,10 @@ by Kyle Goslin & Daniel McSweeney
 
   CRM Current Version 5.1
   For Moodle: 3.5
-  Tested on: Moodle: 3.5
-
+ 
+  THIS CODE IS CURRENTLY UNDER DEVELOPMENT. 
+  NOT STABLE FOR RELEASE.
+  FOR TESTING ONLY
 
 ------------------------------------------------
 

@@ -21,9 +21,12 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+error_reporting(-1);
+ 
+ini_set('display_errors', 'On');
 require_once("../../../config.php");
 global $CFG, $DB;
 

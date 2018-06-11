@@ -60,7 +60,7 @@ if (isset($_GET['id'])) {
 
 
 <script>
-    function goBack(){
+function goBack(){
 	    window.location ="module_manager.php";
 }
 </script>

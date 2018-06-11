@@ -153,29 +153,23 @@ class block_cmanager_comment_form extends moodleform {
 
 
 
-						 <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
-						 	Comments
-						 </div>
+						
 
-
-
-
-						' . $htmlOutput . '
-
-				</div>
-
-
-
-
-
-
-			<div id="right">
+			<div>
 				<form action ="comment.php" method ="post">
-				<textarea id="newcomment" name="newcomment" rows="10" cols="55"></textarea>
+				<textarea id="newcomment" name="newcomment" rows="5" cols="60"></textarea>
 				<p></p>
 				<input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
 				</form>
 			</div>
+            <div style="height:10px"></div>
+ <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
+Comments
+ </div>
+
+						' . $htmlOutput . '
+
+				</div>
 
 
 	 </div>

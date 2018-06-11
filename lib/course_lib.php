@@ -127,8 +127,6 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	} else {
 			$new_course->category = $rec->cate;
 	}
-	
-	
 		
 	
 	// Fields we are carrying across
@@ -138,10 +136,8 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 		$newShortName = $rec->modcode;
 	}
 	
-
 	
 	$new_course->shortname = $newShortName;
-	
 	
 	
 	$p_key = $rec->modkey;
@@ -171,16 +167,33 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 		$modkey = rand(999,5000);	
 	}
 	
+    
+    // ################ TO FIX #######################################################
 	
-    $categoryid = $new_course->category;
-    $category = $DB->get_record('course_categories', array('id'=>$categoryid));
+
+    
+//
+    $course = null;
+   
+    $category = $DB->get_record('course_categories', array('id'=>$categoryid), '*', MUST_EXIST);
     $catcontext = context_coursecat::instance($category->id);
+    require_capability('moodle/course:create', $catcontext);
+ 
+
+//    
+    
+  
     $contextobject = $catcontext;
     $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 
     					   'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 
     					   'noclean'=>true, 'content'=>$contextobject);
+                           
+                           
+                           
 	
-	// Create the course
+    #####################################################################################
+    
+	 // Create the course
 	$course = create_course($new_course, $editoroptions);
 	   
 	// Forward to the course editing page to allow the admin to make

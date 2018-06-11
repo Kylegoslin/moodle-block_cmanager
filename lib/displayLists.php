@@ -130,7 +130,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 			}
 			$outputhtml .= '
 			<div id="existingrequest" style="background: transparent;">
-			<div style="float:left; padding-bottom:20px; width:100%">
+			<div style="padding-bottom:20px; width:100%">
 			<p style="font-size:16px;"><br><b>[' . get_string('Request','block_cmanager'). ' ID #'.$rec->id.']</b></p>
 
 
@@ -206,10 +206,10 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 
 
 
-			 <table width="100%" style="overflow:hidden;" cellpadding="3" >
+			 <table width="80%" style="overflow:hidden;" cellpadding="3" >
 
 				<tr>
-					<td width="25%">
+					<td width="30%">
 						<b>' . get_string('status','block_cmanager'). ':</b>
 					</td>
 					<td style="width:100%">
@@ -224,7 +224,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 			    			$outputhtml .= '
 			    			<tr>
 
-								<td width="25%">
+								<td width="50%">
 									<b><span style="color:red">' . get_string('displayListWarningTitle','block_cmanager'). ':</span></b>
 								</td>
 								<td>

@@ -1,5 +1,3 @@
-
-
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +13,7 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2013-2014 - Institute of Technology Blanchardstown.
+// Copyright 2013-2018 - Institute of Technology Blanchardstown.
 
 
 ------------------------------------------------
@@ -27,9 +25,9 @@ by Kyle Goslin & Daniel McSweeney
 
 
 
-  CRM Current Version 4.3
-  For Moodle: 2.5+
-  Tested on: Moodle 2.5, 2.6, 2.7, 2.8 & 2.9
+  CRM Current Version 5.1
+  For Moodle: 3.5
+  Tested on: Moodle: 3.5
 
 
 ------------------------------------------------

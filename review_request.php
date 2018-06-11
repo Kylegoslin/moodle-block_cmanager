@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -83,7 +83,7 @@ class block_cmanager_review_request_form extends moodleform {
 
         $mform =& $this->_form; // Don't forget the underscore!
         $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('requestReview_Summary','block_cmanager'). '</span>');
-        $mform->addElement('html', '<p></p><center>'.get_string('requestReview_intro1','block_cmanager').'<br>'.get_string('requestReview_intro2','block_cmanager').'</center><p></p>&nbsp;<p></p>&nbsp;');
+        $mform->addElement('html', '<p></p>'.get_string('requestReview_intro1','block_cmanager').'<br>'.get_string('requestReview_intro2','block_cmanager').'<p></p>&nbsp;<p></p>&nbsp;');
 
         $rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
 	    $displayModHTML = block_cmanager_display_admin_list($rec, false, false, false, '');

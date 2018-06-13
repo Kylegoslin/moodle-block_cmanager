@@ -103,7 +103,7 @@ class block_cmanager_deny_form extends moodleform {
 
 	<style>
 			#wrapper {
-		    width: 950px;
+		    width: 80%;
 		    border: 1px solid black;
 		    overflow: hidden; /* will contain if #first is longer than #second */
 			}
@@ -222,30 +222,30 @@ function customText(){
 
 	$optionHTML = 'hh';
 	// Deny Text
-			$denytext1 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext1'");
-			if(!empty($denytext1)){
-				$optionHTML .= '<option value="'.$denytext1.'">'.$denytext1.'</option>';
-			}
+    $denytext1 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext1'");
+    if(!empty($denytext1)){
+        $optionHTML .= '<option value="'.$denytext1.'">'.$denytext1.'</option>';
+    }
 
-			$denytext2 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext2'");
-			if(!empty($denytext2)){
-				$optionHTML .= '<option value="'.$denytext2.'">'.$denytext2.'</option>';
-			}
-			$denytext3 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext3'");
+    $denytext2 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext2'");
+    if(!empty($denytext2)){
+        $optionHTML .= '<option value="'.$denytext2.'">'.$denytext2.'</option>';
+    }
+    $denytext3 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext3'");
 
-			if(!empty($denytext3)){
-				$optionHTML .= '<option value="'.$denytext3.'">'.$denytext3.'</option>';
-			}
+    if(!empty($denytext3)){
+        $optionHTML .= '<option value="'.$denytext3.'">'.$denytext3.'</option>';
+    }
 
-			$denytext4 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext4'");
-		if(!empty($denytext4)){
-				$optionHTML .= '<option value="'.$denytext4.'">'.$denytext4.'</option>';
-			}
+    $denytext4 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext4'");
+    if(!empty($denytext4)){
+        $optionHTML .= '<option value="'.$denytext4.'">'.$denytext4.'</option>';
+    }
 
-			$denytext5 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext5'");
-			if(!empty($denytext5)){
-				$optionHTML .= '<option value="'.$denytext5.'">'.$denytext5.'</option>';
-			}
+    $denytext5 = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'denytext5'");
+    if(!empty($denytext5)){
+        $optionHTML .= '<option value="'.$denytext5.'">'.$denytext5.'</option>';
+    }
 
 
 	return $optionHTML;
@@ -292,7 +292,7 @@ if($_POST){
 		require_once('../cmanager_email.php');
 
 
-		$message = $_POST['newcomment'];
+		$message = required_param('newcomment', PARAM_TEXT);
 
 
 

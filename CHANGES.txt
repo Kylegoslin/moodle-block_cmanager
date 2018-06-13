@@ -14,7 +14,9 @@ Date: June/2018
 
 - Origin issue corrected during request process
 - cmanager home select all option cross browser issue fixed during bulk request actions  
-   
+- removed old code from cmanager_config.php
+- removed $_POST references
+- Updated version requirement for Moodle & cmanager version    
         
 ----------------------------------------------------------------------
 

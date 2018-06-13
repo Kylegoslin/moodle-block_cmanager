@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -51,6 +51,7 @@ $DB->delete_records('block_cmanager_records', array('id'=>$deleteId));
 
 // Delete associated comments
 $DB->delete_records('block_cmanager_comments', array('instanceid'=>$deleteId));
+
 
 if ($type == 'a') {
 	echo "<script>window.location='cmanager_admin.php';</script>";

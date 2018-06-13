@@ -132,8 +132,8 @@ class block_cmanager_comment_form extends moodleform {
 	$htmloutput .='</table>';
 
 	?>
-	<style>
-	 #wrapper {
+<style>
+#wrapper {
     width: 950px;
     border: 1px solid black;
     overflow: hidden; /* will contain if #first is longer than #second */
@@ -148,7 +148,7 @@ class block_cmanager_comment_form extends moodleform {
     overflow: hidden; /* if you dont want #second to wrap below #first */
 }
 
-	 </style>
+</style>
 
 <?php
 	 $mform->addElement('html', '
@@ -228,13 +228,13 @@ global $USER, $CFG, $DB;
 		$newrec = new stdClass();
 		$newrec->instanceid = $mid;
 		$newrec->createdbyid = $userid;
-		$newrec->message = $_POST['newcomment'];
+		$newrec->message = required_param('newcomment', 'PARAM_TEXT');
 		$newrec->dt = date("Y-m-d H:i:s");
 		$DB->insert_record('block_cmanager_comments', $newrec, false);
 
 		// Send an email to everyone concerned.
 		require_once('cmanager_email.php');
-		$message = $_POST['newcomment'];
+		$message = required_param('newcomment', 'PARAM_TEXT');
 		// Get all user id's from the record
 		$currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 

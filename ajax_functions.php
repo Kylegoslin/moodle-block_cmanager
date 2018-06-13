@@ -51,8 +51,8 @@ if ($type == 'del') {
  */
 if ($type == 'updatefield') {
      
-    $post_value = addslashes($_POST['value']);
-    $post_id = addslashes($_POST['id']);
+    $post_value = addslashes(required_param('value', 'PARAM_TEXT'););
+    $post_id = addslashes(required_param('id', 'PARAM_TEXT'););
   	
     $selectQuery = "varname = '$post_id'";
   	$recordExists = $DB->record_exists_select('block_cmanager_config', $selectQuery);

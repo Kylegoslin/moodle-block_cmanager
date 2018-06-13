@@ -62,13 +62,7 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 
 
   <script>
-  $(document).ready(function() {
-    $("#accordion").accordion();
-  });
 
-  $(document).ready(function() {
-    $("#tabs").tabs();
-  });
 
 
 function cancelConfirm(i,langString) {
@@ -115,67 +109,7 @@ if (isset($_GET['t']) && isset($_GET['id'])) {
 }
 
 
-//did we make a change to the course name, enrolment key or date?
-if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date']) 
-    && isset($_POST['defaultmail']) &&isset($_POST['snaming'])) {
 
-    //update autoKey
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'autoKey'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'autoKey';
-    $newrec->value = $_POST['key'];
-    $DB->update_record('block_cmanager_config', $newrec);
-
-    //update naming
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'naming'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'naming';
-    $newrec->value = $_POST['naming'];
-    $DB->update_record('block_cmanager_config', $newrec);
-
-    //self car
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'selfcat'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'selfcat';
-    $newrec->value = $_POST['selfcat'];
-    $DB->update_record('block_cmanager_config', $newrec);
-
-
-    //update snaming
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'snaming'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'snaming';
-    $newrec->value = $_POST['snaming'];
-    $DB->update_record('block_cmanager_config', $newrec);
-
-    //retrieve updated date and convert to timestamp
-    $courseTimeStamp = $_POST['course_date'];
-    $courseTimeStamp = mktime (0, 0, 0, $courseTimeStamp['M'], $courseTimeStamp['d'], $courseTimeStamp['Y']);
-
-    //add the new date to the config
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'startdate'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'startdate';
-    $newrec->value = $courseTimeStamp;
-    $DB->update_record('block_cmanager_config', $newrec);
-    echo "<script>alert('".get_string('ChangesSaved','block_cmanager')."');</script>";
-
-
-    //update no reply email
-    $newrec = new stdClass();
-    $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'emailSender'");
-    $newrec->id = $rowId;
-    $newrec->varname = 'emailSender';
-    $newrec->value = $_POST['defaultmail'];
-    $DB->update_record('block_cmanager_config', $newrec);
-
-
-}
 
 ?>
 
@@ -497,7 +431,7 @@ if ($mform->is_cancelled()) {
     global $CFG;
 
     // Add an email address
-    $post_email = addslashes($_POST['newemail']);
+    $post_email = required_param('newemail', PARAM_EMAIL);
     if ($post_email != '' && block_cmanager_validate_email($post_email)) {
         $newrec = new stdClass();
         $newrec->varname = 'admin_email';

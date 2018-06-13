@@ -12,8 +12,9 @@ Date: June/2018
 - Updated version.php issue.
 - Updated DB schema issue for new moodle.   
 
-- Origin issue corrected during request
-- cmanager home select all option cross browser issue fixed     
+- Origin issue corrected during request process
+- cmanager home select all option cross browser issue fixed during bulk request actions  
+   
         
 ----------------------------------------------------------------------
 

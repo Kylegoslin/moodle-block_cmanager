@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -56,15 +56,8 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script src="js/jquery/jquery-1.7.2.min.js"></script>
 
-  <script>
-// needed anymore????
-  $(document).ready(function() {
-    $("#accordion").accordion();
-  });
+<script>
 
-  $(document).ready(function() {
-    $("#tabs").tabs();
-  });
 
 
 function cancelConfirm(i,langString) {
@@ -118,7 +111,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'autoKey'");
 		$newrec->id = $rowId;
         $newrec->varname = 'autoKey';
-        $newrec->value = $_POST['key'];
+        $newrec->value = required_param('key', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
         //update naming
@@ -126,7 +119,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'naming'");
         $newrec->id = $rowId;
         $newrec->varname = 'naming';
-        $newrec->value = $_POST['naming'];
+        $newrec->value = required_param('naming', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
         //self car
@@ -134,7 +127,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'selfcat'");
         $newrec->id = $rowId;
         $newrec->varname = 'selfcat';
-        $newrec->value = $_POST['selfcat'];
+        $newrec->value = required_param('selfcat', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -143,13 +136,19 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'snaming'");
         $newrec->id = $rowId;
         $newrec->varname = 'snaming';
-        $newrec->value = $_POST['snaming'];
+        $newrec->value = required_param('snaming', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
+        
+        
+        
         //retrieve updated date and convert to timestamp
-        $courseTimeStamp = $_POST['course_date'];
+        $courseTimeStamp = required_param_array('course_date', PARAM_TEXT);
+        
         $courseTimeStamp = mktime (0, 0, 0, $courseTimeStamp['M'], $courseTimeStamp['d'], $courseTimeStamp['Y']);
 
+        
+        
         //add the new date to the config
         $newrec = new stdClass();
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'startdate'");
@@ -165,7 +164,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'emailSender'");
         $newrec->id = $rowId;
         $newrec->varname = 'emailSender';
-        $newrec->value = $_POST['defaultmail'];
+        $newrec->value = required_param('defaultmail', PARAM_EMAIL);
         $DB->update_record('block_cmanager_config', $newrec);
 
         //DENY TEXT
@@ -173,7 +172,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'denytext1'");
         $newrec->id = $rowId;
         $newrec->varname = 'denytext1';
-        $newrec->value = $_POST['denytext1'];
+        $newrec->value = required_param('denytext1', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -181,7 +180,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'denytext2'");
         $newrec->id = $rowId;
         $newrec->varname = 'denytext2';
-        $newrec->value = $_POST['denytext2'];
+        $newrec->value = required_param('denytext2', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -189,7 +188,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'denytext3'");
         $newrec->id = $rowId;
         $newrec->varname = 'denytext3';
-        $newrec->value = $_POST['denytext3'];
+        $newrec->value = required_param('denytext3', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -197,7 +196,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'denytext4'");
         $newrec->id = $rowId;
         $newrec->varname = 'denytext4';
-        $newrec->value = $_POST['denytext4'];
+        $newrec->value = required_param('denytext4', PARAM_TEXT);;
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -205,7 +204,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'denytext5'");
         $newrec->id = $rowId;
         $newrec->varname = 'denytext5';
-        $newrec->value = $_POST['denytext5'];
+        $newrec->value = required_param('denytext5', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
 
@@ -545,8 +544,9 @@ if ($mform->is_cancelled()) {
     global $CFG;
 
     // Add an email address
-    $post_email = addslashes($_POST['newemail']);
-
+    //$post_email = addslashes($_POST['newemail']);
+    $post_email = required_param('newemail', 'PARAM_EMAIL');
+    
     if ($post_email != '' && block_cmanager_validate_email($post_email)) {
         $newrec = new stdClass();
         $newrec->varname = 'admin_email';

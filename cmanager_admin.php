@@ -85,9 +85,9 @@ function quickApproveConfirm(id,langString) {
 
 var checkedIds  = ['null'];
 
-//
-// List of currently selected Ids
-//
+
+// List of currently selected Ids for use
+// with the bulk actions
 function addIdToList(id) {
 	var i = checkedIds.length;
 	var found = false;
@@ -125,11 +125,12 @@ function saveChangedCategory(recordId) {
 
 
 </script>
-	<style>
-		#map { float:left; width:80%; }
-		#wrapper {float:left; width:100%;}
-		#list { background:#eee; list-style:none; padding:0; }
-		#existingrequest { background:#000; }
+
+<style>
+#map { float:left; width:80%; }
+#wrapper {float:left; width:100%;}
+#list { background:#eee; list-style:none; padding:0; }
+#existingrequest { background:#000; }
 
 
 select
@@ -268,18 +269,18 @@ $mform->addElement('html', $mainBody);
 
 echo "<script>
 
+// When the select all option is picked in the bulki actions
+// this is the function that is run.
+//
+
+
+
 function toggle(source) {
   checkboxes = document.getElementsByName('groupedcheck');
-  for(var i in checkboxes){
-
-
-    if(!checkboxes[i].disabled){
-
+  for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = source.checked;
-
-    addIdToList(checkboxes[i].id)
-    }
-   }
+        addIdToList(checkboxes[i].id);
+  }
 }
 
 function bulkaction(){

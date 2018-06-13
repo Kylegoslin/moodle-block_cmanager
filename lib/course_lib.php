@@ -85,7 +85,7 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 
     //** Create an object to hold our new course information
     $new_course = new block_cmanager_new_course();
-
+    $new_course->coursecat = 1;
     $new_course->format = get_config('moodlecourse', 'format');
     //Get the default timestamp for new courses
     $timestamp_startdate = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'startdate'), IGNORE_MULTIPLE);
@@ -113,10 +113,13 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 
     //is course mode enabled (page 1 optional dropdown)
     $mode = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_field3status'));
+    
     // what naming mode is operating
     $naming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'naming'), IGNORE_MULTIPLE);
-    	//what short naming format is operating
+    
+    //what short naming format is operating
     $snaming = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'snaming'), IGNORE_MULTIPLE);
+    
     //get the record for the request
     $rec =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
@@ -142,7 +145,7 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	
 	$p_key = $rec->modkey;
 	
-	//course naming
+	//---------------------- course naming ---------------------------------------------------
 	if ($naming == 1) {
 		$new_course->fullname = $rec->modname;
 	}
@@ -171,53 +174,27 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
     // ################ TO FIX #######################################################
 	
 
+    $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
     
-//
-    $course = null;
-   
-    $category = $DB->get_record('course_categories', array('id'=>$categoryid), '*', MUST_EXIST);
-    $catcontext = context_coursecat::instance($category->id);
-    require_capability('moodle/course:create', $catcontext);
+    // create the course using the data gathered
+    $course = create_course($new_course, $editoroptions);
+    
+    
+    
  
-
-//    
     
-  
-    $contextobject = $catcontext;
-    $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 
-    					   'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 
-    					   'noclean'=>true, 'content'=>$contextobject);
-                           
-                           
-                           
-	
-    #####################################################################################
-    
-	 // Create the course
-	$course = create_course($new_course, $editoroptions);
-	   
-	// Forward to the course editing page to allow the admin to make
-	// any changes to the course
-	$nid = $course->id;
-	
-	if ($nid == null) {
-		return $nid;
-	}
-	 
-	// Update the record to say that it is now complete
-	$updatedRecord = new stdClass();
-	$updatedRecord->id = $rec->id;
-	$updatedRecord->status = 'COMPLETE';
-	$DB->update_record('block_cmanager_records', $updatedRecord);
-	 
-	// Try enroll the creator
-	if (!empty($CFG->creatornewroleid)) {
+   
+    if (!empty($CFG->creatornewroleid)) {
        // deal with course creators - enrol them internally with default role
-       enrol_try_internal_enrol($nid, $rec->createdbyid, $CFG->creatornewroleid);
-	}
-	
-
-	// Check to see if auto create enrollment keys
+       $status = enrol_try_internal_enrol($course->id, $rec->createdbyid, $CFG->creatornewroleid);
+     
+    
+     }
+    
+    
+    
+    
+    // Check to see if auto create enrollment keys
 	// is enabled. If this option is set, add an 
 	// enrollment key.
 	$autoKey = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'autoKey'");
@@ -228,7 +205,7 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
         $enrollmentRecord = new stdClass();
         $enrollmentRecord->enrol =  'self';
         $enrollmentRecord->status = 0;
-        $enrollmentRecord->courseid = $nid;
+        $enrollmentRecord->courseid = $course->id;
         $enrollmentRecord->sortorder = 3;
         $enrollmentRecord->name = '';
         $enrollmentRecord->enrolperiod =  0;
@@ -265,10 +242,30 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	
 	
 	if ($sendMail == true) {
-        block_cmanager_send_emails($nid, $new_course->shortname, $new_course->fullname, $modkey, $mid);
+      block_cmanager_send_emails($course->id, $new_course->shortname, $new_course->fullname, $modkey, $mid);
 	}
-	
-	return $nid;
+    
+    
+ 
+    
+    
+    
+    
+    // Update the record to say that it is now complete
+	$updatedRecord = new stdClass();
+	$updatedRecord->id = $rec->id;
+	$updatedRecord->status = 'COMPLETE';
+	$DB->update_record('block_cmanager_records', $updatedRecord);
+    
+    
+    
+    
+    
+    
+    // return the ID which will be redirected to when finished.
+     return $course->id;
+    
+   
 	
 	
 	

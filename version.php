@@ -21,12 +21,12 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version   = 2015052543;      // The current module version (Date: YYYYMMDDXX)
-$plugin->requires  = 2011070100.00;      // Requires this Moodle version
+$plugin->version   = 2018061351;      // The current module version (Date: YYYYMMDDXX)
+$plugin->requires  = 2018051700.00;      // Requires this Moodle version
 $plugin->component = 'block_cmanager';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.3';
+$plugin->release = '5.1';

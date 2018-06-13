@@ -1,6 +1,21 @@
 ----------------------------------------------------------------------
 
 		CRM Changelog
+----------------------------------------------------------------------
+
+        
+CRM 5.1
+
+Date: June/2018
+
+- Fixed buttons on review request page, were right aligning instead of bottom.
+- Updated version.php issue.
+- Updated DB schema issue for new moodle.   
+
+- Origin issue corrected during request
+- cmanager home select all option cross browser issue fixed     
+        
+----------------------------------------------------------------------
 
 
 CRM 4.3

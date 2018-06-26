@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
@@ -338,7 +338,7 @@ function createTextField(){
      $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textfield', formid: formid},
 			function(data) {
 
-	
+	alert(data);
 
 	   });
 
@@ -354,7 +354,7 @@ function createTextField(){
 // If the text field already existed, rebuilt it using data from the db.
 function recreateTextField(uniqueId, leftText, requiredFieldValue){
 
-
+       // leftText = decodeURI(leftText);
 		var ni = document.getElementById('formdiv');
 		var newdiv = document.createElement('div');
 		//newdiv.style.backgroundColor = "gray";
@@ -503,7 +503,7 @@ var value = document.getElementById('newitem'+id).value;
 // If the text field already existed, rebuilt it using data from the db.
 function recreateTextArea(uniqueId, leftText, requiredFieldValue){
 
-
+       
 		var ni = document.getElementById('formdiv');
 		var newdiv = document.createElement('div');
 		//newdiv.style.backgroundColor = "gray";
@@ -599,7 +599,7 @@ function createDropdown(){
 
 // If the text field already existed, rebuilt it using data from the db.
 function recreateDropdown(uniqueId, leftText, requiredFieldValue){
-
+        
 	  var fieldsInHTML = 'No fields added..';
 
 
@@ -708,7 +708,7 @@ function createRadio(){
 
 // If the text field already existed, rebuilt it using data from the db.
 function recreateRadio(uniqueId, leftText, requiredFieldValue){
-
+        leftText = decodeURI(leftText);
 	  var fieldsInHTML = 'No fields added..';
 
 
@@ -825,26 +825,27 @@ foreach ($formfields as $field) {
 	if ($numberoffields == $reccounter || $numberoffields == 1) {
         echo '<script>movedownEnabled = 0;</script>';
     }
+    $lt = $field->lefttext;
     if ($field->type == 'textfield') {
 		echo "<script>
-		       recreateTextField('". $field->id ."', '". $field->lefttext ."', '". $field->reqfield ."');
+		       recreateTextField('". $field->id ."', '". $lt ."', '". $field->reqfield ."');
 	          </script>";
 	}
 	else if ($field->type == 'textarea') {
 	    echo "<script>
-		       recreateTextArea('". $field->id ."', '". $field->lefttext ."', '". $field->reqfield ."');
+		       recreateTextArea('". $field->id ."', '". $lt ."', '". $field->reqfield ."');
 	      </script>
 	      ";
 	}
 	else if ($field->type == 'dropdown') {
 	     echo "<script>
-		       recreateDropdown('". $field->id ."', '". $field->lefttext ."', '". $field->reqfield ."');
+		       recreateDropdown('". $field->id ."', '". $lt ."', '". $field->reqfield ."');
 	      </script>
 	      ";
 	}
     else if ($field->type == 'radio') {
 	   	echo "<script>
-		       recreateRadio('". $field->id ."', '". $field->lefttext ."', '". $field->reqfield ."');
+		       recreateRadio('". $field->id ."', ". $lt .", '". $field->reqfield ."');
 	      </script>
 	      ";
 	 }

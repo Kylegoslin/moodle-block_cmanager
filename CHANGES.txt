@@ -15,9 +15,11 @@ Date: June/2018
 - Origin issue corrected during request process
 - cmanager home select all option cross browser issue fixed during bulk request actions  
 - removed old code from cmanager_config.php
-- removed $_POST references
+- removed old $_POST/$_GET references from root folder.
 - Updated version requirement for Moodle & cmanager version    
-        
+- formlib/preview.php types set for each field.
+- additional clenaing on ajax function.php and parameters. 
+- Delete icons link fixed in formbuilder.     
 ----------------------------------------------------------------------
 
 

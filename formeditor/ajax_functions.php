@@ -15,20 +15,22 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
 global $CFG, $DB;
 
-
-$type = required_param('type', PARAM_TEXT);  
+// check the type of ajax call
+// that has been made to this page and redirect
+// to that function.
+$type = $_POST['type'];
 
 if($type == 'add'){
 	block_cmanager_add_new_item();
@@ -69,7 +71,7 @@ function block_cmanager_save_selected_form(){
 	$rowId = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'current_active_form_id'");	
 	
 	$dataobject->id = $rowId;
-	$dataobject->value = $value;
+	$dataobject->value = addslashes($value);
 	$DB->update_record('block_cmanager_config', $dataobject);
 	
 	
@@ -100,12 +102,12 @@ function block_cmanager_add_value_to_dropdown(){
 		
 	global $DB;
 	
-	$id = $_POST['id'];
+	$id = required_param('id', PARAM_INT); 
 	$value = required_param('value', PARAM_TEXT);  
 	
 	$object->id = '';
 	$object->fieldid = $id;
-	$object->value = addslashes($value);
+	$object->value = $value;
 	
 	
 	$id = $DB->insert_record('block_cmanager_form_data', $object, true); 
@@ -119,7 +121,7 @@ function block_cmanager_add_value_to_dropdown(){
 function block_cmanager_update_field(){
 	
 	global $CFG, $DB;
-	echo $elementId = $_POST['id'];
+	echo $elementId = required_param('id', PARAM_INT);
 	echo $value = required_param('value', PARAM_TEXT);  
 	
 	$dataobject->id = $elementId;
@@ -137,8 +139,9 @@ function block_cmanager_add_field(){
  
     global $CFG, $DB;
    
-   	$fieldType = $_POST['fieldtype'];
-	$formId = $_POST['formid'];
+   
+   	$fieldType = required_param('fieldtype', PARAM_TEXT);
+	$formId = required_param('formid', PARAM_TEXT);
 	
 	$query = "SELECT * FROM ".$CFG->prefix."block_cmanager_formfields where formid = $formId ORDER BY position DESC";
 	$record = $DB->get_record_sql($query, null, IGNORE_MISSING); 
@@ -209,7 +212,7 @@ function block_cmanager_add_field(){
 */
 function block_cmanager_get_dropdown_values(){
 	
-	$id = $_POST['id'];
+	$id = required_param('id', PARAM_INT);
 	global $DB;
 	$field3ItemsHTML = '';	
 	$selectQuery = "fieldid = '$id'";
@@ -219,7 +222,7 @@ function block_cmanager_get_dropdown_values(){
 	$field3ItemsHTML .= '<table width="300px">';							  
 				  foreach($field3Items as $item){
 				  	$field3ItemsHTML .= '<tr>';
-				  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../images/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
+				  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../icons/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
 					$field3ItemsHTML .= '</tr>';
 				  } 
 	$field3ItemsHTML .= '</table>';
@@ -236,12 +239,12 @@ function block_cmanager_save_changes(){
 	global $CFG;
 	global $DB;
 	
-	$f1t = $_POST['f1t'];
-	$f1d = $_POST['f1d'];
-	$f2t = $_POST['f2t'];
-	$f2d = $_POST['f2d'];
-	$f3d = $_POST['f3d'];
-	$dStat = $_POST['dstat'];	
+	$f1t = required_param('f1t', PARAM_TEXT);
+	$f1d = required_param('f1d', PARAM_TEXT); 
+	$f2t = required_param('f2t', PARAM_TEXT);
+	$f2d = required_param('f2d', PARAM_TEXT);  
+	$f3d = required_param('f3d', PARAM_TEXT);   
+	$dStat = required_param('dstat', PARAM_TEXT);    
 	
 	$field1title_id = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'page1_fieldname1'");
     $field1desc_id = $DB->get_field_select('block_cmanager_config', 'id', "varname = 'page1_fielddesc1'");
@@ -290,11 +293,11 @@ function block_cmanager_save_changes(){
 function block_cmanager_add_new_item(){
 	global $CFG, $DB;
 
-	$newValue = $_POST['valuetoadd'];
+	$newValue = required_param('valuetoadd', PARAM_TEXT);
 
 	$object;
 	$object->varname = 'page1_field3value';
-	$object->value = $newValue;
+	$object->value = addslashes($newValue);
 	$DB->insert_record('block_cmanager_config', $object, false, $primarykey='id'); 
 
 
@@ -308,13 +311,13 @@ function block_cmanager_save_optional_value(){
 		
 	global $CFG, $DB;
 
-	$id = $_POST['id'];
-	$value = $_POST['value'];
+	$id = required_param('id', PARAM_INT);
+	$value = required_param('value', PARAM_TEXT);
 	
 	
 	$dataobject = new stdClass();
 	$dataobject->id = $id;
-	$dataobject->reqfield = $value;
+	$dataobject->reqfield = addslashes($value);
 	
 	$DB->update_record('block_cmanager_formfields', $dataobject);
 	

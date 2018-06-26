@@ -222,19 +222,19 @@ class block_cmanager_comment_form extends moodleform {
 if($_POST){
 
 global $USER, $CFG, $DB;
-
+        $msg = required_param('newcomment', PARAM_TEXT);
 		// Add a record to the database
 		$userid = $USER->id;
 		$newrec = new stdClass();
 		$newrec->instanceid = $mid;
 		$newrec->createdbyid = $userid;
-		$newrec->message = required_param('newcomment', 'PARAM_TEXT');
+		$newrec->message = $msg;
 		$newrec->dt = date("Y-m-d H:i:s");
 		$DB->insert_record('block_cmanager_comments', $newrec, false);
 
 		// Send an email to everyone concerned.
 		require_once('cmanager_email.php');
-		$message = required_param('newcomment', 'PARAM_TEXT');
+	
 		// Get all user id's from the record
 		$currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));
 
@@ -257,8 +257,8 @@ global $USER, $CFG, $DB;
 		$replaceValues['[req_link]'] = $CFG->wwwroot .'/blocks/cmanager/view_summary.php?id=' . $mid;
 
 
-		block_cmanager_email_comment_to_user($message, $user_id, $mid, $replaceValues);
-		block_cmanager_email_comment_to_admin($message, $mid, $replaceValues);
+		block_cmanager_email_comment_to_user($msg, $user_id, $mid, $replaceValues);
+		block_cmanager_email_comment_to_admin($msg, $mid, $replaceValues);
 
 		echo "<script> window.location = 'comment.php?type=".$type."&id=$mid';</script>";
 

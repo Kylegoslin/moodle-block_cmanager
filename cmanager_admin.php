@@ -61,8 +61,23 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 <link href="js/jquery/jquery-ui18.css" rel="stylesheet" type="text/css"/>
 <script src="js/jquery/jquery-1.7.2.min.js"></script>
 <script src="js/jquery/jquery-ui.1.8.min.js"></script>
+<style>
+#map { float:left; width:80%; }
+#wrapper {float:left; width:100%;}
+#list { background:#eee; list-style:none; padding:0; }
+#existingrequest { background:#000; }
 
+
+select
+{
+    width:150px;
+ }
+ tr:nth-child(odd)		{ background-color:#eee; }
+tr:nth-child(even)		{ background-color:#fff; }
+
+</style>
 <script type="text/javascript">
+
 
 function cancelConfirm(id,langString) {
 	var answer = confirm(langString)
@@ -114,7 +129,6 @@ function saveChangedCategory(recordId) {
    var fieldvalue = document.getElementById('menucat' + recordId).value;
 
 
-
     $.post("ajax_functions.php", { type: 'updatecategory', value: fieldvalue, recId: recordId },
     		   function(data) {
     		     alert("Changes have been saved!");
@@ -126,21 +140,7 @@ function saveChangedCategory(recordId) {
 
 </script>
 
-<style>
-#map { float:left; width:80%; }
-#wrapper {float:left; width:100%;}
-#list { background:#eee; list-style:none; padding:0; }
-#existingrequest { background:#000; }
 
-
-select
-{
-    width:150px;
- }
- tr:nth-child(odd)		{ background-color:#eee; }
-tr:nth-child(even)		{ background-color:#fff; }
-
-</style>
 <?php
 
 

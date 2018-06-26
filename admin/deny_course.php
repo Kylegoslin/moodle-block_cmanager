@@ -108,12 +108,13 @@ class block_cmanager_deny_form extends moodleform {
 		    overflow: hidden; /* will contain if #first is longer than #second */
 			}
 			#left {
-			    width: 400px;
+			    width: 50%;
 			    float:left; /* add this */
 
 			}
 			#right {
 			    border: 0px solid green;
+                width: 50%;
 			    overflow: hidden; /* if you dont want #second to wrap below #first */
 			}
 
@@ -126,7 +127,7 @@ class block_cmanager_deny_form extends moodleform {
 		<div id="left">
 		<p></p><br>
 		<form>
-		<table width="300">
+		<table>
 			 <tr>
 
 
@@ -193,7 +194,7 @@ class block_cmanager_deny_form extends moodleform {
 		<div id="right">
  			'.get_string('denyrequest_reason','block_cmanager').'.
  			<p></p>
-		<textarea id="newcomment" name="newcomment" rows="30" cols="70" maxlength="280"></textarea>
+		<textarea id="newcomment" name="newcomment" rows="30" cols="52" maxlength="280"></textarea>
 		<p></p>
 	</div>
 		<input type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>

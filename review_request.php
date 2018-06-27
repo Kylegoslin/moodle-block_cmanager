@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014-2 Kyle Goslin, Daniel McSweeney
+ * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -73,7 +73,7 @@ tr:nth-child(even)		{ background-color:#fff; }
  *
  * Allow the user to review their request
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_review_request_form extends moodleform {
@@ -128,8 +128,8 @@ if ($mform->is_cancelled()) {
     //$replaceValues['[p_code]'] = $rec->progcode;
     //$replaceValues['[p_name]'] = $rec->progname;
     $replaceValues['[e_key]'] = 'No key set';
-    $replaceValues['[full_link]'] = 'Course currently does not exist.';
-    $replaceValues['[loc]'] = 'Location: ';
+    $replaceValues['[full_link]'] = get_string('requestReview_ccdne','block_cmanager');
+    $replaceValues['[loc]'] = get_string('reviewLocation', 'block_cmanager') . ': ';
     $replaceValues['[req_link]'] = $CFG->wwwroot .'/blocks/cmanager/view_summary.php?id=' . $mid;
 
 	// Send email to admin saying we are requesting a new mod

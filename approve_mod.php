@@ -16,13 +16,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
  *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -43,7 +43,7 @@ if (has_capability('block/cmanager:approverecord',$context)) {
  * Approving module
  * Main interface for approving a module
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_approve_module_form extends moodleform {
@@ -134,12 +134,9 @@ class block_cmanager_approve_module_form extends moodleform {
 $mform = new block_cmanager_approve_module_form();//name of the form you defined in file above.
 
 
-//default 'action' for form is strip_querystring(qualified_me())
+
 if ($mform->is_cancelled()) {
-    //you need this section if you have a cancel button on your form
-    //here you tell php what to do if your user presses cancel
-    //probably a redirect is called for!
-    // PLEASE NOTE: is_cancelled() should be called before get_data(), as this may return true
+    
 } 
 
 else if ($fromform=$mform->get_data()) {

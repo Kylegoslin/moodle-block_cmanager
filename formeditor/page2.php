@@ -65,11 +65,11 @@ else {
 	
 	$htmloutput = '<br>
 	<script>		
-		var num = 1; // Used to count the number of fields added.
-       var formid = '.$formid .';
+	var num = 1; // Used to count the number of fields added.
+    var formid = '.$formid .';
 
-       var movedownEnabled = 1;
-	   var numberoffields = 0;
+    var movedownEnabled = 1;
+	var numberoffields = 0;
     
 
 	//onscreen language variables and default values
@@ -165,14 +165,19 @@ if(isset($_GET['t']) && isset($_GET['del'])){
 
   
 	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
-		$itemid = $_GET['del'];
-		$fieldid = $_GET['fid'];
+		//$itemid = $_GET['del']; 
+        $itemid = required_param('del', PARAM_INT);
+		
+        
+        //$fieldid = $_GET['fid']; 
+        $fieldid = required_param('fid', PARAM_INT);
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
 	}
 	
 	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
 	
-		$fieldid = $_GET['del'];
+		//$fieldid = $_GET['del'];
+        $fieldid =  required_param('del', PARAM_INT);
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
 	}
 
@@ -182,9 +187,11 @@ if(isset($_GET['t']) && isset($_GET['del'])){
 // Delete Field
 if(isset($_GET['del'])){
 
-	$formid = $_GET['id'];
-	$delid = $_GET['del'];
-
+	//$formid = $_GET['id'];
+    $formid =  required_param('id', PARAM_INT);
+	//$delid = $_GET['del'];
+    $delid =  required_param('del', PARAM_INT);
+    
     $DB->delete_records_select('block_cmanager_formfields', "id = $delid");
 
 	//Update the position numbers
@@ -210,7 +217,8 @@ if(isset($_GET['del'])){
 // Move field up
 if(isset($_GET['up'])){
 
-	$currentid = $_GET['up'];
+	//$currentid = $_GET['up'];
+    $currentid =  required_param('up', PARAM_INT);
 
 	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
 	$currentposition = $currentrecord->position;
@@ -237,7 +245,8 @@ if(isset($_GET['up'])){
 // Move field down
 if(isset($_GET['down'])){
 
-	$currentid = $_GET['down'];
+	//$currentid = $_GET['down'];
+    $currentid =  required_param('down', PARAM_INT);
 
 	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
 	$currentposition = $currentrecord->position;

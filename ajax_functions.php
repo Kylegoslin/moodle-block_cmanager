@@ -15,7 +15,7 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2018- Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER

@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 $string['pluginname'] = 'Course Request Manager';
@@ -242,6 +242,8 @@ $string['requestReview_moduleName'] = 'Course Name';
 $string['requestReview_originator'] = 'Originator';
 
 
+$string['requestReview_ccdne'] = 'Course currently does not exist';
+$string['reviewLocation'] = 'Location';
 
 $string['requestReview_SubmitRequest'] = 'Submit Request';
 $string['requestReview_AlterRequest'] = 'Alter Request';
@@ -265,7 +267,8 @@ $string['comments_from'] = 'From';
 $string['comments_Header'] = 'Add / View Comments';
 $string['comments_Forward'] = 'All comments will automatically be forwarded by email also';
 $string['comments_PostComment'] = 'Post Comment';
-
+$string['comments_comment'] = 'Comment';
+$string['comments_author'] = 'Author';
 
 //deny request
 $string['denyrequest_Title'] = 'Course Request Facility - Deny Request';
@@ -278,6 +281,7 @@ $string['approverequest_Title'] = 'Course Request Facility - Approve Request';
 $string['approverequest_New'] = 'New course has been created';
 $string['approverequest_Process'] = 'Handover process has begun';
 
+$string['approve_course_no_id'] = 'No Module ID set';
 
 //misc
 $string['noPending'] = 'Sorry, nothing pending!';
@@ -354,9 +358,14 @@ $string['formpage1'] = 'Form Page 1';
 $string['formpage2'] = 'Form Page 2';
 $string['formpage2builder'] = 'Form Page 2 Builder';
 
+$string['formpage1_textfield'] = 'Text Field';
+$string['formpage1_textarea'] = 'Text Area';
+$string['formpage1_rbg'] = 'Radio Button Group';
+$string['formpage1_cbg'] = 'Check Box Group';
 
 // Preview form
 $string['previewform'] = 'Preview Form';
+$string['preview_modmode'] = 'Please select module mode';
 
 // course_exists.php
 $string['courseexists'] = 'Course Exists';
@@ -429,5 +438,8 @@ $string['cmanager:viewrecord'] = 'View Record';
 $string['cmanager:viewconfig'] = 'View Config';
 
 
+$string['lib_error_invalid_c'] = 'Invalid course id!';
+
+$string['course_new_mod_create'] = 'New Module Creation';
 
 ?>

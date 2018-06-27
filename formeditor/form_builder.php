@@ -228,12 +228,8 @@ if ($mform->is_cancelled()) {
  
 } else {
 
-       
-		   
- 
+      
 }
-
-
 
 	$mform->focus();
 	$mform->display();

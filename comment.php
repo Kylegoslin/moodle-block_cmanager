@@ -21,14 +21,14 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
 global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
-
+require_login();
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
@@ -39,7 +39,25 @@ $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
+?>
+<style>
+#wrapper {
+    width: 950px;
+    border: 1px solid black;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#left {
+    width: 600px;
+    float:left; /* add this */
 
+}
+#right {
+    border: 0px solid green;
+    overflow: hidden; /* if you dont want #second to wrap below #first */
+}
+
+</style>
+<?php
 if (has_capability('block/cmanager:addcomment',$context)) {
 } else {
   print_error(get_string('cannotcomment', 'block_cmanager'));
@@ -87,7 +105,7 @@ function goBack(){
  *
  * Comment form
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_comment_form extends moodleform {
@@ -122,65 +140,48 @@ class block_cmanager_comment_form extends moodleform {
 
 
 
-		$htmloutput .=' <tr ><td><b>Date:</b> ' . $record->dt . '</td></tr>';
-		$htmloutput .=' <tr><td><b>Author:</b> ' . $username . '</td></tr>';
+		$htmloutput .=' <tr ><td><b>'.get_string('comments_date','block_cmanager').':</b> ' . $record->dt . '</td></tr>';
+		$htmloutput .=' <tr><td><b>'.get_string('comments_author','block_cmanager').':</b> ' . $username . '</td></tr>';
 
-		$htmloutput .=' <tr><td><b>Comment:</b> ' . $record->message .'</td></tr>';
+		$htmloutput .=' <tr><td><b>'.get_string('comments_comment','block_cmanager').':</b> ' . $record->message .'</td></tr>';
 	  	$htmloutput .=' <tr style=" border-bottom:1pt solid black;"><td></td></tr>';
 		$htmloutput .='<tr><td></td></tr> ';
 	}
 	$htmloutput .='</table>';
 
 	?>
-<style>
-#wrapper {
-    width: 950px;
-    border: 1px solid black;
-    overflow: hidden; /* will contain if #first is longer than #second */
-}
-#left {
-    width: 600px;
-    float:left; /* add this */
 
-}
-#right {
-    border: 0px solid green;
-    overflow: hidden; /* if you dont want #second to wrap below #first */
-}
-
-</style>
 
 <?php
 	 $mform->addElement('html', '
 
-	 <div id="wrapper" style="padding:10px">
+	  <div id="wrapper" style="padding:10px">
 
 	 		<div id="left" style="padding-right:10px">
 
 
 
-						 <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
-						 '.get_string('comments','block_cmanager').'
-						 </div>
+						
 
-
-
+    <div>
+        <form action ="comment.php" method="post">
+        <textarea id="newcomment" name="newcomment" rows="5" cols="60"></textarea>
+        <p></p>
+        <input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
+        </form>
+    </div>
+    
+    <div style="height:10px"></div>
+     <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
+    '.get_string('comments_comment','block_cmanager').'
+     </div>
 
 						' . $htmloutput . '
 
 				</div>
 
-			<div id="right">
-				<form action ="comment.php" method ="post">
-				<textarea id="newcomment" name="newcomment" rows="6" cols="50"></textarea>
-				<p></p>
-				<input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
-				</form>
-			</div>
-
 
 	 </div>
-
 
 	<p></p>
 	<p></p>');

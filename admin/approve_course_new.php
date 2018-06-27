@@ -15,7 +15,7 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
@@ -24,9 +24,7 @@
  * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-error_reporting(-1);
- 
-ini_set('display_errors', 'On');
+
 require_once("../../../config.php");
 global $CFG, $DB;
 
@@ -62,7 +60,7 @@ if(isset($_GET['id'])){
 	
   if(empty($nid)){
   	
-	echo 'New Mod ID Not set';
+	echo get_string('approve_course_no_id','block_cmanager');
 	die;
 	  
 	  

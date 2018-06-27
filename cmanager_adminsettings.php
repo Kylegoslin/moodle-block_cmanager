@@ -15,7 +15,7 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
@@ -82,7 +82,7 @@ function saveChangedText(object, idname, langString) {
 
     $.post("ajax_functions.php", { type: 'updatefield', value: fieldvalue, id: idname },
     		   function(data) {
-    		     alert("Changes have been saved!");
+    		    // alert("Changes have been saved!");
     		   });
 
 }
@@ -226,8 +226,8 @@ function goBack(){
  * Admin settings
  *
  * Main form for the admin settings
- * @package    block_socialbookmark
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @package    block_cmanager
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_adminsettings_form extends moodleform {
@@ -522,7 +522,7 @@ $mainSlider = '
     //convert to date
     $startdate = getdate($timestamp_startdate);
     //add the date selector and set defaults
-    $date_options = array('format' => 'dMY', 'minYear' => 2012, 'maxYear' => 2020);
+    $date_options = array('format' => 'dMY', 'minYear' => 2012, 'maxYear' => 2025);
 
     $mform->addElement('date', 'course_date', 'Date:', $date_options);
     $date_defaults = array('d' => $startdate['mday'], 'M' => $startdate['mon'], 'Y' => $startdate['year']);
@@ -544,7 +544,6 @@ if ($mform->is_cancelled()) {
     global $CFG;
 
     // Add an email address
-    //$post_email = addslashes($_POST['newemail']);
     $post_email = required_param('newemail', 'PARAM_EMAIL');
     
     if ($post_email != '' && block_cmanager_validate_email($post_email)) {

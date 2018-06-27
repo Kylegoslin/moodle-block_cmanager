@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -148,8 +148,8 @@ function saveChangedCategory(recordId) {
  * Admin console
  *
  * Admin console interface
- * @package    block_socialbookmark
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @package    block_cmanager
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_admin_form extends moodleform {
@@ -269,10 +269,8 @@ $mform->addElement('html', $mainBody);
 
 echo "<script>
 
-// When the select all option is picked in the bulki actions
+// When the select all option is picked in the bulk actions
 // this is the function that is run.
-//
-
 
 
 function toggle(source) {

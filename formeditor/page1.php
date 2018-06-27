@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -138,7 +138,7 @@ require_once("$CFG->libdir/formslib.php");
  *
  *  Page 1 form
  * @package    block_socialbookmark
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_page1_form extends moodleform {
@@ -194,10 +194,10 @@ class block_cmanager_page1_form extends moodleform {
 			
 			<select onchange="addNewField(this);">
 			   <option>Add new..</option>
-			   <option value="tf">Text Field</option>
-			   <option value="ta">Text Area</option>
-			   <option value="rbg">Radio Button Group</option>
-			   <option value="cbg">Check Box Group</option>
+			   <option value="tf">'.get_string('formpage1_textfield','block_cmanager').'</option>
+			   <option value="ta">'.get_string('formpage1_textarea','block_cmanager').'</option>
+			   <option value="rbg">'.get_string('formpage1_rbg','block_cmanager').'</option>
+			   <option value="cbg">'.get_string('formpage1_cbg','block_cmanager').'</option>
 			</select>
 			
 			<p></p>

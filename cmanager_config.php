@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -125,7 +125,7 @@ function goBack(){
  * Config form form cmanager
  *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_config_form extends moodleform {
@@ -245,9 +245,10 @@ class block_cmanager_config_form extends moodleform {
     $emailSender = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'emailSender'");
 
     $selfcat = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'selfcat'");
+    
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //fragment 1 (placed on tab 2)
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   
 
 
    $fragment1 = '

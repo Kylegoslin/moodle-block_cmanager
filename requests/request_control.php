@@ -92,12 +92,6 @@ class block_cmanager_request_control_form extends moodleform {
 
 
 
-
-
-
-
-
-
   $mform = new block_cmanager_request_control_form();
   
 
@@ -111,7 +105,7 @@ class block_cmanager_request_control_form extends moodleform {
 
 		
   		// Send Email
-		$custommessage = $_POST['customrequestmessage'];
+		$custommessage = required_param('customrequestmessage', PARAM_TEXT);
   		require_once('../cmanager_email.php');
 		block_cmanager_handover_email_lecturers($_SESSION['mid'], $USER->id, $custommessage);
 		

@@ -20,6 +20,7 @@ Date: June/2018
 - formlib/preview.php types set for each field.
 - additional clenaing on ajax function.php and parameters. 
 - Delete icons link fixed in formbuilder.     
+- Additional lang strings added.
 ----------------------------------------------------------------------
 
 

@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +35,7 @@ global $DB, $CFG;
 
 			
 if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
-	echo 'Error: invalid course id';
+	 echo get_string('lib_error_invalid_c', 'block_cmanager');
 	die;
 }
 
@@ -68,7 +68,7 @@ function block_cmanager_get_lecturer_ids_space_sep($courseid) {
 	
 					
     if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
-        echo 'Error: invalid course id';
+         echo get_string('lib_error_invalid_c', 'block_cmanager');
 	    die;
 	}
 	
@@ -99,7 +99,7 @@ function block_cmanager_get_list_of_lecturer_emails($courseid) {
 	global $DB, $CFG;
 					
 	if (! $course = $DB->get_record("course", array("id"=>$courseid))) {
-        echo 'Error: invalid course id';
+        echo get_string('lib_error_invalid_c', 'block_cmanager');
         die;
 	}
 

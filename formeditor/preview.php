@@ -63,7 +63,7 @@ if(isset($_GET['id'])){
 
 ?>
 <script>
-	function goBack(){
+function goBack(){
 	window.location ="form_builder.php";
 }
 </script>
@@ -233,7 +233,7 @@ function block_cmanager_create_dropdown($leftText, $id, $form, $fieldName, $reqf
 		  
 		$form->addElement('select', $fieldName, $leftText , $options);
 		if($reqfield == 1){
-			$form->addRule($fieldName, 'Please select module mode.', 'required', null, 'server', false, false);
+			$form->addRule($fieldName, get_string('preview_modmode', 'block_cmanager'), 'required', null, 'server', false, false);
 		}
 	
 }

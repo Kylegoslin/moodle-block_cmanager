@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
@@ -119,10 +119,10 @@ class block_cmanager_comment_form extends moodleform {
 
 
 
-		$htmlOutput .=' <tr ><td><b>Date:</b> ' . $record->dt . '</td></tr>';
-		$htmlOutput .=' <tr><td><b>Author:</b> ' . $username . '</td></tr>';
+		$htmlOutput .=' <tr ><td><b>'.get_string('comments_date','block_cmanager').':</b> ' . $record->dt . '</td></tr>';
+		$htmlOutput .=' <tr><td><b>'.get_string('comments_author','block_cmanager').':</b> ' . $username . '</td></tr>';
 
-		$htmlOutput .=' <tr><td><b>Comment:</b> ' . $record->message .'</td></tr>';
+		$htmlOutput .=' <tr><td><b>'.get_string('comments_comment','block_cmanager').':</b> ' . $record->message .'</td></tr>';
 	  	$htmlOutput .=' <tr style=" border-bottom:1pt solid black;"><td></td></tr>';
 		$htmlOutput .='<tr><td></td></tr> ';
 	}
@@ -155,17 +155,18 @@ class block_cmanager_comment_form extends moodleform {
 
 						
 
-			<div>
-				<form action ="comment.php" method ="post">
-				<textarea id="newcomment" name="newcomment" rows="5" cols="60"></textarea>
-				<p></p>
-				<input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
-				</form>
-			</div>
-            <div style="height:10px"></div>
- <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
-Comments
- </div>
+    <div>
+        <form action ="comment.php" method="post">
+        <textarea id="newcomment" name="newcomment" rows="5" cols="60"></textarea>
+        <p></p>
+        <input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
+        </form>
+    </div>
+    
+    <div style="height:10px"></div>
+     <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
+    '.get_string('comments_comment','block_cmanager').'
+     </div>
 
 						' . $htmlOutput . '
 
@@ -225,7 +226,7 @@ if($_POST){
 
 		// Send an email to everyone concerned.
 		require_once('../cmanager_email.php');
-		$message = $_POST['newcomment'];
+		$message = required_param('newcomment', PARAM_TEXT);
 
 		// Get all user id's from the record
 		$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$mid));

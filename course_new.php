@@ -15,13 +15,13 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -64,7 +64,7 @@ if ($editid) {
  *
  * Form fields for additional data during the process of requesting a new course.
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_new_course_form extends moodleform {
@@ -223,7 +223,7 @@ if ($mform->is_cancelled()) {
     }
 
     // Tag the module as new  
-	$newrec->req_type = 'New Module Creation';
+	$newrec->req_type = get_string('course_new_mod_create','block_cmanager');
 	$newrec->status = 'PENDING';
 	$DB->update_record('block_cmanager_records', $newrec); 
 

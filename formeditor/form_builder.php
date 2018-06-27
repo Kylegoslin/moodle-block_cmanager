@@ -109,7 +109,11 @@ if(isset($_GET['del'])){
 
 <script>
 
-	function addNewField(){
+
+
+// After a user has entered the name for a new form page
+// this function is called when the submit button is clicked.
+function addNewField(){
 		
 		var value = document.getElementById('newformname').value;
       
@@ -123,9 +127,10 @@ if(isset($_GET['del'])){
 				   });
 			   
 			   window.location = 'form_builder.php';
-	    }
+	    
+       
+        }
 	}
-	
 	
 	
 

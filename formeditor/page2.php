@@ -112,7 +112,7 @@ function goBack(){
 			'.get_string('formBuilder_p2_instructions','block_cmanager').'
 			<hr><p></p><br>
 	 		'.get_string('formBuilder_p2_addNewField','block_cmanager').':
-			<select onchange="addNewField(this);">
+			<select name="newfieldselect" onchange="addNewField(this);">
 			   <option>'.get_string('formBuilder_p2_dropdown1','block_cmanager').'</option>
 			   <option value="tf">'.get_string('formBuilder_p2_dropdown2','block_cmanager').'</option>
 			   <option value="ta">'.get_string('formBuilder_p2_dropdown3','block_cmanager').'</option>

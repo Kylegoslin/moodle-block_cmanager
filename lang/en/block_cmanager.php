@@ -438,7 +438,7 @@ $string['cmanager:viewrecord'] = 'View Record';
 $string['cmanager:viewconfig'] = 'View Config';
 
 
-$string['lib_error_invalid_c'] = 'Invalid course id!';
+$string['lib_error_invalid_c'] = 'Invalid course ID!';
 
 $string['course_new_mod_create'] = 'New Module Creation';
 

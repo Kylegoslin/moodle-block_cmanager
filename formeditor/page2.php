@@ -217,13 +217,16 @@ if(isset($_GET['del'])){
 // Move field up
 if(isset($_GET['up'])){
 
-	//$currentid = $_GET['up'];
+	
     $currentid =  required_param('up', PARAM_INT);
 
+    // current record being moved
 	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
 	$currentposition = $currentrecord->position;
+ 
 
-	$higherpos = $currentposition-1;
+    // record above the one being moved
+	$higherpos = ($currentposition-1);
     $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos), $fields='*', IGNORE_MULTIPLE);
 
 	// Update the records
@@ -245,7 +248,7 @@ if(isset($_GET['up'])){
 // Move field down
 if(isset($_GET['down'])){
 
-	//$currentid = $_GET['down'];
+	
     $currentid =  required_param('down', PARAM_INT);
 
 	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
@@ -271,8 +274,8 @@ if(isset($_GET['down'])){
 ?>
 
 
-<script src="js/jquery/jquery-3.3.1.min.js"></script>
-t>
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
+
 
 
 <script>

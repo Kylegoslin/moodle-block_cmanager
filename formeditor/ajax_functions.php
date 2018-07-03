@@ -26,11 +26,19 @@
  */
 require_once("../../../config.php");
 global $CFG, $DB;
+require_login();
+require_once('../validate_admin.php');
+
+$context = context_system::instance();
+if (has_capability('block/cmanager:approverecord',$context)) {
+} else {
+  print_error(get_string('cannotviewconfig', 'block_cmanager'));
+}
 
 // check the type of ajax call
 // that has been made to this page and redirect
 // to that function.
-$type = $_POST['type'];
+$type = required_param('type', PARAM_TEXT)
 
 if($type == 'add'){
 	block_cmanager_add_new_item();
@@ -145,13 +153,22 @@ function block_cmanager_add_field(){
 	
 	$query = "SELECT * FROM ".$CFG->prefix."block_cmanager_formfields where formid = $formId ORDER BY position DESC";
 	$record = $DB->get_record_sql($query, null, IGNORE_MISSING); 
-	$pos = $record->position;
+    
+    // if no record exists, just start of with 1000 and
+    // then add one on to the numbering
+    $pos = 1000;  
+    if($record) {
+        $pos = $record->position;
+    }
+   
+	
+    
 	$pos++;
 		
 		
 	if($fieldType == 'textfield'){
 		
-		$object;
+		$object = new stdClass();
 		$object->id = '';
 		$object->type = 'textfield';
 		$object->position = $pos;
@@ -164,7 +181,7 @@ function block_cmanager_add_field(){
 	}
 	else if($fieldType == 'textarea'){
 		
-		$object;
+		$object = new stdClass();
 		$object->id = '';
 		$object->type = 'textarea';
 		$object->position = $pos;
@@ -177,10 +194,8 @@ function block_cmanager_add_field(){
 	
 	}
 	else if($fieldType == 'dropdown'){
-		
-	
 			
-		$object;
+		$object = new stdClass();
 		$object->id = '';
 		$object->type = 'dropdown';
 		$object->position = $pos;
@@ -193,8 +208,7 @@ function block_cmanager_add_field(){
 	
 	else if($fieldType == 'radio'){
 		
-		
-		$object;
+		$object = new stdClass();
 		$object->id = '';
 		$object->type = 'radio';
 		$object->position = $pos;
@@ -313,7 +327,6 @@ function block_cmanager_save_optional_value(){
 
 	$id = required_param('id', PARAM_INT);
 	$value = required_param('value', PARAM_TEXT);
-	
 	
 	$dataobject = new stdClass();
 	$dataobject->id = $id;

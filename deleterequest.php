@@ -35,6 +35,8 @@
  */
 require_once("../../config.php");
 global $CFG, $DB;
+
+// check user has capability
 $context = context_system::instance();
 if (has_capability('block/cmanager:deleterecord',$context)) {
 } else {

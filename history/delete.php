@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2012-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
@@ -50,7 +50,7 @@ echo $OUTPUT->header();
  *
  * Delete a record
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_delete_form extends moodleform {
@@ -84,7 +84,7 @@ class block_cmanager_delete_form extends moodleform {
     }
 	
 }
- 		$mform = new block_cmanager_delete_form();//name of the form you defined in file above.
+ 		$mform = new block_cmanager_delete_form();
  		
 		if (isset($_POST['deleteall'])) {
 
@@ -103,11 +103,11 @@ class block_cmanager_delete_form extends moodleform {
 
  
 		
-		$mform->focus();
-		$mform->set_data($mform);
-		$mform->display();
-		
-		echo $OUTPUT->footer();
+$mform->focus();
+$mform->set_data($mform);
+$mform->display();
+
+echo $OUTPUT->footer();
  
 
 

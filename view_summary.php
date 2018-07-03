@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
 <style>
 	tr:nth-child(odd)		{ background-color:#eee; }
 	tr:nth-child(even)		{ background-color:#fff; }
- </style>
+</style>
 
 
 <script>
@@ -70,7 +70,7 @@ function goBack(){
  * Course request form
  *
  * @package    block_cmanager
- * @copyright  2014 Kyle Goslin, Daniel McSweeney
+ * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_view_summary_form extends moodleform {
@@ -114,28 +114,28 @@ class block_cmanager_view_summary_form extends moodleform {
 
     $mform->addElement('html', '<p></p>
 
-	<table width="700px" style="border: 1px #000000 solid;">
+	<table width="80%" style="border: 1px #000000 solid;">
 			 <tr>
-	             <td width="170px">'.get_string('comments_date','block_cmanager').'</td>
-		         <td width="430px">'.get_string('comments_message','block_cmanager').'</td> 
-		         <td width="100px">'.get_string('comments_from','block_cmanager').'</td> 
+	             <td width="20%">'.get_string('comments_date','block_cmanager').'</td>
+		         <td width="60%">'.get_string('comments_message','block_cmanager').'</td> 
+		         <td width="20%">'.get_string('comments_from','block_cmanager').'</td> 
 		         </tr>
-	 </table>
+	</table>
 
 	
 	<p></p>
-	<table width="700px">
+	<table width="80%">
 			 <tr>
-		             <td width="170px"></td>
-		             <td width="430px"></td> 
-		             <td width="100px"></td> 
+		             <td width="20%"></td>
+		             <td width="60%"></td> 
+		             <td width="20%"></td> 
 		         <tr>
 			' . $htmlOutput . '
 			 </table>
 	
 
-	<p></p>
-	<p></p>
+     <div style="height:20px">
+     </div>
 	');
 
 

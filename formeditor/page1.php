@@ -55,7 +55,8 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 ?>
 
 <link rel="stylesheet" type="text/css" href="../css/main.css" />
-<script src="../js/jquery/jquery-1.7.2.min.js"></script>
+<script src="js/jquery/jquery-3.3.1.min.js"></script>
+
 <script>
 
 function goBack(){

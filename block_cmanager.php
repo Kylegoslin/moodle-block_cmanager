@@ -36,8 +36,8 @@ class block_cmanager extends block_base {
 
         $this->title = get_string('plugindesc', 'block_cmanager');
         $plugin = new stdClass();
-        $plugin->version   = 2014072542;      // The current module version (Date: YYYYMMDDXX)
-        $plugin->requires  = 2011120500.00;      // Requires this Moodle version
+        $plugin->version   = 2018061351;      // The current module version (Date: YYYYMMDDXX)
+        $plugin->requires  = 2018051700.00;   // Requires this Moodle version
     }
 
 
@@ -64,7 +64,7 @@ class block_cmanager extends block_base {
     /**
     * This is the main content generation function that is responsible for
     * returning the relevant content to the user depending on what status
-    * they have (admin / student).
+    * they have (admin / regular staff).
     */
     function block_cmanager_get_html_content(){
 
@@ -74,6 +74,7 @@ class block_cmanager extends block_base {
         $numRequestsPending = 0;
         $numRequestsPending = $DB->count_records('block_cmanager_records', array('status'=>'PENDING'));
 
+            // Admin UI elements
          	if (has_capability('block/cmanager:approverecord',$context)) {
            
             $adminHTML = '<br> <img src="'.$CFG->wwwroot.'/blocks/cmanager/icons/queue.png"/> <a href ="'.$CFG->wwwroot. '/blocks/cmanager/cmanager_admin.php' .'">'.get_string('block_admin','block_cmanager').' ['.$numRequestsPending.']</a><br>
@@ -83,7 +84,8 @@ class block_cmanager extends block_base {
         	}
     	
 
-
+    // UI components for regular users of the block
+    // to allow requests to be made
     $var1 = '';
     if ((isloggedin() && $USER->id != 1)) {
         $var1 = "

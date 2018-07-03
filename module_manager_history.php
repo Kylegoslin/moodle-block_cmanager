@@ -15,7 +15,7 @@
 //
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
-// Copyright 2012-2014 - Institute of Technology Blanchardstown.
+// Copyright 2012-2018 - Institute of Technology Blanchardstown.
 // --------------------------------------------------------- 
 /**
  * COURSE REQUEST MANAGER
@@ -43,6 +43,7 @@ $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 $context = context_system::instance();
 
+// check permissions
 if (has_capability('block/cmanager:viewrecord',$context)) {
 } else {
        print_error(get_string('cannotviewrecords', 'block_cmanager'));
@@ -51,10 +52,7 @@ if (has_capability('block/cmanager:viewrecord',$context)) {
 
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
- 
-<link href="js/jquery/jquery-ui18.css" rel="stylesheet" type="text/css"/>
-<script src="js/jquery/jquery-1.7.2.min.js"></script>
-<script src="js/jquery/jquery-ui.1.8.min.js"></script>
+<script src="js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 
 
@@ -72,14 +70,13 @@ function cancelConfirm(id,langString) {
 </script>
 
 <style>
-
 	tr:nth-child(odd)		{ background-color:#eee; }
 	tr:nth-child(even)		{ background-color:#fff; }
  </style>
 
 <?php
 /**
- *  History manager
+ * History manager
  * The management front end for the modules which have been processed
  * in the past.
  * @package    block_cmanager

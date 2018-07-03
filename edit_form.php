@@ -16,19 +16,11 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
+
+ 
 /**
  * COURSE REQUEST MANAGER
-  *
- * @package    block_cmanager
- * @copyright  2018 Kyle Goslin, Daniel McSweeney
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-
-
-/**
- * COURSE
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
@@ -37,12 +29,13 @@
 class block_cmanager_edit_form extends block_edit_form {
  
     protected function specific_definition($mform) {
- 
+        global $CFG;
         // Section header title according to language file.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
- 
-        // A sample string variable with a default value.
-        $mform->addElement('text', 'config_text', get_string('blockstring', 'block_simplehtml'));
+         
+        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/blocks/cmanager/cmanager_confighome.php"> '.get_string('configurecoursemanagersettings', 'block_cmanager').'<a/>');
+        
+    
         $mform->setDefault('config_text', 'default value');
         $mform->setType('config_text', PARAM_MULTILANG);        
  

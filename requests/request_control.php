@@ -50,8 +50,8 @@ if(isset($_GET['id'])){
 
 ?>
 <link rel="stylesheet" type="text/css" href="css/main.css" />
-<SCRIPT LANGUAGE="JavaScript" SRC="http://code.jquery.com/jquery-1.6.min.js">
-</SCRIPT>
+<script src="js/jquery/jquery-3.3.1.min.js"></script>
+
 
 <?php
 

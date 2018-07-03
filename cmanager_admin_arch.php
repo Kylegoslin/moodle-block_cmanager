@@ -55,9 +55,8 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
-<link href="js/jquery/jquery-ui18.css" rel="stylesheet" type="text/css"/>
-<script src="js/jquery/jquery-1.7.2.min.js"></script>
-<script src="js/jquery/jquery-ui.1.8.min.js"></script>
+<script src="js/jquery/jquery-3.3.1.min.js"></script>
+<script src="js/jquery/jquery-ui.1.12.1.min.js"></script>
   
 <script type="text/javascript">
 

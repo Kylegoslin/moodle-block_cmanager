@@ -21,7 +21,7 @@
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
- * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2012-2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_login();
@@ -32,8 +32,10 @@ global $CFG;
 if ($admins = get_admins()) { 
     $loginIsValid = False;
     foreach ($admins as $admin) {
+     
         if ($admin->id == $USER->id) {
 		    $loginIsValid = True;
+              
 		  
 		}
 		 

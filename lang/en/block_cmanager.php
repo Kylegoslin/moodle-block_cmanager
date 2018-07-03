@@ -30,8 +30,8 @@ $string['plugindesc'] = 'Course Request Manager';
 //block links
 $string['block_admin'] = 'Request Queue';
 $string['block_config'] = 'Configuration';
-$string['block_request'] = 'Make a request';
-$string['block_manage'] = 'Manage your requests';
+$string['block_request'] = 'Make a Request';
+$string['block_manage'] = 'Manage Your Requests';
 
 //basic Navigation
 $string['back'] = 'Back	';

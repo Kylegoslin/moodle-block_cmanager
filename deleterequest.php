@@ -53,6 +53,7 @@ $DB->delete_records('block_cmanager_records', array('id'=>$deleteId));
 $DB->delete_records('block_cmanager_comments', array('instanceid'=>$deleteId));
 
 
+// rediect the browser back when finished deleting.
 if ($type == 'a') {
 	echo "<script>window.location='cmanager_admin.php';</script>";
 

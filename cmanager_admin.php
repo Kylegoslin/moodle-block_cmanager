@@ -164,7 +164,16 @@ function definition() {
     // If search is enabled then use the
     // search parameters
     if ($_POST && isset($_POST['search'])) {
+        
+       
         $searchText = required_param('searchtext', PARAM_TEXT);
+        // if nothing was entered for the search string
+        // send them back with a warning message.
+        if($searchText == ""){
+            
+         echo '<script>alert("'.get_string('cmanager_admin_enterstring','block_cmanager').'"); window.location="cmanager_admin.php"; </script>';
+         die;
+        }
         $searchType = required_param('searchtype', PARAM_TEXT);
 
         if (!empty($searchText) && !empty($searchType)) {
@@ -216,6 +225,7 @@ $page1_fieldname1 = $DB->get_field_select('block_cmanager_config', 'value', "var
 $page1_fieldname2 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname2'");
 
 $searchHTML = '
+
         <div style="width: 200px; background-color:#eee; padding:10px; ">
 	 	<form action="cmanager_admin.php?search=1" method="post">
 
@@ -270,8 +280,6 @@ echo "<script>
 
 // When the select all option is picked in the bulk actions
 // this is the function that is run.
-
-
 function toggle(source) {
   checkboxes = document.getElementsByName('groupedcheck');
   for(var i=0, n=checkboxes.length;i<n;i++) {

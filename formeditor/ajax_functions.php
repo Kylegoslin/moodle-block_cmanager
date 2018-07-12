@@ -38,7 +38,7 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 // check the type of ajax call
 // that has been made to this page and redirect
 // to that function.
-$type = required_param('type', PARAM_TEXT)
+$type = required_param('type', PARAM_TEXT);
 
 if($type == 'add'){
 	block_cmanager_add_new_item();

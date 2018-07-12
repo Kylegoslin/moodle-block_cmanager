@@ -351,7 +351,7 @@ function createTextField(){
      $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textfield', formid: formid},
 			function(data) {
 
-	alert(data);
+	//alert(data);
 
 	   });
 

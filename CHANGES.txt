@@ -23,10 +23,13 @@ Date: June/2018
 - Additional lang strings added.
 
 Date July/2018
+
 - Modified table layout / removed old <p> tags for view_summary.php
 - jquery 1.7.2 updated to  3.3.1
-- jquery-ui 1.8 updated to 1.12.1 / removed not needed refs
+- jquery-ui 1.8 updated to 1.12.1 / removed not needed refs.
 - new links to config in block settings when in edit mode to config block. Updated lang strings.
+- warning message for searching without a string in admin console.
+
 
 ----------------------------------------------------------------------
 

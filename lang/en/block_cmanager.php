@@ -442,4 +442,7 @@ $string['lib_error_invalid_c'] = 'Invalid course ID!';
 
 $string['course_new_mod_create'] = 'New Module Creation';
 
+
+// Admin messages
+$string['cmanager_admin_enterstring'] = 'Please enter a search string';
 ?>

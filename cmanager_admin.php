@@ -130,7 +130,7 @@ function saveChangedCategory(recordId) {
 
     $.post("ajax_functions.php", { type: 'updatecategory', value: fieldvalue, recId: recordId },
     		   function(data) {
-    		     alert("Changes have been saved!");
+    		     //
     		   });
 
 
@@ -247,7 +247,7 @@ $searchHTML = '
 		';
 
 		if ($_POST && isset($_POST['search'])) {
-			$searchHTML .= '<br><p></p><a href="cmanager_admin.php">[Clear Search]</a>';
+			$searchHTML .= '<br><p></p><a href="cmanager_admin.php">['.get_string('clearsearch', 'block_cmanager').']</a>';
 		}
 $searchHTML .= '</div>';
 

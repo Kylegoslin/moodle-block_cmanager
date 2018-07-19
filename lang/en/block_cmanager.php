@@ -382,7 +382,7 @@ $string['historynav'] = 'History';
 $string['searchAuthor'] = 'Author';
 $string['search_side_text'] = 'Search';
 $string['searchbuttontext'] = 'Search!';
-
+$string['clearsearch'] = 'Clear Search';
 // Quick approve
 $string['quickapprove'] = 'Quick Approve';
 $string['quickapprove_desc'] = 'Quick Approve this course?';
@@ -445,4 +445,19 @@ $string['course_new_mod_create'] = 'New Module Creation';
 
 // Admin messages
 $string['cmanager_admin_enterstring'] = 'Please enter a search string';
+
+// events
+$string['startingcoursecreation'] = 'starting course creation';
+$string['createdsuccess'] = 'created a new course successfully';
+$string['courserecdeleted'] = 'Course request has been deleted';
+$string['requestprocessing'] = 'Request Procesing';
+$string['failedtoenrolcreator'] = 'Failed to enrol course creator';
+$string['enrolledcrator'] = 'Enrolled creator';
+$string['stepnumber'] = 'Step';
+
+$string['keyaddfail'] = 'add enrollment key fail';
+$string['keyaddsuccess'] = 'add enrollment key success';
+$string['updatingrecstatus'] = 'updating record status';
+$string['courserecorddeleted'] = 'Course record deleted';
+$string['deletecourserequest'] = 'Delete course request';
 ?>

@@ -42,12 +42,12 @@ echo $OUTPUT->header();
 ?>
 <style>
 #wrapper {
-    width: 950px;
+    width: 80%;
     border: 1px solid black;
     overflow: hidden; /* will contain if #first is longer than #second */
 }
 #left {
-    width: 600px;
+    width: 100%;
     float:left; /* add this */
 
 }
@@ -172,7 +172,7 @@ class block_cmanager_comment_form extends moodleform {
     </div>
     
     <div style="height:10px"></div>
-     <div style="border: 1px #000000 solid; width:605px; background:  #E0E0E0">
+     <div style="border: 1px #000000 solid; width:100%; background:  #E0E0E0">
     '.get_string('comments_comment','block_cmanager').'
      </div>
 

@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version   = 2018061351;      // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2018071900;      // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2018051700.00;      // Requires this Moodle version
 $plugin->component = 'block_cmanager';
 $plugin->maturity = MATURITY_STABLE;

@@ -20,7 +20,11 @@ Date: June/2018
 - formlib/preview.php types set for each field.
 - additional clenaing on ajax function.php and parameters. 
 - Delete icons link fixed in formbuilder.     
-- Additional lang strings added.
+- Additional lang strings added to settings.
+- cmanager_admin lang strings added.
+- Blank search prevented for admin.
+- Minor changes to "open details" card.
+- Events/logging added into the course approve process, course delete, new course request.
 
 Date July/2018
 
@@ -29,8 +33,9 @@ Date July/2018
 - jquery-ui 1.8 updated to 1.12.1 / removed not needed refs.
 - new links to config in block settings when in edit mode to config block. Updated lang strings.
 - warning message for searching without a string in admin console.
-
-
+- modified user and admin comment layout to utilise more screen space.
+- Event logging added into the course approval process.
+- Event logging added to the course deleting process.
 ----------------------------------------------------------------------
 
 

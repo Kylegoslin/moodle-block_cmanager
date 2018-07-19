@@ -205,7 +205,8 @@ class block_cmanager_courserequest_form extends moodleform {
             
             if ($_SESSION['editingmode'] == 'true') {
                 $mform->setDefault('menucategory', $currentrecord->cate);
-             }
+            }
+           
         }
 
         if (!$autoKey) {

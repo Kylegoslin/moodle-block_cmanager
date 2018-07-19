@@ -54,6 +54,8 @@ if(isset($_GET['id'])){
 }
 
 
+
+
 	// Create the course by record ID      
 	$nid = block_cmanager_create_new_course_by_record_id($mid, true);
 	

@@ -81,10 +81,23 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	require_once('../../../course/lib.php');
 	require_once($CFG->libdir.'/completionlib.php');
 	
-	
+	 
+    global $context;
 
     //** Create an object to hold our new course information
     $new_course = new block_cmanager_new_course();
+    
+    
+    // Starting course creation process
+    // Step 1/5
+    $event = \block_cmanager\event\course_process::create(array(
+    'objectid' => $objid,
+    'other' => '-'. get_string('stepnumber', 'block_cmanager'). ' 1/5-' . get_string('startingcoursecreation','block_cmanager'),
+    'context' => $context,
+    ));
+    $event->trigger();
+    
+    
     $new_course->coursecat = 1;
     $new_course->format = get_config('moodlecourse', 'format');
     //Get the default timestamp for new courses
@@ -171,7 +184,7 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
 	}
 	
     
-    // ################ TO FIX #######################################################
+    // ------------------------------------------
 	
 
     $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
@@ -182,12 +195,28 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
     
     
  
-    
-   
+   // 
+   // Step 2 -- Enroll Creator
+   //
     if (!empty($CFG->creatornewroleid)) {
        // deal with course creators - enrol them internally with default role
        $status = enrol_try_internal_enrol($course->id, $rec->createdbyid, $CFG->creatornewroleid);
      
+       if(!$status){
+           $event = \block_cmanager\event\course_process::create(array(
+            'objectid' => $objid,
+            'other' => '-'. get_string('stepnumber', 'block_cmanager').  '2/5- ' . get_string('failedtoenrolcreator','block_cmanager'),
+            'context' => $context,
+            ));
+            $event->trigger();
+       }else {
+            $event = \block_cmanager\event\course_process::create(array(
+            'objectid' => $objid,
+            'other' => '-'. get_string('stepnumber', 'block_cmanager'). ' 2/5: -' . get_string('enrolledcrator','block_cmanager'),
+            'context' => $context,
+            ));
+            $event->trigger();
+       }
     
      }
     
@@ -237,7 +266,30 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
         $enrollmentRecord->timecreated = time();
         $enrollmentRecord->timemodified = time();
 
-        $DB->insert_record('enrol', $enrollmentRecord);
+        $enrolRes = $DB->insert_record('enrol', $enrollmentRecord);
+        //
+        // Step 3 ---- enrollment key
+        //
+        if(!$enrolRes){
+            
+               global $context;
+                $event = \block_cmanager\event\course_process::create(array(
+                'objectid' => $objid,
+                'context' => $context,
+                'other' => '-'. get_string('stepnumber', 'block_cmanager'). ' 3/5 - ' . get_string('keyaddsuccess', 'block_cmanager'),
+                ));
+                $event->trigger();
+            
+        } else {
+              global $context;
+                $event = \block_cmanager\event\course_process::create(array(
+                'objectid' => $objid,
+                'context' => $context,
+                'other' => '-'. get_string('stepnumber', 'block_cmanager'). '- 3/5 - '. get_string('keyaddfail', 'block_cmanager'),
+                ));
+                $event->trigger();
+            
+        }
 	} 
 	
 	
@@ -245,8 +297,13 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
       block_cmanager_send_emails($course->id, $new_course->shortname, $new_course->fullname, $modkey, $mid);
 	}
     
-    
- 
+    // Step 4 - Updating the course record status
+    $event = \block_cmanager\event\course_process::create(array(
+    'objectid' => $objid,
+    'context' => $context,
+    'other' => '-'. get_string('stepnumber', 'block_cmanager').' 4/5 ' . get_string('updatingrecstatus','block_cmanager'),
+    ));
+    $event->trigger();
     
     
     
@@ -260,6 +317,15 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
     
     
     
+    // Make a log entry to say the course has been created
+    // Step 5/5
+    $event = \block_cmanager\event\course_created::create(array(
+    'objectid' => $objid,
+    'context' => $context,
+    'other' => '-'. get_string('stepnumber', 'block_cmanager').' 5/5 course ID ' . $course->id . '',
+    ));
+    $event->trigger();
+        
     
     
     // return the ID which will be redirected to when finished.

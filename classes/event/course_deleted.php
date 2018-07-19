@@ -1,4 +1,4 @@
-<?php 
+<?php
 // --------------------------------------------------------- 
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,30 +24,38 @@
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once("../../../config.php");
-global $CFG, $DB;
-$formPath = "$CFG->libdir/formslib.php";
-require_once($formPath);
-require_login();
+namespace block_cmanager\event;
+defined('MOODLE_INTERNAL') || die();
 
-require_once('../lib/displayLists.php');
 
-$context = context_system::instance();
-if (has_capability('block/cmanager:viewrecord',$context)) {
-} else {
-  print_error(get_string('cannotviewrecord', 'block_cmanager'));
+class course_deleted extends \core\event\base {
+    protected function init() {
+        $this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
+        $this->data['edulevel'] = self::LEVEL_OTHER;
+        $this->data['objecttable'] = '';
+    }
+ 
+    public static function get_name() {
+        return get_string('deletecourserequest', 'block_cmanager');
+    }
+ 
+    public function get_description() {
+        return get_string('courserecdeleted', 'block_cmanager') . ' '. $this->other;
+    }
+ 
+    public function get_url() {
+        return new \moodle_url('/test.php');
+    }
+ 
+    public function get_legacy_logdata() {
+      // 
+      }
+ 
+    public static function get_legacy_eventname() {
+      //
+    }
+ 
+    protected function get_legacy_eventdata() {
+      //
+    }
 }
-
-$mid = required_param('id', PARAM_INT);
-
-$rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
-$displayModHTML = block_cmanager_display_admin_list($rec, false, false, false, '');
-echo '<div style="font-family: Arial,Verdana,Helvetica,sans-serif">';
-echo $displayModHTML;
-echo '</div>';
-
-
-
-
-
-

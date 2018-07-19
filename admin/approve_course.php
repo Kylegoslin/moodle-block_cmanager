@@ -55,9 +55,10 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 
 
 <script language="javascript" type="text/javascript">
-
+// Open a small window with the details
+// of the module for the admin to see.
 function popitup(url) {
-	newwindow=window.open(url,'name','height=600,width=400');
+	newwindow=window.open(url,'name','height=600,width=500');
 	if (window.focus) {newwindow.focus()}
 	return false;
 }

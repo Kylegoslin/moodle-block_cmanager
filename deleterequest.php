@@ -52,8 +52,16 @@ $deleteQuery = "id = $deleteId";
 $DB->delete_records('block_cmanager_records', array('id'=>$deleteId));
 
 // Delete associated comments
-$DB->delete_records('block_cmanager_comments', array('instanceid'=>$deleteId));
+$res = $DB->delete_records('block_cmanager_comments', array('instanceid'=>$deleteId));
 
+if($res){
+    $event = \block_cmanager\event\course_deleted::create(array(
+    'objectid' => $objid,
+    'other' => get_string('courserecorddeleted','block_cmanager') . 'ID:' . $deleteId,
+    'context' => $context,
+    ));
+    $event->trigger();
+}
 
 // rediect the browser back when finished deleting.
 if ($type == 'a') {

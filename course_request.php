@@ -55,31 +55,29 @@ $currentsess = '00';
 
 $currentmode = optional_param('mode', '', PARAM_INT);    
 if ($currentmode == 1) { // Make a new request
-    $_SESSION['cmanager_addedmods'] = '';
-    $_SESSION['editingmode'] = 'false';
-
-    $newrec = new stdClass();
-    $newrec->modname = '';
-    $newrec->createdbyid = $USER->id;
-    $newrec->createdate = date("d/m/y H:i:s");
-    $newrec->formid = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'current_active_form_id'));
-      
-    $currentsess = $DB->insert_record('block_cmanager_records', $newrec, true);
-    $_SESSION['cmanager_session'] = $currentsess;
-
     if (has_capability('block/cmanager:addrecord',$context)) {
+        $_SESSION['cmanager_addedmods'] = '';
+        $_SESSION['editingmode'] = 'false';
+
+        $newrec = new stdClass();
+        $newrec->modname = '';
+        $newrec->createdbyid = $USER->id;
+        $newrec->createdate = date("d/m/y H:i:s");
+        $newrec->formid = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'current_active_form_id'));
+      
+        $currentsess = $DB->insert_record('block_cmanager_records', $newrec, true);
+        $_SESSION['cmanager_session'] = $currentsess;
     } else {
         print_error(get_string('cannotrequestcourse', 'block_cmanager'));
     }
 
 }
 else if ($currentmode == 2) { // editing mode
-    $_SESSION['editingmode'] = 'true';
-    $currentsess = optional_param('edit', '0', PARAM_INT);
-    $_SESSION['cmanager_session'] = $currentsess;
-    $_SESSION['cmanagermode'] = 'admin';
-
     if (has_capability('block/cmanager:editrecord',$context)) {
+        $_SESSION['editingmode'] = 'true';
+        $currentsess = optional_param('edit', '0', PARAM_INT);
+        $_SESSION['cmanager_session'] = $currentsess;
+        $_SESSION['cmanagermode'] = 'admin';
     } else {
         print_error(get_string('cannoteditrequest', 'block_cmanager'));
     } 

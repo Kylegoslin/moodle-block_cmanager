@@ -460,4 +460,18 @@ $string['keyaddsuccess'] = 'add enrollment key success';
 $string['updatingrecstatus'] = 'updating record status';
 $string['courserecorddeleted'] = 'Course record deleted';
 $string['deletecourserequest'] = 'Delete course request';
+
+// GDPR Privacy API
+$string['comments'] = 'Comments';
+$string['privacy:metadata:db:block_cmanager_records:modname'] = 'The requested course full name';
+$string['privacy:metadata:db:block_cmanager_records:modcode'] = 'The requested course short name';
+$string['privacy:metadata:db:block_cmanager_records:createdbyid'] = 'The user ID submitting the request';
+$string['privacy:metadata:db:block_cmanager_records:createdate'] = 'Time created';
+$string['privacy:metadata:db:block_cmanager_records'] = 'Stores requests for the course request manager block';
+$string['privacy:metadata:db:block_cmanager_comments:instanceid'] = 'The request ID that the comment refers to';
+$string['privacy:metadata:db:block_cmanager_comments:createdbyid'] = 'The user ID submitting the comment';
+$string['privacy:metadata:db:block_cmanager_comments:dt'] = 'Time created';
+$string['privacy:metadata:db:block_cmanager_comments:message'] = 'The comment message';
+$string['privacy:metadata:db:block_cmanager_comments'] = 'Stores comments regarding courses requests for the course request manager block';
+
 ?>

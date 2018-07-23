@@ -36,6 +36,11 @@ Date July/2018
 - modified user and admin comment layout to utilise more screen space.
 - Event logging added into the course approval process.
 - Event logging added to the course deleting process.
+- Fixed XMLDB PATH format.
+- Prevent request inserts from users without permissions.
+- Additional lang strings added.
+- lib/coursecatlib.php include added.
+- GDPR Privacy API support added.
 ----------------------------------------------------------------------
 
 

@@ -143,17 +143,40 @@ class provider implements
      */
     public static function delete_data_for_all_users_in_context(\context $context) {
         global $DB;
-        // Not implemented yet.
+
+        if (!$context instanceof \context_system) {
+            return;
+        }
+
+        $DB->delete_records('block_cmanager_records');
+        $DB->delete_records('block_cmanager_comments');
     }
 
     /**
-     * Delete personal data for the user in a list of contexts.
+     * Delete all user data for the specified user, in the specified contexts.
      *
-     * @param approved_contextlist $contextlist List of contexts to delete data from.
+     * @param approved_contextlist $contextlist a list of contexts approved for deletion.
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
         global $DB;
-        // Not implemented yet.
+
+        if (empty($contextlist->count())) {
+            return;
+        }
+
+        // Remove non-system contexts. If it ends up empty then early return.
+        $contexts = array_filter($contextlist->get_contexts(), function($context) {
+            return $context->contextlevel == CONTEXT_SYSTEM;
+        });
+
+        if (empty($contexts)) {
+            return;
+        }
+
+        $userid = $contextlist->get_user()->id;
+
+        $DB->delete_records('block_cmanager_records', ['createdbyid' => $userid]);
+        $DB->delete_records('block_cmanager_comments', ['createdbyid' => $userid]);
     }
 
 }

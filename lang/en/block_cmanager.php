@@ -137,7 +137,7 @@ $string['formBuilder_instructions'] = 'The course request facility has been deve
 $string['formBuilder_instructions1'] = 'Programme codes and titles';
 $string['formBuilder_instructions2'] = 'Desired start and end dates';
 $string['formBuilder_instructions3'] = 'Desired Enrolment keys';
-$string['formBuilder_instructions4'] = 'Additional staff and permisions';
+$string['formBuilder_instructions4'] = 'Additional staff and permissions';
 $string['formBuilder_instructions5'] = 'Course Format';
 $string['formBuilder_instructions6'] = 'Many others...';
 $string['formBuilder_currentActiveForm'] = 'Curent Active Form';
@@ -419,14 +419,14 @@ $string['denytext5'] = 'Reason 5';
 
 
 // Error messages
-$string['cannotrequestcourse'] = ' Sorry your account does not have sufficient privelages to request a course. You need to be assigned to a system role with sufficient privileges.';
-$string['cannotviewrecords'] = ' Sorry your account does not have sufficient privelages to view records. You need to be assigned to a system role with sufficient privileges.';
-$string['cannotapproverecord'] = ' Sorry your account does not have sufficient privelages to approve records. You need to be assigned to a system role with sufficient privileges.';
-$string['cannoteditrequest'] = ' Sorry your account does not have sufficient privelages to edit a record. You need to be assigned to a system role with sufficient privileges.';
-$string['cannotcomment'] = ' Sorry yyour account does not have sufficient privelages to comment. You need to be assigned to a system role with sufficient privileges.';
-$string['cannotdelete'] = ' Sorry your account does not have sufficient privelages to delete a record. You need to be assigned to a system role with sufficient privileges.';
-$stirng['cannotdenyrecord'] = ' Sorry your account does not have sufficient privelages to deny a record. You need to be assigned to a system role with sufficient privileges.';
-$string['cannotviewconfig'] = ' Sorry your account does not have sufficient privelages to view the config. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotrequestcourse'] = ' Sorry your account does not have sufficient privileges to request a course. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotviewrecords'] = ' Sorry your account does not have sufficient privileges to view records. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotapproverecord'] = ' Sorry your account does not have sufficient privileges to approve records. You need to be assigned to a system role with sufficient privileges.';
+$string['cannoteditrequest'] = ' Sorry your account does not have sufficient privileges to edit a record. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotcomment'] = ' Sorry yyour account does not have sufficient privileges to comment. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotdelete'] = ' Sorry your account does not have sufficient privileges to delete a record. You need to be assigned to a system role with sufficient privileges.';
+$stirng['cannotdenyrecord'] = ' Sorry your account does not have sufficient privileges to deny a record. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotviewconfig'] = ' Sorry your account does not have sufficient privileges to view the config. You need to be assigned to a system role with sufficient privileges.';
 
 $string['cmanager:addcomment'] = 'Add comment';
 $string['cmanager:addrecord'] = 'Add Record';
@@ -460,4 +460,18 @@ $string['keyaddsuccess'] = 'add enrollment key success';
 $string['updatingrecstatus'] = 'updating record status';
 $string['courserecorddeleted'] = 'Course record deleted';
 $string['deletecourserequest'] = 'Delete course request';
+
+// GDPR Privacy API
+$string['comments'] = 'Comments';
+$string['privacy:metadata:db:block_cmanager_records:modname'] = 'The requested course full name';
+$string['privacy:metadata:db:block_cmanager_records:modcode'] = 'The requested course short name';
+$string['privacy:metadata:db:block_cmanager_records:createdbyid'] = 'The user ID submitting the request';
+$string['privacy:metadata:db:block_cmanager_records:createdate'] = 'Time created';
+$string['privacy:metadata:db:block_cmanager_records'] = 'Stores requests for the course request manager block';
+$string['privacy:metadata:db:block_cmanager_comments:instanceid'] = 'The request ID that the comment refers to';
+$string['privacy:metadata:db:block_cmanager_comments:createdbyid'] = 'The user ID submitting the comment';
+$string['privacy:metadata:db:block_cmanager_comments:dt'] = 'Time created';
+$string['privacy:metadata:db:block_cmanager_comments:message'] = 'The comment message';
+$string['privacy:metadata:db:block_cmanager_comments'] = 'Stores comments regarding courses requests for the course request manager block';
+
 ?>

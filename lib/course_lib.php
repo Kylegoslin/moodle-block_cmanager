@@ -26,6 +26,7 @@
  */
 
 require_once("../../../config.php");
+require_once($CFG->libdir. '/coursecatlib.php');
 
 global $CFG, $DB;
 

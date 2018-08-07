@@ -58,8 +58,12 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="js/jquery/jquery-ui.css"></script>
 <script src="js/jquery/jquery-3.3.1.min.js"></script>
-<script src="js/jquery/jquery-ui.1.12.1.min.js"></script>
+<script src="js/jquery/jquery-ui.js"></script>
+
+
+  
 <style>
 #map { float:left; width:80%; }
 #wrapper {float:left; width:100%;}
@@ -70,20 +74,35 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 select
 {
     width:150px;
- }
- tr:nth-child(odd)		{ background-color:#eee; }
+}
+tr:nth-child(odd)		{ background-color:#eee; }
 tr:nth-child(even)		{ background-color:#fff; }
 
 </style>
+
+
+
 <script type="text/javascript">
 
-
+//
+// Ask the user do they really want to delete
+// the request using a dialog.
 function cancelConfirm(id,langString) {
-	var answer = confirm(langString)
+	
+    
+    
+    var answer = confirm(langString)
+    
+    
 	if (answer){
 
-		window.location = "deleterequest.php?t=a&&id=" + id;
-	}
+	window.location = "deleterequest.php?t=a&&id=" + id;
+}
+
+
+    
+ 
+
 
 }
 
@@ -358,3 +377,4 @@ if ($_POST && isset($_POST['search'])) {
     ";
 
 }
+

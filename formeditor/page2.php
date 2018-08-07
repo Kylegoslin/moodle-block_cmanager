@@ -858,7 +858,7 @@ foreach ($formfields as $field) {
 	}
     else if ($field->type == 'radio') {
 	   	echo "<script>
-		       recreateRadio('". $field->id ."', ". $lt .", '". $field->reqfield ."');
+		       recreateRadio('". $field->id ."', '". $lt ."', '". $field->reqfield ."');
 	      </script>
 	      ";
 	 }

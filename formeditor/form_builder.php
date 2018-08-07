@@ -196,11 +196,11 @@ class block_cmanager_builder_form extends moodleform {
  	$formRecords = $DB->get_recordset_select('block_cmanager_config', $whereQuery);
 										   
 	
-	$formsItemsHTML = '<table width="250px">';
+	$formsItemsHTML = '<table>';
 	foreach($formRecords as $rec){
 		$formsItemsHTML .= '<tr>';
 		
-		$formsItemsHTML .= '<td width="100px">' .$rec->value.'</td>';
+		$formsItemsHTML .= '<td width="70%">' .$rec->value.'</td>';
 		$formsItemsHTML .= '<td><a title="'.get_string('formBuilder_editForm','block_cmanager').'" href="page2.php?id=' . $rec->id . '&name='.$rec->value.'">[Edit]</></td>';
 		$formsItemsHTML .= '<td><a title="'.get_string('formBuilder_previewForm','block_cmanager').'" href="preview.php?id=' . $rec->id . '">[Preview]</a></td>';
 		$formsItemsHTML .= '<td><a title="'.get_string('formBuilder_deleteForm','block_cmanager').'" href="#" onclick="javascript:deleteSelectedForm(\''.get_string('formBuilder_confirmDelete','block_cmanager').'\',' . $rec->id . ');">[Delete]</a></td>';

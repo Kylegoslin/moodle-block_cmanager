@@ -37,12 +37,20 @@ Date July/2018
 - Event logging added into the course approval process.
 - Event logging added to the course deleting process.
 
-With thanks to LTS.ie
-- Fixed XMLDB PATH format.
+  With thanks to LTS.ie
+  Fixed XMLDB PATH format.
 - Prevent request inserts from users without permissions.
 - Additional lang strings added.
 - lib/coursecatlib.php include added.
 - GDPR Privacy API support added.
+
+Date: August 2018
+- Minor bug on radio buttons during form creation fixed. (page2.php)
+
+
+
+
+
 ----------------------------------------------------------------------
 
 

@@ -46,7 +46,7 @@ Date July/2018
 
 Date: August 2018
 - Minor bug on radio buttons during form creation fixed. (page2.php)
-
+- Bootstrap modals added to replace older JavaScript pop ups (beta)
 
 
 

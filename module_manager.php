@@ -31,6 +31,7 @@ $formpath = "$CFG->libdir/formslib.php";
 require_once($formpath);
 require_login();
 require_once('lib/displayLists.php');
+require_once('lib/boot.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -62,17 +63,16 @@ if (has_capability('block/cmanager:viewrecord',$context)) {
 ?>
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script src="js/jquery/jquery-3.3.1.min.js"></script>
+
 <script type="text/javascript">
-function cancelConfirm(id,langString) {
-	//var answer = confirm("Are you sure you want to cancel this request?")
-	var answer = confirm(langString)
-	if (answer){
-
-		window.location = "deleterequest.php?id=" + id;
-	}
-	else{
-
-	}
+var id = 0;
+// pop up a modal to ask the user are
+// they sure that they want to cancel the 
+// request
+function cancelConfirm(cid,langString) {
+	$("#conf1").modal();
+    id = cid;
+	
 }
 </script>
 <style>
@@ -105,9 +105,27 @@ class block_cmanager_module_manager_form extends moodleform {
         // Get the list of pending requests
 	    $pendinglist = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid" , 'status' => 'PENDING'), 'id ASC');
 	    $outputhtml = '<div id="pendingrequestcontainer">';
-
+        
+        $outputhtml .= block_cmanager_display_admin_list($pendinglist, true, false, false, 'user_manager');
+        
+        
+        $outputhtml .= generateGenericConfirm('conf1', get_string('alert', 'block_cmanager') , 
+                                     get_string('cmanagerConfirmCancel', 'block_cmanager'), 
+                                     get_string('yes', 'block_cmanager'));
+                                     
+        $outputhtml .= '
+        <script>
+        // cancel request click handler
+        $("#conf1").click(function(){
+                window.location = "deleterequest.php?id=" + id;
+              
+            
+            });
+            
+        </script>
+        ';                             
         // Existing Requests
-	    $outputhtml = block_cmanager_display_admin_list($pendinglist, true, false, false, 'user_manager');
+	    
         $mform->addElement('html', '
 	                                <p></p>
 	                                &nbsp;
@@ -132,3 +150,5 @@ $mform->display();
 $mform->focus();
 $mform->focus();
 echo $OUTPUT->footer();
+?>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>

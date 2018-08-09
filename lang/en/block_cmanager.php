@@ -228,7 +228,7 @@ $string['recordsHaveBeenDeleted'] = 'Records have been deleted';
 $string['clickHereToReturn'] = 'Click here to return';
 
 $string['selectedcategory'] = 'Category';
-
+$string['yes'] = 'Yes';
 
 //request details
 $string['requestReview_Summary'] = 'Request Summary';
@@ -284,6 +284,7 @@ $string['approverequest_Process'] = 'Handover process has begun';
 $string['approve_course_no_id'] = 'No Module ID set';
 
 //misc
+$string['alert'] = 'Alert';
 $string['noPending'] = 'Sorry, nothing pending!';
 $string['status'] = 'STATUS';
 $string['creationdate'] = 'Creation Date';
@@ -437,7 +438,7 @@ $string['cmanager:editrecord'] = 'Edit Record';
 $string['cmanager:viewrecord'] = 'View Record';
 $string['cmanager:viewconfig'] = 'View Config';
 
-
+$string['ok'] = 'Ok';
 $string['lib_error_invalid_c'] = 'Invalid course ID!';
 
 $string['course_new_mod_create'] = 'New Module Creation';

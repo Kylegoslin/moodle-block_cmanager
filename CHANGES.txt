@@ -46,8 +46,11 @@ Date July/2018
 
 Date: August 2018
 - Minor bug on radio buttons during form creation fixed. (page2.php)
-- Bootstrap modals added to replace older JavaScript pop ups (beta)
-
+- Bootstrap modals added to replace older JavaScript pop ups (cmanager_admin)
+- module_manager / cmanager_admin_arch modals added.
+- cmanager_admin_arch removed tab refs and added in modals.
+- adminsettings.php modals added.
+- cmanager_config.php modals added.
 
 
 

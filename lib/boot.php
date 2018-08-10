@@ -77,7 +77,7 @@ $html = '
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">'.get_string('cancel','block_cmanager').'</button>
-        <button type="button" class="btn btn-primary" id="quickAppRec">'.$btnText.'</button>
+        <button type="button" class="btn btn-primary" id="ok'.$id.'">'.$btnText.'</button>
       </div>
     </div>
   </div>

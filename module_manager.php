@@ -116,8 +116,11 @@ class block_cmanager_module_manager_form extends moodleform {
         $outputhtml .= '
         <script>
         // cancel request click handler
-        $("#conf1").click(function(){
-                window.location = "deleterequest.php?id=" + id;
+        // just does a hard redirect to the delete page and back.
+        $("#okconf1").click(function(){
+              
+              console.log("deleting request");
+              window.location = "deleterequest.php?id=" + id;
               
             
             });
@@ -151,4 +154,4 @@ $mform->focus();
 $mform->focus();
 echo $OUTPUT->footer();
 ?>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+<script src="js/bootstrap.min.js"/>

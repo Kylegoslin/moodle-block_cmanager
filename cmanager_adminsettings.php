@@ -29,6 +29,7 @@ global $CFG, $DB;
 require_once("$CFG->libdir/formslib.php");
 require_login();
 require_once('validate_admin.php');
+require_once('lib/boot.php');
 
 $PAGE->set_url('/blocks/cmanager/cmanager_othersettings.php');
 $PAGE->set_context(context_system::instance());
@@ -55,7 +56,7 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script src="js/jquery/jquery-3.3.1.min.js"></script>
-
+<script src="js/bootstrap.min.js"/>
 
 <script>
 
@@ -157,7 +158,7 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $newrec->varname = 'startdate';
         $newrec->value = $courseTimeStamp;
         $DB->update_record('block_cmanager_config', $newrec);
-        echo "<script>alert('".get_string('ChangesSaved','block_cmanager')."');</script>";
+        
 
 
         //update no reply email
@@ -208,7 +209,12 @@ if (isset($_POST['naming']) && isset($_POST['key']) && isset($_POST['course_date
         $newrec->value = required_param('denytext5', PARAM_TEXT);
         $DB->update_record('block_cmanager_config', $newrec);
 
-
+        
+        echo generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );
+        echo '<script>$("#saved").modal(); </script>';
+        
+        //echo "<script>alert('".get_string('ChangesSaved','block_cmanager')."');</script>";
+        
 }
 
 
@@ -599,3 +605,4 @@ if (!empty($naming)) {
 }
 
 
+?>

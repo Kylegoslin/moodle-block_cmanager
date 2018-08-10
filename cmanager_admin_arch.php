@@ -31,6 +31,7 @@ require_once($formPath);
 require_login();
 require_once('../../course/lib.php');
 require_once('lib/displayLists.php');
+require_once('lib/boot.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -59,13 +60,12 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 <script src="js/jquery/jquery-ui.1.12.1.min.js"></script>
   
 <script type="text/javascript">
-
+var deleteRec = 0;
 function cancelConfirm(id,langString) {
-	var answer = confirm(langString)
-	if (answer){
-		
-		window.location = "deleteRequest.php?t=adminarch&&id=" + id;
-	}
+	
+    deleteRec = id;
+    console.log("deleting rec" + deleteRec);
+    $("#delete_modal").modal();
 	
 }
 
@@ -86,18 +86,7 @@ function saveChangedCategory(fieldvalue, recordId){
 }
 
 
-$(document).ready(function() {
-    $("#tabs").tabs();
-    
-    <?php 
-    // Switch to the history tab
-    if(isset($_GET['view'])){
-    	if (required_param('view', PARAM_TEXT) == 'history'){
-			echo "    $('#tabs').tabs('select', '2');";    		
-    	}
-    }
-    ?>
-  });
+
 </script>
 <style>
 	tr:nth-child(odd)		{ background-color:#eee; }
@@ -292,7 +281,21 @@ $mform->focus();
 $mform->display();
 echo $OUTPUT->footer();
 
+// Modal for deleting requests
+echo generateGenericConfirm('delete_modal', get_string('alert', 'block_cmanager') , 
+                                    get_string('configure_delete', 'block_cmanager'), 
+                                    get_string('yesDeleteRecords', 'block_cmanager'));
+                                    
+?>                                    
+<script>
 
+// delete request ok  button click handler
+$("#okdelete_modal").click(function(){
+   
+ window.location = "deleteRequest.php?t=adminarch&&id=" + deleteRec;
+});
+
+</script>
   
 	
-		
+<script src="js/bootstrap.min.js"/>

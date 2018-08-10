@@ -63,7 +63,7 @@ if (has_capability('block/cmanager:approverecord',$context)) {
 <script src="js/jquery/jquery-3.3.1.min.js"></script>
 <script src="js/jquery/jquery-ui.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+<script src="js/bootstrap.min.js"/>
 
 
   
@@ -119,11 +119,9 @@ function definition() {
             echo '<script>$("#genpop1").modal(); 
             
             $("#genpop1").click(function(){
-   
               
              window.location="cmanager_admin.php";
             });
-            
             
             </script>';
             
@@ -231,12 +229,7 @@ $mform->addElement('html', $mainBody);
 
 
 
-echo "<script>
-
-
-
-
-</script>";
+echo "<script></script>";
 
 
 $mform = new block_cmanager_admin_form();
@@ -249,13 +242,7 @@ if ($mform->is_cancelled()) {
 
 } else {
 
-
-
-
 }
-
-
-
 
 
 $mform->focus();
@@ -283,67 +270,26 @@ if ($_POST && isset($_POST['search'])) {
 
 }
 
+// Modal for deleting requests
+echo generateGenericConfirm('delete_modal', get_string('alert', 'block_cmanager') , 
+                                    get_string('configure_delete', 'block_cmanager'), 
+                                    get_string('yesDeleteRecords', 'block_cmanager'));
 
-
-
+// Modal for quick approve                                     
+echo generateGenericConfirm('quick_approve', get_string('alert', 'block_cmanager') , 
+                                     get_string('quickapprove_desc', 'block_cmanager'), 
+                                     get_string('quickapprove', 'block_cmanager'));
 ?>
 
 
-<!-- Modal for deleting requests -->
-<div class="modal fade" id="cman_pop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <span id="popup_text"></span>
-        
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo get_string('cancel','block_cmanager'); ?></button>
-        <button type="button" class="btn btn-primary" id="deleteRec"><?php echo get_string('yesDeleteRecords','block_cmanager'); ?></button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Modal for quick approve -->
-<div class="modal fade" id="cman_pop_quick" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><?php echo get_string('quickapprove','block_cmanager'); ?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <span id="popup_quick_text"></span>
-        
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo get_string('cancel','block_cmanager'); ?></button>
-        <button type="button" class="btn btn-primary" id="quickAppRec"><?php echo get_string('quickapprove_desc','block_cmanager'); ?></button>
-      </div>
-    </div>
-  </div>
-</div>
- 
 
  
 <script>
 var deleteRec = 0;
 var quickApp = 0;
-// quick approve button click handler
-$("#quickAppRec").click(function(){
+// quick approve ok button click handler
+$("#okquick_approve").click(function(){
    
    console.log("quick Approve..");
    window.location = "admin/bulk_approve.php?mul=" + quickApp;
@@ -351,11 +297,10 @@ $("#quickAppRec").click(function(){
 
 
 
-// delete request button click handler
-$("#deleteRec").click(function(){
+// delete request ok  button click handler
+$("#okdelete_modal").click(function(){
    
    console.log("deleting.." + deleteRec);
-  
    window.location = "deleterequest.php?t=a&&id=" + deleteRec;
 });
 
@@ -366,7 +311,7 @@ $("#deleteRec").click(function(){
 function cancelConfirm(id,langString) {
 	deleteRec = id;
     $("#popup_text").html(langString);
-    $("#cman_pop").modal();
+    $("#delete_modal").modal();
     
    
 
@@ -377,13 +322,8 @@ function quickApproveConfirm(id,langString) {
     quickApp = id;
     
     $("#popup_quick_text").html(langString);
-    $("#cman_pop_quick").modal();
+    $("#quick_approve").modal();
     
-	//var answer = confirm(langString)
-	//if (answer){
-
-	//	window.location = "admin/bulk_approve.php?mul=" + id;
-	//}
 
 }
 

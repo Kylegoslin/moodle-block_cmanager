@@ -30,6 +30,7 @@ require_once("$CFG->libdir/formslib.php");
 
 require_login();
 require_once('validate_admin.php');
+require_once('lib/boot.php');
 
 $PAGE->set_url('/blocks/cmanager/cmanager_config.php');
 $PAGE->set_context(context_system::instance());
@@ -62,10 +63,7 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 <script src="js/jquery/jquery-ui.1.12.1.min.js"></script>
 
 
-  <script>
-
-
-
+<script>
 function cancelConfirm(i,langString) {
 	var answer = confirm(langString)
 	if (answer){
@@ -88,7 +86,7 @@ function saveChangedText(object, idname, langString){
 
     $.post("ajax_functions.php", { type: 'updatefield', value: fieldvalue, id: idname },
     		   function(data) {
-    		     alert("Changes have been saved!");
+    		       $("#saved").modal();
     		   });
 
 }
@@ -455,7 +453,8 @@ echo $OUTPUT->footer();
 
 }
 
-
+    echo generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );
+       
 /**
 * Very basic funciton for validating an email address.
 * This should really be replaced with something a little better!
@@ -488,4 +487,4 @@ if ($valid) {
 
 
 ?>
-
+<script src="js/bootstrap.min.js"/>

@@ -30,6 +30,7 @@ global $CFG, $DB;
 
 require_login();
 require_once('../validate_admin.php');
+require_once('../lib/boot.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -62,54 +63,46 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 
 
 <script>
-	function saveSelectedForm(){
-		
-		 var value = document.getElementById('selectform').value;
-		  
-		
-		  $.ajaxSetup({async:false});
-		  $.post("ajax_functions.php", { type: 'saveselectedform', value: value},
-   				function(data) {
-		     		
-		         // alert(data);
-			   });
-		
-			   
-			   window.location = 'form_builder.php';
-		
-	}
-	
-	
-	function deleteSelectedForm(confirmMsg,form){
-		
-		var confirmDelete = confirm(confirmMsg);
-
-		if(confirmDelete == true){
-			window.location = "form_builder.php?del="+form;
-		}
-		
-		
-	}
-	function goBack(){
-	window.location ="../cmanager_confighome.php";
+//
+// From the dropdown menu of different forms that are avilable
+// save the one the user has just selected.
+function saveSelectedForm(){
+    
+     var value = document.getElementById('selectform').value;
+      
+    
+      $.ajaxSetup({async:false});
+      $.post("ajax_functions.php", { type: 'saveselectedform', value: value},
+            function(data) {
+                
+             // alert(data);
+           });
+    
+           
+           window.location = 'form_builder.php';
+    
 }
-</script>
-<?php
+	
+//
+// Delete a selected from from the list of available
+// forms.
+var formId = 0;	
+function deleteSelectedForm(confirmMsg,form){
+    formId = form;
+    $("#delete_modal").modal();
+  //  var confirmDelete = confirm(confirmMsg);
 
-
-
-
-
-if(isset($_GET['del'])){
-	$delId = required_param('del', PARAM_INT);
-    $DB->delete_records_select('block_cmanager_config', "id = $delId"); 
-	echo " <script>window.location = 'form_builder.php';</script> ";
+   // if(confirmDelete == true){
+   //     window.location = "form_builder.php?del="+form;
+   // }
+    
+    
 }
-?>
 
-
-<script>
-
+// time travel.
+function goBack(){
+    window.location ="../cmanager_confighome.php";
+}
 
 
 // After a user has entered the name for a new form page
@@ -133,13 +126,20 @@ function addNewField(){
         }
 	}
 	
-	
+
+
 
 
 </script>
-	
 
 <?php
+
+if(isset($_GET['del'])){
+	$delId = required_param('del', PARAM_INT);
+    $DB->delete_records_select('block_cmanager_config', "id = $delId"); 
+	echo " <script>window.location = 'form_builder.php';</script> ";
+}
+
 
 
 class block_cmanager_builder_form extends moodleform {
@@ -147,15 +147,6 @@ class block_cmanager_builder_form extends moodleform {
     function definition() {
         global $CFG, $USER, $DB;
         $mform =& $this->_form; // Don't forget the underscore! 
- 
- 
- $headingTab =  '
-		<p></p> 
-		&nbsp;
-		<p></p>	';
-	 
- 
- 
  
    	$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage2','block_cmanager').'</span>');
    
@@ -195,8 +186,22 @@ class block_cmanager_builder_form extends moodleform {
 	$whereQuery = "varname = 'page2form'";
  	$formRecords = $DB->get_recordset_select('block_cmanager_config', $whereQuery);
 										   
-	
-	$formsItemsHTML = '<table>';
+                                           
+    // Modal for deleting requests
+    $pop = generateGenericConfirm('delete_modal', get_string('alert', 'block_cmanager') , 
+                                        get_string('formBuilder_confirmDelete', 'block_cmanager'), 
+                                        get_string('formBuilder_deleteForm', 'block_cmanager'));
+    // button click handler
+    $js = '<script>
+        
+    // delete request ok  button click handler
+    $("#okdelete_modal").click(function(){
+         window.location = window.location = "form_builder.php?del="+formId;
+    });
+     </script>'; 
+
+ 
+	$formsItemsHTML = $pop . $js . '<table>';
 	foreach($formRecords as $rec){
 		$formsItemsHTML .= '<tr>';
 		
@@ -243,9 +248,6 @@ if ($mform->is_cancelled()) {
 
 
 
-
+                                    
 ?>
-
-  
-	
-		
+<script src="../js/bootstrap.min.js"/>

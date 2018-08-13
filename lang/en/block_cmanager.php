@@ -463,7 +463,7 @@ $string['courserecorddeleted'] = 'Course record deleted';
 $string['deletecourserequest'] = 'Delete course request';
 
 
-+// GDPR Privacy API
+// GDPR Privacy API
 $string['comments'] = 'Comments';
 $string['privacy:metadata:db:block_cmanager_records:modname'] = 'The requested course full name';
 $string['privacy:metadata:db:block_cmanager_records:modcode'] = 'The requested course short name';

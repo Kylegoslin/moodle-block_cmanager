@@ -29,6 +29,7 @@ require_once("../../../config.php");
 global $CFG, $DB;
 require_login();
 require_once('../validate_admin.php');
+require_once('../lib/boot.php');
 
  /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -55,7 +56,7 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 ?>
 
 <link rel="stylesheet" type="text/css" href="../css/main.css" />
-<script src="js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
 
 <script>
 
@@ -90,7 +91,9 @@ function addNewField(field){
 
 }
 	
-	
+//
+// Add a new menu item into the optional drop down field on
+// form page 1.	
 function addNewItem(){
 	
     jQuery.ajaxSetup({async:false});
@@ -105,7 +108,9 @@ function addNewItem(){
 }
 	
 	
-	
+//
+// Save all the text inside the fields for page 1 of the form
+//	
 function saveAllChanges(langString){
 		
     var field1title = document.getElementById('field1title').value;
@@ -125,8 +130,8 @@ function saveAllChanges(langString){
      		
 	});
 		
-		
-	alert(langString);
+	$("#saved").modal();
+	
 		
 }
 </script>
@@ -351,7 +356,9 @@ class block_cmanager_page1_form extends moodleform {
 		<input type="text" id="newitem"></input><input type="submit" name="submitbutton" value="'.get_string('entryFields_AddNewItem','block_cmanager').'" onclick="addNewItem();">
 		<p></p>
 		
-		<input type="submit" value="'.get_string('SaveChanges','block_cmanager').'" onclick="saveAllChanges(\''.get_string('ChangesSaved','block_cmanager').'\');"/> 
+		<button type="button" onclick="saveAllChanges(\''.get_string('ChangesSaved','block_cmanager').'\');">
+        '.get_string('SaveChanges','block_cmanager').'  
+        </button>        
 		
 		
 		    </td>
@@ -377,7 +384,8 @@ class block_cmanager_page1_form extends moodleform {
 	
 	 ';
 	 
-	 
+	 $fieldshtml .= generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );
+       
 	 
 	 $mform->addElement('html', $fieldshtml);
 

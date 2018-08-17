@@ -51,7 +51,7 @@ Date: August 2018
 - cmanager_admin_arch removed tab refs and added in modals.
 - adminsettings.php modals added.
 - cmanager_config.php modals added.
-
+- modals added to page1.php / removed leave page warnings.
 
 
 ----------------------------------------------------------------------

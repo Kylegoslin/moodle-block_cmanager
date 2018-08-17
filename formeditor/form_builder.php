@@ -67,19 +67,19 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 // From the dropdown menu of different forms that are avilable
 // save the one the user has just selected.
 function saveSelectedForm(){
-    
+     window.onbeforeunload = null;
      var value = document.getElementById('selectform').value;
       
     
       $.ajaxSetup({async:false});
       $.post("ajax_functions.php", { type: 'saveselectedform', value: value},
             function(data) {
-                
+                 window.location = 'form_builder.php';
              // alert(data);
            });
     
            
-           window.location = 'form_builder.php';
+          
     
 }
 	
@@ -90,17 +90,12 @@ var formId = 0;
 function deleteSelectedForm(confirmMsg,form){
     formId = form;
     $("#delete_modal").modal();
-  //  var confirmDelete = confirm(confirmMsg);
-
-   // if(confirmDelete == true){
-   //     window.location = "form_builder.php?del="+form;
-   // }
-    
-    
+ 
 }
 
 // time travel.
 function goBack(){
+    window.onbeforeunload = null;
     window.location ="../cmanager_confighome.php";
 }
 
@@ -108,19 +103,21 @@ function goBack(){
 // After a user has entered the name for a new form page
 // this function is called when the submit button is clicked.
 function addNewField(){
-		
+		window.onbeforeunload = null;
+    
+    
 		var value = document.getElementById('newformname').value;
       
        
        if(value != ''){
-	        $.ajaxSetup({async:false});
+	        //$.ajaxSetup({async:false});
 	        $.post("ajax_functions.php", { type: 'addnewform', value: value},
 	   				function(data) {
 			     		
-			          
+			          window.location = 'form_builder.php';
 				   });
 			   
-			   window.location = 'form_builder.php';
+			   
 	    
        
         }

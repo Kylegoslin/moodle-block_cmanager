@@ -320,7 +320,7 @@ function cancelConfirm(id,langString) {
 
 function quickApproveConfirm(id,langString) {
     quickApp = id;
-    
+    window.onbeforeunload = null;    
     $("#popup_quick_text").html(langString);
     $("#quick_approve").modal();
     

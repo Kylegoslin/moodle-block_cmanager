@@ -117,10 +117,7 @@ function addNewField(){
 			          window.location = 'form_builder.php';
 				   });
 			   
-			   
-	    
-       
-        }
+	   }
 	}
 	
 

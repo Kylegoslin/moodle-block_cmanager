@@ -55,6 +55,8 @@ Date: August 2018
 - cmanager_admin search alignment in IE fixed.
 - DE lang strings removed as are outdated, moving to AMOS.
 - modals added to page2.php and redirects removed.
+- page2 now preventing blank form titles being created.
+- JS modified in cmanager_admin to remove warnings.
 
 
 ----------------------------------------------------------------------

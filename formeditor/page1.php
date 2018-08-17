@@ -61,6 +61,7 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 <script>
 
 function goBack(){
+    window.onbeforeunload = null;
 	window.location ="../cmanager_confighome.php";
 }
 
@@ -98,13 +99,14 @@ function addNewItem(){
 	
     jQuery.ajaxSetup({async:false});
     var value = document.getElementById('newitem').value;
-    $.post("ajax_functions.php", { valuetoadd: value, type: 'add'},
-   
-   	function(data) {
-     		
-	});
- 
-	//alert('A new item has been added: ' + value);
+    if(value != "") {
+        $.post("ajax_functions.php", { valuetoadd: value, type: 'add'},
+       
+        function(data) {
+                
+        });
+    }
+	
 }
 	
 	

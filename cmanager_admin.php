@@ -157,7 +157,7 @@ $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'.get_s
 
 
 $bulkActions = "<p></p>
-			    <div style=\"width: 200px; text-align:left; padding:10px; font-size:11pt; background-color: #eee\">
+			    <div style=\"width: 210px; text-align:left; padding:10px; font-size:11pt; background-color: #eee\">
 
                 <b>".get_string('bulkactions','block_cmanager')."</b>
 			<br>
@@ -179,7 +179,7 @@ $page1_fieldname2 = $DB->get_field_select('block_cmanager_config', 'value', "var
 
 $searchHTML = '
 
-        <div style="width: 200px; background-color:#eee; padding:10px; ">
+        <div style="width: 210px; background-color:#eee; padding:10px; ">
 	 	<form action="cmanager_admin.php?search=1" method="post">
 
 	 	<b><span style="font-size:11pt">'.get_string('search_side_text', 'block_cmanager').'</span></b>

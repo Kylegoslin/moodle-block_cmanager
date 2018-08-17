@@ -52,6 +52,9 @@ Date: August 2018
 - adminsettings.php modals added.
 - cmanager_config.php modals added.
 - modals added to page1.php / removed leave page warnings.
+- cmanager_admin search alignment in IE fixed.
+- DE lang strings removed as are outdated, moving to AMOS.
+- modals added to page2.php and redirects removed.
 
 
 ----------------------------------------------------------------------

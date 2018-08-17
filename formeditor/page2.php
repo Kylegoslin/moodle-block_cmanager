@@ -30,6 +30,7 @@ require_once("$CFG->libdir/formslib.php");
 
 require_login();
 require_once('../validate_admin.php');
+require_once('../lib/boot.php');
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -143,7 +144,7 @@ function goBack(){
 			<a href="preview.php?id=' . $formid . '">'.get_string('formBuilder_previewForm','block_cmanager').'</a>
 			<center><a href="../cmanager_admin.php"><input type="button" value="'.get_string('formBuilder_returntoCM','block_cmanager').'"/></a></center>
 		';
-		
+	$htmloutput .= generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );	
 	echo $htmloutput;	
 ?>
 
@@ -279,7 +280,8 @@ if(isset($_GET['down'])){
 
 
 <script>
-
+// Save the form field status as either a required field
+// or an optional field. Display a modal after saving.
 function saveOptionalStatus(id){
 
 		var value1 = document.getElementById('optional_' + id).value;
@@ -287,8 +289,8 @@ function saveOptionalStatus(id){
 		$.post("ajax_functions.php", { type: 'saveoptionalvalue', value: value1, id: id },
 
   		function(data) {
-  			alert('<?php echo get_string('ChangesSaved', 'block_cmanager');?>');
-
+  			//alert('<?php echo get_string('ChangesSaved', 'block_cmanager');?>');
+            $("#saved").modal();
 	   });
 
 	}
@@ -798,23 +800,22 @@ function recreateRadio(uniqueId, leftText, requiredFieldValue){
 // by passing the field id.
 function saveFieldValue(id){
 
-
-	var value = document.getElementById('x' + id).value;
+    var value = document.getElementById('x' + id).value;
 
 	//alert("value: " +value);
     
     var currentid = id;
     
-   $.ajaxSetup({async:false});
+    $.ajaxSetup({async:false});
     $.post("ajax_functions.php", { type: 'updatefield', id: currentid, value: value},
 				function(data) {
-					alert('<?php echo get_string('changeshavebeensaved', 'block_cmanager'); ?>');
-
+					//alert('<?php echo get_string('changeshavebeensaved', 'block_cmanager'); ?>');
+                    $("#saved").modal();
 		   });
 
 
 
- window.location = 'page2.php?id=' + formid;
+ //window.location = 'page2.php?id=' + formid;
 
 }
 </script>

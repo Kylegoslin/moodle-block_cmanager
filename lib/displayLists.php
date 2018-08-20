@@ -168,7 +168,7 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 
 							<a onclick="cancelConfirm('. $rec->id .', \'delete\')" href="#"><img src="icons/list/delete.png"/>' . get_string('delete','block_cmanager'). '</a>
 
-							<A href="admin/comment.php?type=adminarch&id=' . $rec->id . '"><img src="icons/list/comment.png"/>' . get_string('addviewcomments','block_cmanager'). '</a>
+							<a href="admin/comment.php?type=adminarch&id=' . $rec->id . '"><img src="icons/list/comment.png"/>' . get_string('addviewcomments','block_cmanager'). '</a>
 
 					</div>
 				';

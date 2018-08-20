@@ -51,6 +51,121 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
 }
 
 
+
+
+// Deleting dropdown menus
+if(isset($_GET['t']) && isset($_GET['del'])){
+
+  
+	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
+		//$itemid = $_GET['del']; 
+        $itemid = required_param('del', PARAM_INT);
+		
+        
+        //$fieldid = $_GET['fid']; 
+        $fieldid = required_param('fid', PARAM_INT);
+		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
+	}
+	
+	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
+	
+		//$fieldid = $_GET['del'];
+        $fieldid =  required_param('del', PARAM_INT);
+		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
+	}
+
+}
+
+
+// Delete Field
+if(isset($_GET['del'])){
+
+	$formid =  required_param('id', PARAM_INT);
+	$delid =  required_param('del', PARAM_INT);
+    
+    $DB->delete_records_select('block_cmanager_formfields', "id = $delid");
+
+	//Update the position numbers
+	$selectquery = "SELECT * FROM ".$CFG->prefix."block_cmanager_formfields WHERE formid = $formid order by id ASC";
+	$positionitems = $DB->get_records_sql($selectquery, null);
+
+	$newposition = 1;
+	$dataobject = new stdClass();
+    foreach($positionitems as $item){
+
+		$dataobject->id = $item->id;
+		$dataobject->position = $newposition;
+		$DB->update_record('block_cmanager_formfields', $dataobject);
+
+		$newposition++;
+
+	  }
+
+
+}
+
+
+// Move field up
+if(isset($_GET['up'])){
+
+	
+    $currentid =  required_param('up', PARAM_INT);
+    $formid =  required_param('id', PARAM_INT);
+    // current record being moved
+	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
+    
+	$currentposition = $currentrecord->position;
+ 
+    
+    // record above the one being moved
+	$higherpos = ($currentposition-1);
+    $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
+
+	// Update the current record
+	$dataobject = new stdClass();
+	$dataobject->id = $currentrecord->id;
+	$dataobject->position = $currentposition - 1;
+	$DB->update_record('block_cmanager_formfields', $dataobject);
+
+    // update the record above
+	$dataobject2 = new stdClass();
+	$dataobject2->id = $higherrecord->id;
+	$dataobject2->position = $currentrecord->position;
+	$DB->update_record('block_cmanager_formfields', $dataobject2);
+
+
+}
+
+
+
+// Move field down
+if(isset($_GET['down'])){
+
+	
+    $currentid =  required_param('down', PARAM_INT);
+    $formid =  required_param('id', PARAM_INT);
+
+	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
+	$currentposition = $currentrecord->position;
+
+	$higherpos = $currentposition+1;
+    $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
+
+	// Update the records
+	$dataobject = new stdClass();
+	$dataobject->id = $currentrecord->id;
+	$dataobject->position = $higherrecord->position;
+	$DB->update_record('block_cmanager_formfields', $dataobject);
+
+	$dataobject2 = new stdClass();
+	$dataobject2->id = $higherrecord->id;
+	$dataobject2->position = $currentrecord->position;
+	$DB->update_record('block_cmanager_formfields', $dataobject2);
+
+}
+
+
+
 if(isset($_GET['id'])){
 	$formid = $_GET['id'];
 	$current_record =  $DB->get_record('block_cmanager_config', array('id'=>$formid));
@@ -158,121 +273,7 @@ function goBack(){
 			</div>
 
 
-<?php
 
-
-// Deleting dropdown menus
-if(isset($_GET['t']) && isset($_GET['del'])){
-
-  
-	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
-		//$itemid = $_GET['del']; 
-        $itemid = required_param('del', PARAM_INT);
-		
-        
-        //$fieldid = $_GET['fid']; 
-        $fieldid = required_param('fid', PARAM_INT);
-		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
-	}
-	
-	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
-	
-		//$fieldid = $_GET['del'];
-        $fieldid =  required_param('del', PARAM_INT);
-		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
-	}
-
-}
-
-
-// Delete Field
-if(isset($_GET['del'])){
-
-	//$formid = $_GET['id'];
-    $formid =  required_param('id', PARAM_INT);
-	//$delid = $_GET['del'];
-    $delid =  required_param('del', PARAM_INT);
-    
-    $DB->delete_records_select('block_cmanager_formfields', "id = $delid");
-
-	//Update the position numbers
-	$selectquery = "SELECT * FROM ".$CFG->prefix."block_cmanager_formfields WHERE formid = $formid order by id ASC";
-	$positionitems = $DB->get_records_sql($selectquery, null);
-
-	$newposition = 1;
-	$dataobject = new stdClass();
-    foreach($positionitems as $item){
-
-		$dataobject->id = $item->id;
-		$dataobject->position = $newposition;
-		$DB->update_record('block_cmanager_formfields', $dataobject);
-
-		$newposition++;
-
-	  }
-
-
-}
-
-
-// Move field up
-if(isset($_GET['up'])){
-
-	
-    $currentid =  required_param('up', PARAM_INT);
-
-    // current record being moved
-	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
-	$currentposition = $currentrecord->position;
- 
-
-    // record above the one being moved
-	$higherpos = ($currentposition-1);
-    $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos), $fields='*', IGNORE_MULTIPLE);
-
-	// Update the records
-	$dataobject = new stdClass();
-	$dataobject->id = $currentrecord->id;
-	$dataobject->position = $higherrecord->position;
-	$DB->update_record('block_cmanager_formfields', $dataobject);
-
-	$dataobject2 = new stdClass();
-	$dataobject2->id = $higherrecord->id;
-	$dataobject2->position = $currentrecord->position;
-	$DB->update_record('block_cmanager_formfields', $dataobject2);
-
-
-}
-
-
-
-// Move field down
-if(isset($_GET['down'])){
-
-	
-    $currentid =  required_param('down', PARAM_INT);
-
-	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid), $fields='*', IGNORE_MULTIPLE);
-	$currentposition = $currentrecord->position;
-
-	$higherpos = $currentposition+1;
-    $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos), $fields='*', IGNORE_MULTIPLE);
-
-	// Update the records
-	$dataobject = new stdClass();
-	$dataobject->id = $currentrecord->id;
-	$dataobject->position = $higherrecord->position;
-	$DB->update_record('block_cmanager_formfields', $dataobject);
-
-	$dataobject2 = new stdClass();
-	$dataobject2->id = $higherrecord->id;
-	$dataobject2->position = $currentrecord->position;
-	$DB->update_record('block_cmanager_formfields', $dataobject2);
-
-}
-
-
-?>
 
 
 <script src="../js/jquery/jquery-3.3.1.min.js"></script>

@@ -291,7 +291,6 @@ var quickApp = 0;
 // quick approve ok button click handler
 $("#okquick_approve").click(function(){
    
-   console.log("quick Approve..");
    window.location = "admin/bulk_approve.php?mul=" + quickApp;
 });
 
@@ -300,7 +299,7 @@ $("#okquick_approve").click(function(){
 // delete request ok  button click handler
 $("#okdelete_modal").click(function(){
    
-   console.log("deleting.." + deleteRec);
+   
    window.location = "deleterequest.php?t=a&&id=" + deleteRec;
 });
 

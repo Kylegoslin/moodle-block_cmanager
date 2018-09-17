@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks\cmanager\db" VERSION="20060905" COMMENT="XMLDB file for Moodle mod/label"
+<XMLDB PATH="blocks/cmanager/db" VERSION="20060905" COMMENT="XMLDB file for Moodle mod/label"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

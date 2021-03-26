@@ -93,7 +93,7 @@ class block_cmanager_module_manager_history_form extends moodleform {
 	$mform->addElement('header', 'mainheader','<span style="font-size:18px"> '.get_string('myarchivedrequests','block_cmanager').'</span>');
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;'.get_string('cmanagerWelcome','block_cmanager').' &nbsp;
 			<p></p><br>
-			&nbsp;&nbsp;<INPUT TYPE="BUTTON" VALUE="'.get_string('cmanagerRequestBtn','block_cmanager').'" ONCLICK="window.location.href=\'course_request.php?mode=1\'"><br>
+			&nbsp;&nbsp;<INPUT class="btn btn-secondary" TYPE="BUTTON" VALUE="'.get_string('cmanagerRequestBtn','block_cmanager').'" ONCLICK="window.location.href=\'course_request.php?mode=1\'"><br>
 			<p></p><p></p>&nbsp;');
 
 	$uid = $USER->id;

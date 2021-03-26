@@ -46,16 +46,16 @@ $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_u
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage2builder', 'block_cmanager'), new moodle_url('/blocks/cmanager/formeditor/form_builder.php'));
 $PAGE->navbar->add(get_string('previewform', 'block_cmanager'));
-
-$PAGE->set_url('/blocks/cmanager/formeditor/preview.php');
+$mid = optional_param('id', '', PARAM_INT);
+$PAGE->set_url('/blocks/cmanager/formeditor/preview.php', ['id' => $mid]);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
 
-if(isset($_GET['id'])){
-	$formId = required_param('id', PARAM_INT);
+if(!empty($mid)){
+	$formId = $mid;
 } else {
 	echo 'Error: No ID specified.';
 	die;
@@ -98,7 +98,7 @@ class block_cmanager_preview_form extends moodleform {
 		// Page description text
 		$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;'.get_string('formBuilder_previewInstructions1','block_cmanager').' <br>&nbsp;&nbsp;&nbsp;'.get_string('formBuilder_previewInstructions2','block_cmanager').'<p></p>&nbsp;');
 		
-		$mform->addElement('html', '<p></p><center><div style="width:800px; text-align:left"><b>Step 2: Other Details</b></div></center><p></p>');
+		$mform->addElement('html', '<p></p><center><div style="width:800px; text-align:left"><b>' . get_string('formBuilder_step2', 'block_cmanager') . '</b></div></center><p></p>');
 	      
  
 		  
@@ -114,17 +114,17 @@ class block_cmanager_preview_form extends moodleform {
 			  $fieldName = 'f' . $fieldnameCounter; // Give each field an incremented fieldname.
 			
 			   if($field->type == 'textfield'){
-			       block_cmanager_create_textfield($field->lefttext, $mform, $fieldName, $field->reqfield);
+			       block_cmanager_create_textfield(format_string($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'textarea'){
-			  	   block_cmanager_create_textarea($field->lefttext, $mform, $fieldName, $field->reqfield);
+			  	   block_cmanager_create_textarea(format_string($field->lefttext), $mform, $fieldName, $field->reqfield);
 			   }
 			   else if($field->type == 'dropdown'){
-			       block_cmanager_create_dropdown($field->lefttext, $field->id, $mform, $fieldName, $field->reqfield);
+			       block_cmanager_create_dropdown(format_string($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   else if($field->type == 'radio'){
-			       block_cmanager_create_radio($field->lefttext, $field->id, $mform, $fieldName, $field->reqfield);
+			       block_cmanager_create_radio(format_string($field->lefttext), $field->id, $mform, $fieldName, $field->reqfield);
 			   }
 			   
 			   
@@ -226,8 +226,8 @@ function block_cmanager_create_dropdown($leftText, $id, $form, $fieldName, $reqf
 		  foreach($field3Items as $item){
 		  	         $value = $item->value;
 					 if($value != ''){
-						$options[$value] = $value;
-						$options[$value] = $value;
+						$options[$value] = format_string($value);
+						// $options[$value] = $value;
 					}
 		  }
 		  

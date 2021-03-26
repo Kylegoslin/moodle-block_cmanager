@@ -141,7 +141,7 @@ class block_cmanager_config_form extends moodleform {
     $mform->addElement('header', 'mainheader','<span style="font-size:18px"> '.get_string('emailConfig','block_cmanager').'</span>');
 
     // Back Button
-    $mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button type="button" onclick="goBack();"><img src="icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>');
+    $mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button class="btn btn-secondary" type="button" onclick="goBack();"><img src="icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>');
 
     // Email text box
     $approvedTextRecord = $DB->get_record('block_cmanager_config', array('varname'=>'approved_text'));
@@ -258,7 +258,7 @@ class block_cmanager_config_form extends moodleform {
    <div style="font-size: 12px">
    <br> '.get_string('config_addemail','block_cmanager').'
    <input type="text" name="newemail" id="newemail"/>
-   <input type="submit" name="addemailbutton" id="addemailbutton" value="'.get_string('SaveEMail','block_cmanager').'"/>
+   <input class="btn btn-secondary" type="submit" name="addemailbutton" id="addemailbutton" value="'.get_string('SaveEMail','block_cmanager').'"/>
    </div>
    <p></p> 
    &nbsp;
@@ -296,7 +296,7 @@ class block_cmanager_config_form extends moodleform {
     <p>
     <textarea name="approveduseremail" id="approveduseremail"  style="width:70%; height: 250px;">'.$approved_user_email_value.'</textarea>
     <br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(approveduseremail, \'approveduseremail\',\''.get_string('ChangesSaved','block_cmanager').'\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(approveduseremail, \'approveduseremail\',\''.get_string('ChangesSaved','block_cmanager').'\')"/>
     </p>
     </div>
 
@@ -305,7 +305,7 @@ class block_cmanager_config_form extends moodleform {
     <p>
     <textarea name="approvedadminemail" id="approvedadminemail" style="width:70%; height: 250px;">'.$approved_admin_email_value.'</textarea>
     <br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(approvedadminemail, \'approvedadminemail\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(approvedadminemail, \'approvedadminemail\')"/>
     </p>
     </div>
 
@@ -314,7 +314,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="requestnewmoduleuser" id="requestnewmoduleuser" style="width:70%; height: 250px;">'.$request_new_module_user_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(requestnewmoduleuser, \'requestnewmoduleuser\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(requestnewmoduleuser, \'requestnewmoduleuser\')"/>
     </p>
     </div>
 
@@ -324,7 +324,7 @@ class block_cmanager_config_form extends moodleform {
     <p>
     <textarea name="requestnewmoduleadmin" id="requestnewmoduleadmin" style="width:70%; height: 250px;">'.$request_new_module_admin_value.'</textarea>
     <br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(requestnewmoduleadmin, \'requestnewmoduleadmin\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(requestnewmoduleadmin, \'requestnewmoduleadmin\')"/>
     </p>
     </div>
 
@@ -334,7 +334,7 @@ class block_cmanager_config_form extends moodleform {
     <p>
     <textarea name="commentemailadmin" id="commentemailadmin" style="width:70%; height: 250px;">'.$comment_email_admin_value.'</textarea>
     <br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(commentemailadmin, \'commentemailadmin\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(commentemailadmin, \'commentemailadmin\')"/>
     </p>
     </div>
 
@@ -343,7 +343,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="commentemailuser" id="commentemailuser" style="width:70%; height: 250px;">'.$comment_email_user_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(commentemailuser, \'commentemailuser\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(commentemailuser, \'commentemailuser\')"/>
     </p>
     </div>
 
@@ -354,7 +354,7 @@ class block_cmanager_config_form extends moodleform {
     <p>
     <textarea name="modulerequestdeniedadmin" id="modulerequestdeniedadmin" style="width:70%; height: 250px;">'.$module_request_denied_admin_value.'</textarea>
     <br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(modulerequestdeniedadmin, \'modulerequestdeniedadmin\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(modulerequestdeniedadmin, \'modulerequestdeniedadmin\')"/>
     </p>
     </div>
 
@@ -363,7 +363,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="modulerequestdenieduser" id="modulerequestdenieduser" style="width:70%; height: 250px;">'.$module_request_denied_user_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(modulerequestdenieduser, \'modulerequestdenieduser\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(modulerequestdenieduser, \'modulerequestdenieduser\')"/>
     </p>
     </div>
 
@@ -373,7 +373,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="handovercurrent" id="handovercurrent" style="width:70%; height: 250px;">'.$handover_current_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handovercurrent, \'handovercurrent\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handovercurrent, \'handovercurrent\')"/>
     </p>
     </div>
 
@@ -382,7 +382,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="handoveruser" id="handoveruser" style="width:70%; height: 250px;">'.$handover_user_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handoveruser, \'handoveruser\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handoveruser, \'handoveruser\')"/>
     </p>
     </div>
 
@@ -392,7 +392,7 @@ class block_cmanager_config_form extends moodleform {
     '.get_string('configure_leaveblankmail','block_cmanager').'
     <p>
     <textarea name="handoveradmin" id="handoveradmin" style="width:70%; height: 250px;">'.$handover_admin_value.'</textarea><br>
-    <input type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handoveradmin, \'handoveradmin\')"/>
+    <input class="btn btn-secondary" type="button" value="'.get_string('SaveChanges','block_cmanager').'" onClick="saveChangedText(handoveradmin, \'handoveradmin\')"/>
     </p>
     </div>
     <br>

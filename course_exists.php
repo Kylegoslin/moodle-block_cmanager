@@ -127,9 +127,9 @@ foreach($allRecords as $record){
  	$mform->addElement('html', '
 
 	<div id="singleborderwide" style="background:transparent">
-	<div style="text-align: left; float: left; width:160px">' . $record->shortname . '</div> 
-	<div style="text-align: left; float: left; width:160px">' . $record->fullname .'</div>
-	<div style="text-align: left; float: left; width:160px"> ' . $catLocation . '</div>
+	<div style="text-align: left; float: left; width:160px">' . format_string($record->shortname) . '</div> 
+	<div style="text-align: left; float: left; width:160px">' . format_string($record->fullname) .'</div>
+	<div style="text-align: left; float: left; width:160px"> ' . format_string($catLocation) . '</div>
 
 	<div style="text-align: left; float: left; width:160px">' . $lecturerHTML. ' </div> 
 	<div style="text-align: left; float: left; width:160px"><span style="font-size: 10px;"><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager').'</a>
@@ -147,7 +147,7 @@ foreach($allRecords as $record){
 	}</script>';
  	$mform->addElement('html', '</center>');
 	// Page description text
-	$mform->addElement('html', '<p></p><center>' . get_string('noneofthese','block_cmanager'). ', <input type="button" value="'.get_string('clickhere','block_cmanager').'" onclick="noneOfThese()"><p></p></center>');
+	$mform->addElement('html', '<p></p><center>' . get_string('noneofthese','block_cmanager'). ', <input class="btn btnsecondary" btntype="button" value="'.get_string('clickhere','block_cmanager').'" onclick="noneOfThese()"><p></p></center>');
  	
 
 	$mform->closeHeaderBefore('buttonar');

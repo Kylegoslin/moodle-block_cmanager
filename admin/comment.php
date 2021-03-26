@@ -99,7 +99,7 @@ class block_cmanager_comment_form extends moodleform {
 
 	// Page description text
 	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-				  <button type="button" value="" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button>
+				  <button class ="btn btn-secondary" type="button" value="" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button>
 				    <p></p>
 				    &nbsp;&nbsp;&nbsp;'.get_string('comments_Forward','block_cmanager').'.<p></p>&nbsp;<center>');
 
@@ -159,7 +159,7 @@ class block_cmanager_comment_form extends moodleform {
         <form action ="comment.php" method="post">
         <textarea id="newcomment" name="newcomment" rows="5" cols="60"></textarea>
         <p></p>
-        <input type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
+        <input class="btn btn-secondary" type="submit" value="'.get_string('comments_PostComment','block_cmanager').'"/>
         </form>
     </div>
     

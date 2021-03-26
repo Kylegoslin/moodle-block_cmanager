@@ -161,7 +161,7 @@ $bulkActions = "<p></p>
 
                 <b>".get_string('bulkactions','block_cmanager')."</b>
 			<br>
-			<input type=\"checkbox\" onClick=\"toggle(this)\" /> Select All<br/>
+			<input class=\"bulk-action-checkbox\" type=\"checkbox\" onClick=\"toggle(this)\" /> Select All<br/>
 
 			<select id=\"bulk\" onchange='bulkaction();'>
 			  <option></option>
@@ -186,14 +186,14 @@ $searchHTML = '
 	 	<br> <input type="text" name="searchtext" id="searchtext"></input><br>
 	 	<span style="font-size:11pt">
 	 	<select name="searchtype" id="searchtype">
-  		<option value="code">'.$page1_fieldname1.'</option>
-		<option value="title">'.$page1_fieldname2.'</option>
+		<option value="code">' . format_string($page1_fieldname1) . '</option>
+		<option value="title">' . format_string($page1_fieldname2) . '</option>
   		<option value="requester">' . get_string('searchAuthor', 'block_cmanager').'</option>
 		</select>
 		</span>
 		<br>
 		<span style="font-size:11pt">
-		<input type="submit" value="'.get_string('searchbuttontext', 'block_cmanager').'" name="search"></input>
+		<input class="btn btn-outline-secondary" type="submit" value="'.get_string('searchbuttontext', 'block_cmanager').'" name="search"></input>
 		</span>
 		</form>
 

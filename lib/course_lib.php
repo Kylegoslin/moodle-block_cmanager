@@ -26,14 +26,17 @@
  */
 
 require_once("../../../config.php");
-require_once($CFG->libdir. '/coursecatlib.php');
+
+if ($CFG->branch < 36) {
+    require_once($CFG->libdir.'/coursecatlib.php');
+}
 
 global $CFG, $DB;
 
 /** 
 * Building up the new course object
 */
-class block_cmanager_new_course {
+class block_cmanager_new_course extends stdClass {
 
      	public $returnto = 'topcat';
 	 	public $category = 1;
@@ -92,7 +95,7 @@ function block_cmanager_create_new_course_by_record_id($mid, $sendMail) {
     // Starting course creation process
     // Step 1/5
     $event = \block_cmanager\event\course_process::create(array(
-    'objectid' => $objid,
+    'objectid' => '',
     'other' => '-'. get_string('stepnumber', 'block_cmanager'). ' 1/5-' . get_string('startingcoursecreation','block_cmanager'),
     'context' => $context,
     ));

@@ -236,7 +236,7 @@ function block_cmanager_get_dropdown_values(){
 	$field3ItemsHTML .= '<table width="300px">';							  
 				  foreach($field3Items as $item){
 				  	$field3ItemsHTML .= '<tr>';
-				  	$field3ItemsHTML .= '<td>' . $item->value . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../icons/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
+				  	$field3ItemsHTML .= '<td>' . format_string($item->value, true, ['context' => context_system::instance()]) . '</td> <td><a href="page2.php?id=' . $formid.'&t=dropitem&fid='.$id.'&del=' . $item->id . '"><img src="../icons/deleteIcon.png" width="20" height="20" alt="delete" /></a></td>';
 					$field3ItemsHTML .= '</tr>';
 				  } 
 	$field3ItemsHTML .= '</table>';

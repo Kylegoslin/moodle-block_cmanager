@@ -200,6 +200,15 @@ function block_cmanager_send_email_to_Address($to, $subject, $text){
 	$emailinguserobject->id = 1;
 	$emailinguserobject->email = $to;
 	$emailinguserobject->maildisplay = true;
+	$emailinguserobject->username = '';
+	$emailinguserobject->mailformat = 1;
+	$emailinguserobject->firstnamephonetic = '';
+	$emailinguserobject->lastnamephonetic = '';
+	$emailinguserobject->middlename = '';
+	$emailinguserobject->alternatename = '';
+	$emailinguserobject->firstname = get_string('admin');
+	$emailinguserobject->lastname = '';
+
 
 	email_to_user($emailinguserobject, $senderemailaddress, $subject, $text, $messagehtml='', $attachment='', 
 				  $attachname='', true, $replyto='', $replytoname='', $wordwrapwidth=79);

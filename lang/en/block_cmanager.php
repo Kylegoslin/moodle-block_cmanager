@@ -51,7 +51,7 @@ $string['administratorConfig'] = 'Other Settings';
 $string['emailConfig'] = 'E-mail Config';
 $string['emailConfigContents'] = 'Configure Communication E-Mails';
 $string['cmanagerStats'] = 'CManager Statistics';
-$string['emailConfigInfo'] = 'This section contains E-Mail addresses of administators who will be notified whenever any course requests have been recorded.';
+$string['emailConfigInfo'] = 'This section contains E-Mail addresses of administrators who will be notified whenever any course requests have been recorded.';
 $string['emailConfigSectionHeader'] = 'Configure E-Mail';
 $string['emailConfigSectionContents'] = 'Configure E-Mail Contents';
 $string['statsConfigInfo'] = 'This section contains statistics on the current number of requests which have been made since the Course Request Manager module has been in use on this server.';
@@ -88,7 +88,7 @@ $string['emailConfigHeader'] = 'Here you can make changes to the E-mails which a
 $string['email_courseCode'] = 'Course code';
 $string['email_courseName'] = 'Course name';
 $string['email_progCode'] = 'Programme code';
-$string['email_progName'] = 'Proramme name';
+$string['email_progName'] = 'Programme name';
 $string['email_enrolmentKey'] = 'Enrolment key';
 $string['email_fullURL'] = 'Full URL to new course';
 $string['email_sumLink'] = 'Full Course Request Manager request summary link';
@@ -101,7 +101,7 @@ $string['email_commentNotification'] = 'Comment Notification E-Mail';
 $string['email_requestDenied'] = 'Request Denied E-Mail';
 $string['email_handover'] = 'Handover Request';
 $string['email_noReply'] = 'Communications Email Address';
-$string['email_noReplyInstructions'] = 'This utility sends email requests to adminsitrators and end users as course requests are processed. Please enter the email address that these mails will appear to be sent from. It is recommended to use a NOREPLY email address. e.g. noreply@yourmoodlebox.com';
+$string['email_noReplyInstructions'] = 'This utility sends email requests to administrators and end users as course requests are processed. Please enter the email address that these emails will appear to be sent from. It is recommended to use a NOREPLY email address. e.g. noreply@yourmoodlebox.com';
 
 //email subjects and contents
 $string['emailSubj_userApproved'] = "Moodle request approved!";
@@ -124,11 +124,13 @@ $string['emailSubj_requester'] = "Requester E-mail";
 $string['request_rule1'] = 'Please enter a value in this field.';
 $string['request_rule2'] = 'Please select a value.';
 $string['request_rule3'] = 'Please enter an enrolment key.';
-$string['request_requestControl'] = 'Request Contol of this module';
+$string['request_requestControl'] = 'Request Control of this module';
 $string['request_requestnewBlank'] = 'Request a new blank Module and the removal of this module';
 $string['request_pleaseSelect'] = 'Please select course mode.';
 $string['request_complete'] = 'Course Request Complete.';
 $string['request_addModule'] = 'Add Module';
+
+$string['requestForm_category'] = 'Category';
 
 $string['changeshavebeensaved'] = 'Changes Saved!';
 //form builder
@@ -140,7 +142,7 @@ $string['formBuilder_instructions3'] = 'Desired Enrolment keys';
 $string['formBuilder_instructions4'] = 'Additional staff and permissions';
 $string['formBuilder_instructions5'] = 'Course Format';
 $string['formBuilder_instructions6'] = 'Many others...';
-$string['formBuilder_currentActiveForm'] = 'Curent Active Form';
+$string['formBuilder_currentActiveForm'] = 'Current Active Form';
 $string['formBuilder_currentActiveFormInstructions'] = 'Please select the form to use from the dropdown below. You can change the current active form at any time or create a new one and select it. ';
 $string['formBuilder_selectDescription'] = 'Select form to use for requests';
 $string['formBuilder_selectOption'] = 'Select form..';
@@ -156,7 +158,7 @@ $string['formBuilder_p2_dropdown3'] = 'Text Area';
 $string['formBuilder_p2_dropdown4'] = 'Radio Button Group';
 $string['formBuilder_p2_dropdown5'] = 'Drop Down Menu';
 $string['formBuilder_p2_dropdown6']  = 'Text';
-$string['formBuilder_p2_instructions'] = 'This form can be configured to allow you to gather as much or as little information from the end user. If you require information from your users to assit you in creating a course, then conigure the form here.Simply add or remove fields which the user will complete during a course request. This information can then assist you when dealing with requests.';
+$string['formBuilder_p2_instructions'] = 'This form can be configured to allow you to gather as much or as little information needed from the end user. If you require information from your users to assist you in creating a course, then configure the form here. Simply add or remove fields which the user will complete during a course request. This information can then assist you when dealing with requests.';
 $string['formBuilder_about'] = 'About';
 $string['formBuilder_editForm'] = 'Edit Form';
 $string['formBuilder_deleteForm'] = 'Delete Form';
@@ -182,7 +184,7 @@ $string['formBuilder_shownbelow']  = 'is shown below';
 $string['formBuilder_previewHeader'] = 'Preview Form';
 $string['formBuilder_previewInstructions1'] = 'Please complete this form as accurately as possible.';
 $string['formBuilder_previewInstructions2'] = 'Please consult local guidelines for making course requests';
-$string['formBuilder_step2'] = 'Step 2: Other Details';
+$string['formBuilder_step2'] = 'Step 2: Other details';
 
 //Configure Course Search Form Fields
 $string['formfieldsHeader'] = 'Configure Request Form - Page 1';
@@ -196,12 +198,13 @@ $string['entryFields_status'] = 'Status';
 $string['entryFields_Dropdown'] = 'Optional Dropdown Field';
 $string['entryFields_DropdownDescription'] = ' You may wish to add an optional drop down list with some values that will help you categorise the new course. For example your organisation may offer courses in full time mode, part time mode, distance education mode, online only mode etc. You can add these options to the optional dropdown list and allow users to select one when making a new course request.';
 $string['entryFields_AddNewItem'] = 'Add New Item';
+$string['entryFields_values'] = 'Values: ';
 
 //module_manager
 $string['cmanager'] = 'CRManager';
 $string['cmanagerDisplay'] = 'Course Request Manager';
 $string['cmanagerDisplaySearchForm'] = 'Configure Request Form - Page 1';
-$string['cmanagerWelcome'] = 'Welcome to moodle Course Request Manager. Before requesting a new course, please check your local guidelines.';
+$string['cmanagerWelcome'] = 'Welcome to Course Request Manager. Before requesting a new course, please check your local guidelines.';
 $string['cmanagerRequestBtn'] = 'Request a new course setup';
 $string['cmanagerExstingTab'] = 'Existing Requests';
 $string['cmanagerHistoryTab'] = 'Request History';
@@ -235,6 +238,10 @@ $string['requestReview_Summary'] = 'Request Summary';
 $string['requestReview_intro1'] = 'Please review the following information carefully before submitting your request.';
 $string['requestReview_intro2'] = 'Your request will be dealt with as soon as possible.';
 $string['requestReview_status'] = 'STATUS';
+$string['requestReview_COMPLETE'] = 'COMPLETE';
+$string['requestReview_PENDING'] = 'PENDING';
+$string['requestReview_REQUEST_DENIED'] = 'REQUEST DENIED';
+$string['requestReview_NULL'] = 'NULL';
 
 $string['requestReview_requestType'] = 'Request Type';
 $string['requestReview_moduleCode'] = 'Course Code';
@@ -253,7 +260,7 @@ $string['requestReview_requestType'] = 'Request Type';
 
 $string['requestReview_OpenDetails'] = 'Open Details';
 $string['requestReview_ApproveRequest'] = 'Approve Request';
-$string['requestReview_ApproveRequest'] = 'Approve Request';
+
 
 $string['requestReview_courseName'] = 'Course Name';
 $string['requestReview_courseCode'] = 'Course Code';
@@ -395,7 +402,7 @@ $string['configureemailsettings_desc'] = 'This section allows you to configure t
 
 
 $string['configureadminsettings'] = 'Admin Settings';
-$string['configureadminsettings_desc'] = 'Addition additional settings for Course Request Manager';
+$string['configureadminsettings_desc'] = 'Additional settings for Course Request Manager';
 
 $string['required_field'] = 'Required Field';
 $string['optional_field'] = 'Optional Field';
@@ -407,7 +414,8 @@ $string['cmanager:addinstance'] = 'Add Instance';
 $string['displayListWarningTitle'] = 'WARNING';
 $string['displayListWarningSideText'] = 'This shortname already exists in the moodle database. Admin attention required. This request is excluded from bulk actions.';
 
-$string['nocatselected'] = 'Sorry no catgory has been selected for this course';
+$string['nocatselected'] = 'Sorry no category has been selected for this course';
+$string['noneselected'] = 'None selected';
 
 $string['customdeny'] = 'Denial Text Templates';
 $string['customdenydesc'] = 'Administrators may deny course requests for a number of reasons. Outlining the reason for a denial in an email can be time consuming. This feature lets you create up to five reasons which can be quickly selected during the denial process. Max 250 chars';
@@ -426,7 +434,7 @@ $string['cannotapproverecord'] = ' Sorry your account does not have sufficient p
 $string['cannoteditrequest'] = ' Sorry your account does not have sufficient privileges to edit a record. You need to be assigned to a system role with sufficient privileges.';
 $string['cannotcomment'] = ' Sorry yyour account does not have sufficient privileges to comment. You need to be assigned to a system role with sufficient privileges.';
 $string['cannotdelete'] = ' Sorry your account does not have sufficient privileges to delete a record. You need to be assigned to a system role with sufficient privileges.';
-$stirng['cannotdenyrecord'] = ' Sorry your account does not have sufficient privileges to deny a record. You need to be assigned to a system role with sufficient privileges.';
+$string['cannotdenyrecord'] = ' Sorry your account does not have sufficient privileges to deny a record. You need to be assigned to a system role with sufficient privileges.';
 $string['cannotviewconfig'] = ' Sorry your account does not have sufficient privileges to view the config. You need to be assigned to a system role with sufficient privileges.';
 
 $string['cmanager:addcomment'] = 'Add comment';

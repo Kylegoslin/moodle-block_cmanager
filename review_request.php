@@ -37,14 +37,14 @@ require_login();
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
 $PAGE->navbar->add(get_string('modrequestfacility', 'block_cmanager'));
-$PAGE->set_url('/blocks/cmanager/review_request.php');
+$mid = optional_param('id', '', PARAM_INT);
+$PAGE->set_url('/blocks/cmanager/review_request.php', ['id'=> $mid]);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));
 echo $OUTPUT->header();
 
-if (isset($_GET['id'])) {
-	$mid = required_param('id', PARAM_INT);
+if (!empty($mid)) {
 	$_SESSION['mid'] = $mid;
 } else {
 	$mid = $_SESSION['mid'];
@@ -135,7 +135,7 @@ if ($mform->is_cancelled()) {
 	// Send email to admin saying we are requesting a new mod
 	block_cmanager_request_new_mod_email_admins($replaceValues);
 
-	// Send email to user to track that we are requestig a new mod
+	// Send email to user to track that we are requesting a new mod
 	block_cmanager_request_new_mod_email_user($USER->id, $replaceValues);
 
 

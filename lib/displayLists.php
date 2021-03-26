@@ -30,7 +30,9 @@
  *  representations of queues etc.
  * ------------------------------------------------------------------------
  */
-require_once($CFG->libdir. '/coursecatlib.php');
+if ($CFG->branch < 36) {
+    require_once($CFG->libdir.'/coursecatlib.php');
+}
 ?>
 
 <style>
@@ -56,153 +58,182 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
     $counter = 1;
 
     foreach ($pendinglist as $rec) {
-			// Get a list of all the lecturers
-			$lecturerhtml = '';
-            $req_values = $rec->req_values;
+        // Get a list of all the lecturers
+        $lecturerhtml = '';
+        $req_values = $rec->req_values;
 
-			if (!empty($req_values)) {
-				if (! $course = $DB->get_record("course", array("id"=> $req_values))) {
-					   // If the course doesn't exist anymore, just let the process continue..
-					} else { // Otherwise, start the process
-						    $context = get_context_instance(CONTEXT_COURSE, $course->id);
-						    if ($managerroles = get_config('', 'coursemanager')) {
-									$coursemanagerroles = explode(',', $managerroles);
-									foreach ($coursemanagerroles as $roleid) {
-									    $role = $DB->get_record('role', array('id'=>$roleid));
-									    $canseehidden = has_capability('moodle/role:viewhiddenassigns', $context);
-									    $roleid = (int) $roleid;
-									    $namesarray = null;
-									    if ($users = get_role_users($roleid, $context, true, '', 'u.lastname ASC', $canseehidden)) {
+        if (!empty($req_values)) {
+            if (!$course = $DB->get_record("course", array("id" => $req_values))) {
+                // If the course doesn't exist anymore, just let the process continue..
+            } else { // Otherwise, start the process
+                $context = context_course::instance($course->id);
+                if ($managerroles = get_config('', 'coursemanager')) {
+                    $coursemanagerroles = explode(',', $managerroles);
+                    foreach ($coursemanagerroles as $roleid) {
+                        $role = $DB->get_record('role', array('id' => $roleid));
+                        $canseehidden = has_capability('moodle/role:viewhiddenassigns', $context);
+                        $roleid = (int) $roleid;
+                        $namesarray = null;
+                        if ($users = get_role_users($roleid, $context, true, '', 'u.lastname ASC', $canseehidden)) {
 
-										    foreach ($users as $teacher) {
-										    $fullname = fullname($teacher, has_capability('moodle/site:viewfullnames', $context));
-										    $namesarray[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.
-										                    $teacher->id.'&amp;course='.SITEID.'">'.$fullname.'</a>';
-										}
-									    }
-									}
-									if (!empty($namesarray)) {
-									    $lecturerhtml =  implode(', ', $namesarray);
+                            foreach ($users as $teacher) {
+                                $fullname = fullname($teacher, has_capability('moodle/site:viewfullnames', $context));
+                                $namesarray[] = '<a href="' . $CFG->wwwroot . '/user/view.php?id=' .
+                                        $teacher->id . '&amp;course=' . SITEID . '">' . $fullname . '</a>';
+                            }
+                        }
+                    }
+                    if (!empty($namesarray)) {
+                        $lecturerhtml = implode(', ', $namesarray);
 
-									}
-						    }
-					}
-            } else {
-				// Get the id from who created the record, and get their username
+                    }
+                }
+            }
+        } else {
+            // Get the id from who created the record, and get their username
 
-				$fullname = $DB->get_field('user', 'username', array('id'=>$rec->createdbyid));
+            $fullname = $DB->get_field('user', 'username', array('id' => $rec->createdbyid));
 
-				$lecturerhtml = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.
-						                    $rec->createdbyid.'&amp;course='.SITEID.'">'.$fullname.'</a>';
-			}
+            $lecturerhtml = '<a href="' . $CFG->wwwroot . '/user/view.php?id=' .
+                    $rec->createdbyid . '&amp;course=' . SITEID . '" id="namelink">' . $fullname . '</a>';
+        }
 
-			//Get the latest comment
-			$latestComment = '';
-			$currentmodid = $rec->id;
+        //Get the latest comment
+        $latestComment = '';
+        $currentmodid = $rec->id;
 
+        $wherequery = "instanceid = '$currentmodid'";
+        $modrecords = $DB->get_recordset_select('block_cmanager_comments', $wherequery);
 
-			$wherequery = "instanceid = '$currentmodid'";
-		 	$modrecords = $DB->get_recordset_select('block_cmanager_comments', $wherequery);
+        foreach ($modrecords as $record) {
 
-		    foreach ($modrecords as $record) {
+            $latestComment = $record->message;
+            if (strlen($latestComment) > 55) {
+                $latestComment = substr($latestComment, 0, 55);
+                $pagename = basename($_SERVER['PHP_SELF']);
 
-				$latestComment = $record->message;
-				if (strlen($latestComment) > 55) {
-					$latestComment = substr($latestComment, 0, 55);
-					$pagename = basename($_SERVER['PHP_SELF']);
+                if ($pagename == 'module_manager.php') {
+                    $latestComment .= '... <a href="comment.php?type=userq&id=' . $currentmodid . '">[' .
+                            get_string('viewmore', 'block_cmanager') . ']</a>';
 
-					if ($pagename == 'module_manager.php') {
-					    $latestComment .= '... <a href="comment.php?type=userq&id=' . $currentmodid . '">['.get_string('viewmore','block_cmanager').']</a>';
+                } else {
+                    $latestComment .= '... <a href="comment.php?type=adminq&id=' . $currentmodid . '">[' .
+                            get_string('viewmore', 'block_cmanager') . ']</a>';
+                }
+            }
+        }
 
-					} else {
-						$latestComment .= '... <a href="comment.php?type=adminq&id=' . $currentmodid . '">['.get_string('viewmore','block_cmanager').']</a>';
-					}
-				}
-		    }
+        // Check if shortname exists
+        $shortnameexists = $DB->record_exists('course', array('shortname' => $rec->modcode));
+        $shortnameexistsmode = $DB->record_exists('course', array('shortname' => $rec->modcode . ' - ' . $rec->modmode));
 
-			// Check if shortname exists
-			$shortnameexists = $DB->record_exists('course', array('shortname'=>$rec->modcode));
-			$shortnameexistsmode = $DB->record_exists('course', array('shortname'=>$rec->modcode . ' - ' . $rec->modmode));
-
-			$disabledhtml = '';
-			if ($shortnameexists == 1 || $shortnameexistsmode == 1) {
-				$disabledhtml = 'disabled="disabled"';
-			}
-			$outputhtml .= '
+        $disabledhtml = '';
+        if ($shortnameexists == 1 || $shortnameexistsmode == 1) {
+            $disabledhtml = 'disabled="disabled"';
+        }
+        $outputhtml .= '
 			<div id="existingrequest" style="background: transparent;">
 			<div style="padding-bottom:20px; width:100%">
-			<p style="font-size:16px;"><br><b>[' . get_string('Request','block_cmanager'). ' ID #'.$rec->id.']</b></p>
-
-
 			';
-			if ($includeleftcheckbox == true) {
-					$outputhtml .= '<input type="checkbox" id="' . $rec->id . '" name="groupedcheck" onClick="addIdToList(' . $rec->id . ')" value="' . $rec->id . '" '.$disabledhtml.'/>
-									<br>';
-		    }
+        if ($includeleftcheckbox == true) {
+            $outputhtml .= '<div class="float-left">
+                            <div class="custom-control custom-checkbox mr-1"> 
+                            <input type="checkbox" id="' . $rec->id .
+                    '" class="bulk-action-checkbox custom-control-input" name="groupedcheck" onClick="addIdToList(' . $rec->id .
+                    ')" value="' . $rec->id . '" ' . $disabledhtml . '/>
+									<br>
+                                    <label for="' . $rec->id . '" class="custom-control-label"> 
+                                    <b>[' . get_string('Request', 'block_cmanager') . ' ID #' . $rec->id . ']</b>
+                                     </label>
+                            </div>
+                            </div>';
+        } else {
+            $outputhtml .= '<label> 
+            <b>[' . get_string('Request', 'block_cmanager') . ' ID #' . $rec->id . ']</b></label>
+            </div>
+            </div>';
+        }
+            // ---------- Additional Controls -------------------------------
+            if ($includerightpanel == true) {
+                /* cmanager_admin.php */
+                if ($rightpaneltype == 'admin_queue') {
+                    $outputhtml .= '
+                        <br>
+						<div class="btn-group" style="font-size:14px; padding-bottom:6.5px" id="existingrequesticons">
+								<a class="btn btn-default" href="#" onclick="quickApproveConfirm(' . $rec->id . ',\'' .
+                            get_string('quickapprove_desc', 'block_cmanager') . '\')"><img src="icons/list/quick.png"/> ' .
+                            get_string('quickapprove', 'block_cmanager') . '</a>
 
-		 // ---------- Additional Controls -------------------------------
-		 if ($includerightpanel == true) {
-
-				if ($rightpaneltype == 'admin_queue') {
-						$outputhtml .= '
-						<div style="font-size:14px; padding-bottom:5px">
-								<a href="#" onclick="quickApproveConfirm('. $rec->id .',\''.get_string('quickapprove_desc','block_cmanager').'\')"><img src="icons/list/quick.png"/> ' . get_string('quickapprove','block_cmanager'). '</a>
-
-								<a href="admin/approve_course.php?id=' . $rec->id .'"><img src="icons/list/approve.png"/> ' . get_string('approve','block_cmanager'). '</a>
+								<a class="btn btn-default" href="admin/approve_course.php?id=' . $rec->id .
+                            '"><img src="icons/list/approve.png"/> ' . get_string('approve', 'block_cmanager') . '</a>
 
 
-								<a href="admin/deny_course.php?id=' . $rec->id .'"><img src="icons/list/deny.png"/> ' . get_string('deny','block_cmanager'). '</a>
+								<a class="btn btn-default" href="admin/deny_course.php?id=' . $rec->id .
+                            '"><img src="icons/list/deny.png"/> ' . get_string('deny', 'block_cmanager') . '</a>
 
-								<a href="course_request.php?mode=2&edit=' . $rec->id .'"><img src="icons/list/edit.png"/> ' . get_string('edit','block_cmanager'). '</a>
+								<a class="btn btn-default" href="course_request.php?mode=2&edit=' . $rec->id .
+                            '"><img src="icons/list/edit.png"/> ' . get_string('edit', 'block_cmanager') . '</a>
 
-								<a href="#" onclick="cancelConfirm('. $rec->id .',\''.get_string('configure_delete','block_cmanager').'\')" href="#"><img src="icons/list/delete.png"/> ' . get_string('delete','block_cmanager'). '</a>
-								<a href="admin/comment.php?type=adminq&id=' . $rec->id . '"><img src="icons/list/comment.png"/> ' . get_string('addviewcomments','block_cmanager'). '</a>
+								<a class="btn btn-default" href="#" onclick="cancelConfirm(' . $rec->id . ',\'' .
+                            get_string('configure_delete', 'block_cmanager') . '\')" href="#"><img src="icons/list/delete.png"/> ' .
+                            get_string('delete', 'block_cmanager') . '</a>
+								<a class="btn btn-default" href="admin/comment.php?type=adminq&id=' . $rec->id .
+                            '"><img src="icons/list/comment.png"/> ' . get_string('addviewcomments', 'block_cmanager') . '</a>
 						</div>
 
 						';
 
-		}
-        else if ($rightpaneltype == 'admin_arch') {
-		        $outputhtml .= '
-					<div style="float:left; font-size:14px; padding-bottom:5px">
+                } /* cmanager_admin_arch.php */
+                else if ($rightpaneltype == 'admin_arch') {
+                    $outputhtml .= '
+					<div class="btn-group" style="font-size:14px; padding-bottom:6.5px">
 
-							<a onclick="cancelConfirm('. $rec->id .', \'delete\')" href="#"><img src="icons/list/delete.png"/>' . get_string('delete','block_cmanager'). '</a>
+							<a class="btn btn-default" onclick="cancelConfirm(' . $rec->id .
+                            ', \'delete\')" href="#"><img src="icons/list/delete.png"/>' . get_string('delete', 'block_cmanager') . '</a>
 
-							<a href="admin/comment.php?type=adminarch&id=' . $rec->id . '"><img src="icons/list/comment.png"/>' . get_string('addviewcomments','block_cmanager'). '</a>
+							<a class="btn btn-default" href="admin/comment.php?type=adminarch&id=' . $rec->id .
+                            '"><img src="icons/list/comment.png"/>' . get_string('addviewcomments', 'block_cmanager') . '</a>
 
 					</div>
 				';
-		}
-    	else if ($rightpaneltype == 'user_manager') {
+                } /* module_manager.php */
+                else if ($rightpaneltype == 'user_manager') {
 
-    					$outputhtml .= '
-    			<div style="float: left; font-size:14px; padding-bottom:5px">
+                    $outputhtml .= '
+    			<div class="btn-group" style="font-size:14px; padding-bottom:6.5px" id="existingrequesticons">
 
-    					<A href="view_summary.php?id=' . $rec->id .'"><img src="icons/list/open.png"/> '.get_string('view','block_cmanager').'</a>
+    					<A class="btn btn-default" href="view_summary.php?id=' . $rec->id . '"><img src="icons/list/open.png"/> ' .
+                            get_string('view', 'block_cmanager') . '</a>
 
-    					<A href="course_request.php?mode=2&edit=' . $rec->id .'"><img src="icons/list/edit.png"/> '.get_string('edit','block_cmanager').'</a>
+    					<A class="btn btn-default" href="course_request.php?mode=2&edit=' . $rec->id .
+                            '"><img src="icons/list/edit.png"/> ' . get_string('edit', 'block_cmanager') . '</a>
 
-    					<a onclick="cancelConfirm('. $rec->id .',\''.get_string('cmanagerConfirmCancel','block_cmanager').'\')" href="#"><img src="icons/list/deny.png"/> '.get_string('cancel','block_cmanager').'</a>
+    					<a class="btn btn-default" onclick="cancelConfirm(' . $rec->id . ',\'' .
+                            get_string('cmanagerConfirmCancel', 'block_cmanager') .
+                            '\')" href="#"><img src="icons/list/deny.png"/> ' . get_string('cancel', 'block_cmanager') . '</a>
 
-    					<A href="comment.php?type=userq&id=' . $rec->id . '"><img src="icons/list/comment.png"/> '.get_string('addviewcomments','block_cmanager').'</a>
+    					<A class="btn btn-default" href="comment.php?type=userq&id=' . $rec->id .
+                            '"><img src="icons/list/comment.png"/> ' . get_string('addviewcomments', 'block_cmanager') . '</a>
 
 
     			</div>		';
-    	}
-		else if ($rightpaneltype == 'user_history') {
-			$outputhtml .= '
-				<div style="float: left; font-size:14px; padding-bottom:5px">
+                } /* module_manager_history.php */
+                else if ($rightpaneltype == 'user_history') {
+                    $outputhtml .= '
+				<div class="btn-group" style="font-size:14px; padding-bottom:5px">
 
-						<a href="view_summary.php?id=' . $rec->id .'"> <img src="icons/list/open.png"/> '.get_string('view','block_cmanager').'</a>
+						<a class="btn btn-default" href="view_summary.php?id=' . $rec->id . '"> <img src="icons/list/open.png"/> ' .
+                            get_string('view', 'block_cmanager') . '</a>
 
-						<A href="comment.php?type=userarch&id=' . $rec->id . '"> <img src="icons/list/comment.png"/> '.get_string('addviewcomments','block_cmanager').'</a>
+						<A class="btn btn-default" href="comment.php?type=userarch&id=' . $rec->id .
+                            '"> <img src="icons/list/comment.png"/> ' . get_string('addviewcomments', 'block_cmanager') . '</a>
 
 				</div>';
-		}
-     }
-	// ------------------ END admin controls ----------------------
+                }
+            }
+            // ------------------ END admin controls ----------------------
 
-			$outputhtml .='
+            $outputhtml .= '
 
 
 
@@ -210,131 +241,139 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 
 				<tr>
 					<td width="30%">
-						<b>' . get_string('status','block_cmanager'). ':</b>
+						<b>' . get_string('status', 'block_cmanager') . ':</b>
 					</td>
-					<td style="width:100%">
-						'. $rec->status . '
-					</td>
-				</tr>
-				';
+					';
 
-			// Check if shortname exists
-			if ($rightpaneltype == 'admin_queue') {
-						if ($shortnameexists == 1 || $shortnameexistsmode == 1) {
-			    			$outputhtml .= '
+            $outputhtml .= '
+                    <td width="100%">
+					' . get_string('requestReview_' . str_replace(' ', '_', $rec->status), 'block_cmanager') . '
+					</td>
+				</tr>';
+
+            // Check if shortname exists
+            if ($rightpaneltype == 'admin_queue') {
+                if ($shortnameexists == 1 || $shortnameexistsmode == 1) {
+                    $outputhtml .= '
 			    			<tr>
 
 								<td width="50%">
-									<b><span style="color:red">' . get_string('displayListWarningTitle','block_cmanager'). ':</span></b>
+									<b><span style="color:red">' . get_string('displayListWarningTitle', 'block_cmanager') . ':</span></b>
 								</td>
 								<td>
-									<span style="color:red">'. get_string('displayListWarningSideText','block_cmanager') . '</span>
+									<span style="color:red">' . get_string('displayListWarningSideText', 'block_cmanager') . '</span>
 								</td>
 							</tr>
 			    			';
-						}
-			}
+                }
+            }
 
-			$outputhtml .= '
+            $outputhtml .= '
 				<tr>
 					<td width="25%">
-						<b>' . get_string('creationdate','block_cmanager'). ':</b>
+						<b>' . get_string('creationdate', 'block_cmanager') . ':</b>
 					</td>
 					<td>
-						'. $rec->createdate . '
+						' . $rec->createdate . '
 					</td>
 				</tr>
 
 				<tr>
 					<td width="25%">
-						<b>' . get_string('requesttype','block_cmanager'). ':</b>
+						<b>' . get_string('requesttype', 'block_cmanager') . ':</b>
 					</td>
 					<td>
-						'. $rec->req_type . '
+						' . get_string('course_new_mod_create', 'block_cmanager') . '
 					</td>
 				</tr>
 
 				<tr>
 					<td width="25%">
-						<b>' . $page1_fieldname1 . ':</b>
+						<b>' . format_string($page1_fieldname1) . ':</b>
 					</td>
 					<td>
-						'. $rec->modcode . '
+						' . format_string($rec->modcode) . '
 					</td>
 				</tr>
 
 				<tr>
 					<td width="25%">
-						<b>'. $page1_fieldname2 .':</b>
+						<b>' . format_string($page1_fieldname2) . ':</b>
 					</td>
 					<td>
-						'. $rec->modname . '
+						' . format_string($rec->modname) . '
 					</td>
 				</tr>';
 
-				if (isset($rec->modmode)) {
-				 $selectedmodname = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc3'");
+            if (isset($rec->modmode)) {
+                $selectedmodname = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'page1_fielddesc3'");
 
-				$outputhtml .= '
+                $outputhtml .= '
 						<tr>
 						<td width="25%">
-							<b> ' . $selectedmodname. ': </b>
+							<b> ' . format_string($selectedmodname) . ': </b>
 						</td>
 						<td>
-							'. $rec->modmode . '
+							' . format_string($rec->modmode) . '
 						</td>
 					</tr>';
-				}
+            }
 
-	 $catlisthtml = '';
-	if ($editcatavailable == true) {
-		$movetocategories = array();
-        $notused = array();
-        $movetocategories += coursecat::make_categories_list();
-      	$cateDrop =  html_writer::select($movetocategories, 'cat'.$rec->id, $rec->cate, null);
- 	    $catlisthtml .= '<div id="catname" class="catname">'.$cateDrop . '';
-		$catlisthtml .=  '<input id="clickMe" type="button" value="'.get_string('update','block_cmanager').'" onclick="saveChangedCategory(\''.$rec->id.'\')" /></div>';
+            $catlisthtml = '';
+            if ($editcatavailable == true) {
+                $movetocategories = array();
+                $notused = array();
+                if ($CFG->branch > 35) {
+                    $movetocategories += core_course_category::make_categories_list();
+                } else {
+                    $movetocategories += coursecat::make_categories_list();
+                }
 
-	} else {
+                $cateDrop = html_writer::select($movetocategories, 'cat' . $rec->id, $rec->cate, null);
+                $catlisthtml .= '<div id="catname" class="catname">' . $cateDrop . '';
+                $catlisthtml .= '<input class="btn btn-default" id="clickMe" type="button" value="' .
+                        get_string('update', 'block_cmanager') . '" onclick="saveChangedCategory(\'' . $rec->id . '\')" /></div>';
 
-		if (!empty($rec->cate)) {
-			$catlisthtml .= $DB->get_field_select('course_categories', 'name', "id =" . $rec->cate);
-		} else {
-			$catlisthtml = '<i>None Selected</i>';
-		}
+            } else {
 
-	}
-			   $outputhtml .= '
+                if (!empty($rec->cate)) {
+                    $catlisthtml .= format_string($DB->get_field_select('course_categories', 'name', "id =" . $rec->cate));
+
+                } else {
+                    $catlisthtml = '<i>' . get_string('noneselected', 'block_cmanager') . '</i>';
+                }
+
+            }
+            $outputhtml .= '
 					<tr>
 					<td width="25%">
-						<b> ' . get_string('selectedcategory', 'block_cmanager'). ': </b>
+						<b> ' . get_string('selectedcategory', 'block_cmanager') . ': </b>
 					</td>
 					<td>
-						'. $catlisthtml . '
+						' . $catlisthtml . '
 					</td>
 				</tr>';
 
-				if 	(isset($rec->modkey)) {
+            if (isset($rec->modkey)) {
 
-					$outputhtml .= '
+                $outputhtml .= '
 						<tr>
 							<td width="25%">
-								<b> ' . get_string('configure_EnrolmentKey','block_cmanager'). ':</b>
+								<b> ' . get_string('configure_EnrolmentKey', 'block_cmanager') . ':</b>
 							</td>
 							<td>
-								'. $rec->modkey . '
+								' . $rec->modkey . '
 							</td>
 						</tr>';
 
-				}
+            }
 
-
-				$outputhtml .= '
+            $outputhtml .= '
 				' . block_cmanager_generate_summary($rec->id, $rec->formid) . '
 
 				<tr>
 					<td width="25%">
-						<b>' . get_string('originator','block_cmanager'). ':</b>
+						<b>' . get_string('originator', 'block_cmanager') . ':</b>
 					</td>
 					<td>
 						' . $lecturerhtml . '
@@ -355,10 +394,10 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 
 				<tr>
 					<td width="25%">
-						<b>' . get_string('comments','block_cmanager'). ':</b>
+						<b>' . get_string('comments', 'block_cmanager') . ':</b>
 					</td>
 					<td>
-						'. $latestComment . '
+						' . $latestComment . '
 					</td>
 
 				</tr>
@@ -366,51 +405,47 @@ function block_cmanager_display_admin_list($pendinglist, $includerightpanel, $in
 			 </div>
 			 ';
 
+            $outputhtml .= '</div>';
+            $counter++;
+        }
 
-
-		$outputhtml .= '</div>';
-		$counter++;
-	}
-
-
-return $outputhtml;
-}
-
-
-
-/**
-* Generate a summary
-*/
-function block_cmanager_generate_summary($recordid, $formid) {
-
-    global $CFG, $DB;
-
-    $generatedhtml = '';
-
-    // Get the form fields from the database.
-    $wherequery = "formid = '$formid'";
-
-    $modrecords = $DB->get_records('block_cmanager_formfields', array('formid'=>$formid), $sort='position ASC');
-
-    $counter = 1;
-
-    foreach ($modrecords as $record) {
-        $fieldidname = 'c' . $counter;
-        $generatedhtml .= '<tr>';
-        $generatedhtml .= '  <td width="25%">';
-        $generatedhtml .= '  <b>' . $record->lefttext . ': </b>';
-        $generatedhtml .= ' </td>';
-        $generatedhtml .= '	<td>';
-        $generatedhtml .= $DB->get_field('block_cmanager_records', $fieldidname, array('id'=>$recordid));
-        $generatedhtml .= '	</td>';
-        $generatedhtml .= '</tr>';
-
-        $counter++;
+        return $outputhtml;
     }
 
+    /**
+     * Generate a summary
+     */
+    function block_cmanager_generate_summary($recordid, $formid): string {
 
-	return $generatedhtml;
-}
+        global $CFG, $DB;
+
+        $generatedhtml = '';
+
+        // Get the form fields from the database.
+        $wherequery = "formid = '$formid'";
+
+        $modrecords = $DB->get_records('block_cmanager_formfields', array('formid' => $formid), $sort = 'position ASC');
+
+        $counter = 1;
+
+        foreach ($modrecords as $record) {
+            $fieldidname = 'c' . $counter;
+
+            $generatedhtml .= '<tr>';
+            $generatedhtml .= '  <td width="25%">';
+            $generatedhtml .= '  <b>' . format_string($record->lefttext) . ': </b>';
+            $generatedhtml .= ' </td>';
+            $generatedhtml .= '	<td>';
+            $customfield = $DB->get_field('block_cmanager_records', $fieldidname, array('id' => $recordid));
+            $generatedhtml .= format_string($customfield);
+            $generatedhtml .= '	</td>';
+            $generatedhtml .= '</tr>';
+
+            $counter++;
+        }
+        return $generatedhtml;
+    }
+
 
 
 

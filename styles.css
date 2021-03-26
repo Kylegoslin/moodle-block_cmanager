@@ -1,0 +1,32 @@
+/* Course Request Tables: module_manager.php, cmanager_admin.php,  */
+
+/* scale icons down */
+#existingrequesticons a img {
+    height: 24px;
+}
+
+/* increase space in table rows */
+#existingrequest td {
+    line-height: 1.5;
+}
+
+/*  cmanager_admin.php: fix text input */
+#searchtext {
+    width: 190px;
+    margin: 2px;
+}
+
+/*  cmanager_admin.php: some space between elements */
+#searchtype {
+    margin: 2px;
+}
+
+/*  cmanager_admin.php: position checkbox */
+#existingrequest input[type="checkbox"] {
+    float: left;
+}
+
+/* cmanager_admin.php: add padding to checkbox and label div */
+#requestcheckbox {
+    padding: 10px;
+}

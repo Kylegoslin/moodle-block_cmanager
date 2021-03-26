@@ -56,14 +56,14 @@ $res = $DB->delete_records('block_cmanager_comments', array('instanceid'=>$delet
 
 if($res){
     $event = \block_cmanager\event\course_deleted::create(array(
-    'objectid' => $objid,
+    'objectid' => '',
     'other' => get_string('courserecorddeleted','block_cmanager') . 'ID:' . $deleteId,
     'context' => $context,
     ));
     $event->trigger();
 }
 
-// rediect the browser back when finished deleting.
+// redirect the browser back when finished deleting.
 if ($type == 'a') {
 	echo "<script>window.location='cmanager_admin.php';</script>";
 

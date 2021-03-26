@@ -37,8 +37,8 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage2', 'block_cmanager'));
-
-$PAGE->set_url('/blocks/cmanager/formeditor/page2.php');
+$mid = optional_param('id', '', PARAM_INT);
+$PAGE->set_url('/blocks/cmanager/formeditor/page2.php', ['id' => $mid]);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
 $PAGE->set_title(get_string('pluginname', 'block_cmanager'));

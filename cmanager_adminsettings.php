@@ -253,7 +253,7 @@ class block_cmanager_adminsettings_form extends moodleform {
 	$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('configureadminsettings','block_cmanager').'</span>');
 
     // Back Button
-	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button type="button" onclick="goBack();"><img src="icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>');
+	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;   <button class="btn btn-secondary" type="button" onclick="goBack();"><img src="icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>');
 
 
 
@@ -384,8 +384,8 @@ class block_cmanager_adminsettings_form extends moodleform {
 				window.location="history/delete.php?delete=archonly";
 			}
 			</script>
-				<input type="button" onClick="deleteAll()" value="'.get_string('deleteAllRequests', 'block_cmanager').'"><p></p>
-				<input type="button" onClick="deleteArchOnly()" value="'.get_string('deleteOnlyArch', 'block_cmanager').'">
+				<input class="btn btn-secondary" type="button" onClick="deleteAll()" value="'.get_string('deleteAllRequests', 'block_cmanager').'"><p></p>
+				<input class="btn btn-secondary" type="button" onClick="deleteArchOnly()" value="'.get_string('deleteOnlyArch', 'block_cmanager').'">
 
 
 				</div>
@@ -510,7 +510,7 @@ class block_cmanager_adminsettings_form extends moodleform {
 $saveall = '
 </div>
 <br><br><br>
-<span style="font-size:12px"><center><input type="submit" value="'.get_string('SaveAll','block_cmanager').'" /></center></span>
+<span style="font-size:12px"><center><input class="btn btn-secondary" type="submit" value="'.get_string('SaveAll','block_cmanager').'" /></center></span>
 </form>
 </div> <!--end of fragment 2 -->
 </div><!--tabs tag -->

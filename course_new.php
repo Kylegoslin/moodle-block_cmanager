@@ -98,10 +98,10 @@ class block_cmanager_new_course_form extends moodleform {
 			    if ($ineditingmode == true) {
 				    $fname = 'c' . $fieldnamecounter;
 				  	$fieldvalue = $currentrecord->$fname;
-					block_cmanager_create_text_field(stripslashes($field->lefttext), $mform, $fieldname, 
+					block_cmanager_create_text_field(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                      $fieldvalue, $field->reqfield);
 				} else {
-				      block_cmanager_create_text_field(stripslashes($field->lefttext), $mform, $fieldname, '', 
+				      block_cmanager_create_text_field(stripslashes(format_string($field->lefttext)), $mform, $fieldname, '',
                                                        $field->reqfield);
 				  }
 				  
@@ -110,10 +110,10 @@ class block_cmanager_new_course_form extends moodleform {
 			        if ($ineditingmode == true) {
 					    $fname = 'c' . $fieldnamecounter;
 					  	$fieldvalue = $currentrecord->$fname;
-						block_cmanager_create_text_area(stripslashes($field->lefttext), $mform, $fieldname, 
+						block_cmanager_create_text_area(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                         $fieldvalue, $field->reqfield);
 					} else {
-				  		block_cmanager_create_text_Area(stripslashes($field->lefttext), $mform, $fieldname, 
+				  		block_cmanager_create_text_Area(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                         '', $field->reqfield);
 				  	}
 			}
@@ -121,11 +121,11 @@ class block_cmanager_new_course_form extends moodleform {
 			        if ($ineditingmode == true) {
 					    $fname = 'c' . $fieldnamecounter;
 					  	$fieldvalue = $currentrecord->$fname;
-						block_cmanager_create_dropdown(stripslashes($field->lefttext), $field->id, $mform, 
+						block_cmanager_create_dropdown(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                        $fieldname, $fieldvalue, $field->reqfield);
 							
 					} else  {
-			   			block_cmanager_create_dropdown(stripslashes($field->lefttext), $field->id, $mform, 
+			   			block_cmanager_create_dropdown(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                        $fieldname, '', $field->reqfield); 
 					}
 		   }
@@ -133,11 +133,11 @@ class block_cmanager_new_course_form extends moodleform {
 			  	 	if ($ineditingmode == true) {
 					  	 $fname = 'c' . $fieldnamecounter;
 					  	 $fieldvalue = $currentrecord->$fname;
-						 block_cmanager_create_radio(stripslashes($field->lefttext), $field->id, $mform, 
+						 block_cmanager_create_radio(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                      $fieldname, $fieldvalue, $field->reqfield);
 						
 					} else {
-						 block_cmanager_create_radio(stripslashes($field->lefttext), $field->id, $mform, 
+						 block_cmanager_create_radio(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                      $fieldname, '', $field->reqfield);
 					}
 		  }
@@ -222,8 +222,7 @@ if ($mform->is_cancelled()) {
         $newrec->c15 = $fromform->f15;
     }
 
-    // Tag the module as new  
-	$newrec->req_type = get_string('course_new_mod_create','block_cmanager');
+    // Tag the module as new
 	$newrec->status = 'PENDING';
 	$DB->update_record('block_cmanager_records', $newrec); 
 
@@ -239,9 +238,9 @@ function block_cmanager_create_text_field($lefttext, $form, $fieldname, $fieldva
 	$attributes = array();
 	$attributes['value'] = $fieldvalue;
 	$form->addElement('text', $fieldname, $lefttext, $attributes);
+    $form->setType($fieldname, PARAM_TEXT);
 	if ($reqfield == 1) {
 		$form->addRule($fieldname, '', 'required', null, 'server', false, false);
-        $form->setType($fieldname, PARAM_TEXT);
 	}
 }
 
@@ -317,8 +316,7 @@ function block_cmanager_create_dropdown($lefttext, $id, $form, $fieldname, $sele
 	foreach ($field3Items as $item) {
 	        $value = $item->value;
 			if ($value != '') {
-			    $options[$value] = $value;
-			    $options[$value] = $value;
+			    $options[$value] = format_string($value);
 			}
 	 }
 		  

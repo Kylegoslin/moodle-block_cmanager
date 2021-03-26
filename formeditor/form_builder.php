@@ -144,7 +144,7 @@ class block_cmanager_builder_form extends moodleform {
  
    	$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('formpage2','block_cmanager').'</span>');
    
- 	$mform->addElement('html', '<p></p>	<button type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
+ 	$mform->addElement('html', '<p></p>	<button class="btn btn-secondary" type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
 	');
 	
 	// Page description text
@@ -159,7 +159,7 @@ class block_cmanager_builder_form extends moodleform {
     $whereQuery = "varname = 'page2form'";
  	$formrows = $DB->get_recordset_select('block_cmanager_config', $whereQuery);
 										   
-		$selectHTML = '<center>'.get_string('formBuilder_selectDescription','block_cmanager').': <select onchange="saveSelectedForm()" id="selectform">';
+		$selectHTML = '<center>'.get_string('formBuilder_selectDescription','block_cmanager').' <select onchange="saveSelectedForm()" id="selectform">';
 		    	foreach($formrows as $row){
 				$selected = '';	
 				if($currentSelectedForm == $row->id){
@@ -217,7 +217,7 @@ class block_cmanager_builder_form extends moodleform {
 		
 	    '. $formsItemsHTML .'
 	    	   <p></p> 
-			   <input type="text" id = "newformname" size="20"></input> <input type="button" value = "'.get_string('formBuilder_createNewText','block_cmanager').'" onclick="addNewField()"/></center>');
+			   <input type="text" id = "newformname" size="20"></input> <input class="btn btn-secondary" type="button" value = "'.get_string('formBuilder_createNewText','block_cmanager').'" onclick="addNewField()"/></center>');
 	}
 }
 

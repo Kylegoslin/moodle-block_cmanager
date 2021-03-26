@@ -91,7 +91,7 @@ class block_cmanager_deny_form extends moodleform {
 
 
 	// Page description text
-	$mform->addElement('html', '<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+	$mform->addElement('html', '<button class="btn btn-secondary" type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
 
 		<script>
 		function addSelectedText(num){
@@ -197,7 +197,7 @@ class block_cmanager_deny_form extends moodleform {
 		<textarea id="newcomment" name="newcomment" rows="30" cols="52" maxlength="280"></textarea>
 		<p></p>
 	</div>
-		<input type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
+		<input class="btn btn-secondary" type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
 
 
 

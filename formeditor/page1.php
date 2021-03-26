@@ -223,7 +223,7 @@ class block_cmanager_page1_form extends moodleform {
 		&nbsp;
 		<p></p>	
 	 
- 	<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+ 	<button class="btn-secondary" type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
 	
 
 
@@ -348,17 +348,17 @@ class block_cmanager_page1_form extends moodleform {
 		
 		<tr>
 		   <td>
-		      Values:
+		      ' . get_string('entryFields_values','block_cmanager') . '
 		   </td>
-		       ' . $field3itemshtml. '
+		       ' . format_text($field3itemshtml, FORMAT_HTML, ['context'=> context_system::instance()]) . '
 		   <td>
 		<p></p>
 		&nbsp;
 
-		<input type="text" id="newitem"></input><input type="submit" name="submitbutton" value="'.get_string('entryFields_AddNewItem','block_cmanager').'" onclick="addNewItem();">
+		<input type="text" id="newitem"></input><input class="btn-secondary" type="submit" name="submitbutton" value="'.get_string('entryFields_AddNewItem','block_cmanager').'" onclick="addNewItem();">
 		<p></p>
 		
-		<button type="button" onclick="saveAllChanges(\''.get_string('ChangesSaved','block_cmanager').'\');">
+		<button class="btn-secondary" type="button" onclick="saveAllChanges(\''.get_string('ChangesSaved','block_cmanager').'\');">
         '.get_string('SaveChanges','block_cmanager').'  
         </button>        
 		

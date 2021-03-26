@@ -90,7 +90,7 @@ class block_cmanager_view_summary_form extends moodleform {
 
   	// Page description text
  	$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;
-				                <button type="button" value="" onclick="goBack();"><img src="icons/back.png"/>'.get_string('back','block_cmanager').'</button> <p></p>');
+				                <button class="btn btn-secondary" type="button" value="" onclick="goBack();"><img src="icons/back.png"/>'.get_string('back','block_cmanager').'</button> <p></p>');
 				    
 	$rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
     $displayModHTML = block_cmanager_display_admin_list($rec, false, false, false, '');

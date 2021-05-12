@@ -22,6 +22,7 @@
  *
  * @package    block_cmanager
  * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -36,17 +37,24 @@ if ($CFG->branch < 36) {
 
 require_login();
 
+$currentmode = optional_param('mode', '', PARAM_INT);
+if ($currentmode == 1) { // Make a new request
+    $pagetitle = 'block_request';
+} else if ($currentmode == 2) { // editing mode
+    $pagetitle = 'requestReview_AlterRequest';
+} else {
+    $pagetitle = 'modrequestfacility';
+}
+
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
-$PAGE->navbar->add(get_string('modrequestfacility', 'block_cmanager'));
+$PAGE->navbar->add(get_string($pagetitle, 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/course_request.php');
 $context = context_system::instance();
 $PAGE->set_context($context);
-
-
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string($pagetitle, 'block_cmanager'));
+$PAGE->set_title(get_string($pagetitle, 'block_cmanager'));
 echo $OUTPUT->header();
 
 
@@ -57,7 +65,6 @@ echo $OUTPUT->header();
 $currentsess = '00';
 
 
-$currentmode = optional_param('mode', '', PARAM_INT);
 if ($currentmode == 1) { // Make a new request
 
 
@@ -99,9 +106,9 @@ else if ($currentmode == 2) { // editing mode
 
 $currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentsess), '*', IGNORE_MULTIPLE);
 
-// Quick hack to stop guests from making requests!
-if ($USER->id == 1) {
-    echo error('Sorry no guest access, please login.');
+// Stop guests from making requests!
+if (isguestuser()) {
+    echo error(get_string('guestsarenotallowed', 'error'));
     die;
 }
 
@@ -124,68 +131,49 @@ class block_cmanager_courserequest_form extends moodleform {
 
         $mform =& $this->_form; // Don't forget the underscore!
 
-        $mform->addElement('header', 'mainheader','<span style="font-size:18px">'.
-                           get_string('modrequestfacility','block_cmanager'). '</span>');
+        $field1desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
+        $field2desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);
 
-        $field1desc = $DB->get_field('block_cmanager_config', 'value',
-                                     array('varname'=>'page1_fielddesc1'), IGNORE_MULTIPLE);
-        $field2desc = $DB->get_field('block_cmanager_config', 'value',
-                                     array('varname'=>'page1_fielddesc2'), IGNORE_MULTIPLE);
+        // Get the field values.
+        $field1title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname1'), IGNORE_MULTIPLE);
+        $field2title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname2'), IGNORE_MULTIPLE);
+        $field3desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc3'), IGNORE_MULTIPLE);
+        $field4title = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fieldname4'), IGNORE_MULTIPLE);
+        $field4desc = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_fielddesc4'), IGNORE_MULTIPLE);
+        // Get field 3 status.
+        $field3status = $DB->get_field('block_cmanager_config', 'value', array('varname'=>'page1_field3status'), IGNORE_MULTIPLE);
 
-
-        // Get the field values
-        $field1title = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_fieldname1'), IGNORE_MULTIPLE);
-        $field2title = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_fieldname2'), IGNORE_MULTIPLE);
-        $field3desc = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_fielddesc3'), IGNORE_MULTIPLE);
-        $field4title = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_fieldname4'), IGNORE_MULTIPLE);
-        $field4desc = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_fielddesc4'), IGNORE_MULTIPLE);
-        //get field 3 status
-        $field3status = $DB->get_field('block_cmanager_config', 'value',
-                                      array('varname'=>'page1_field3status'), IGNORE_MULTIPLE);
-
-        //get the value for autokey - the config variable that determines enrolment key auto or prompt
+        // Get the value for autokey - the config variable that determines enrolment key auto or prompt
         $autoKey = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'autoKey'");
 
+        // Get the value for category selection - the config variable that determines if user can choose a category.
         $selfcat = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'selfcat'");
 
         // Page description text
-        $mform->addElement('html', '<p></p>'.get_string('courserequestline1','block_cmanager'));
-        $mform->addElement('html', '<p></p><div style="width:545px; text-align:left"><b>' .
-                           get_string('step1text','block_cmanager'). '</b></div><p></p><br>');
+        $mform->addElement('html', '<p>'.get_string('courserequestline1','block_cmanager').'</p>');
+        $mform->addElement('html', '<h2>' . get_string('step1text','block_cmanager'). '</h2>');
 
-        // Programme Code
-        $attributes = array();
-
+        // Course shortname.
+        $attributes = [];
         $attributes['value'] = $currentrecord->modcode;
         $mform->addElement('text', 'programmecode', format_string($field1title), $attributes, '');
-        $mform->addRule('programmecode', get_string('request_rule1','block_cmanager'), 'required',
-                        null, 'server', false, false);
-
-
-        $mform->addElement('static', 'description', '', format_string($field1desc));
-        $mform->addElement('html', '<p></p>');
+        $mform->addHelpButton('programmecode', 'shortnamecourse');
+        $mform->addRule('programmecode', get_string('request_rule1','block_cmanager'), 'required', null, 'server', false, false);
         $mform->setType('programmecode', PARAM_TEXT);
+        $mform->addElement('static', 'description', '', format_string($field1desc));
 
-        // Programme Title
-        $attributes = array();
+        // Course fullname.
+        $attributes = [];
         $attributes['value'] = $currentrecord->modname;
         $mform->addElement('text', 'programmetitle', format_string($field2title), $attributes);
-        $mform->addRule('programmetitle', get_string('request_rule1','block_cmanager'),
-                        'required', null, 'server', false, false);
+        $mform->addHelpButton('programmetitle', 'fullnamecourse');
+        $mform->addRule('programmetitle', get_string('request_rule1','block_cmanager'), 'required', null, 'server', false, false);
         $mform->setType('programmetitle', PARAM_TEXT);
-
         $mform->addElement('static', 'description', '', format_string($field2desc));
-        $mform->addElement('html', '<p>&nbsp;<br>');
 
-
-        // Programme Mode
+        // Optional Dropdown
         if ($field3status == 'enabled') {
-            $options = array();
+            $options = [];
             $selectQuery = "varname = 'page1_field3value'";
             $field3Items = $DB->get_recordset_select('block_cmanager_config', $select=$selectQuery);
 
@@ -193,55 +181,57 @@ class block_cmanager_courserequest_form extends moodleform {
                 $value = $item->value;
                 if ($value != '') {
                     $options[$value] = format_string($value);
-                    // $options[$value] = $value;
                 }
             }
 
             $mform->addElement('select', 'programmemode', format_string($field3desc) , $options);
-            $mform->addRule('programmemode', get_string('request_rule2','block_cmanager'),
-                            'required', null, 'server', false, false);
+            $mform->addRule('programmemode', get_string('request_rule2','block_cmanager'), 'required', null, 'server', false, false);
             $mform->setDefault('programmemode', $currentrecord->modmode);
             $mform->setType('programmemode', PARAM_TEXT);
         }
 
-
-        // If enabled, give the user the option
-        // to select a category location for the course.
+        // If enabled, give the user the option to select a category location for the course.
         if ($selfcat == 'yes') {
-          //  $movetocategories = array();
+            //  $movetocategories = array();
             if ($CFG->branch > 35) {
                 $options = core_course_category::make_categories_list();
             } else {
                 $options = coursecat::make_categories_list();
             }
             $mform->addElement('select', 'menucategory', get_string('requestForm_category', 'block_cmanager'), $options);
+            $mform->addHelpButton('menucategory', 'coursecategory');
 
             if ($_SESSION['editingmode'] == 'true') {
                 $mform->setDefault('menucategory', $currentrecord->cate);
+            } else {
+                $mform->setDefault('menucategory', $CFG->defaultrequestcategory);
             }
-
         }
 
+        // Enrolment key.
         if (!$autoKey) {
-            // enrolment key
-            $attributes = array();
-            $mform->addElement('html', '<br><br>');
+            $attributes = [];
             $attributes['value'] = $currentrecord->modkey;
             $mform->addElement('text', 'enrolkey', $field4title, $attributes);
-            $mform->addRule('enrolkey', get_string('request_rule3','block_cmanager'), 'required',
-                            null, 'server', false, false);
+            $mform->addRule('enrolkey', get_string('request_rule3','block_cmanager'), 'required', null, 'server', false, false);
             $mform->setType('enrolkey', PARAM_TEXT);
         }
 
-        // Hidden form element to pass the key
-
+        // Hidden form element to pass the key.
         if (isset($_GET['edit'])) {
 
             $mform->addElement('hidden', 'editingmode', $currentsess);
             $mform->setType('editingmode', PARAM_TEXT);
-         }
+        }
 
-        $mform->addElement('html', '<p></p>&nbsp<p></p>');
+        // Course Summary.
+        if (false) { // This functionality has not yet been implemented.
+            $mform->addElement('editor', 'summary_editor', get_string('summary'), null, course_request::summary_editor_options());
+            $mform->addHelpButton('summary_editor', 'coursesummary');
+            $mform->setType('summary_editor', PARAM_RAW);
+        }
+
+        // Submit / Cancel buttons.
         $buttonarray=array();
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('Continue','block_cmanager'));
         $buttonarray[] = &$mform->createElement('cancel', 'cancel', get_string('cancel','block_cmanager'));
@@ -319,8 +309,8 @@ if ($mform->is_cancelled()) {
 
 
     // If we are not in editing mode, continue search or creation
-    $selectquery = "shortname LIKE '%".addslashes($postcode)."%'                    
-                    OR (shortname LIKE '%".addslashes($spacecheck)."%' 
+    $selectquery = "shortname LIKE '%".addslashes($postcode)."%'
+                    OR (shortname LIKE '%".addslashes($spacecheck)."%'
                     AND shortname LIKE '%".addslashes($postmode)."%')
                     OR shortname LIKE '%".addslashes($spacecheck)."%' ";
 

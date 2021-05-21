@@ -89,9 +89,9 @@ function block_cmanager_new_course_approved_mail_user($uids, $current_mod_info) 
         $subject = get_string('emailSubj_userApproved','block_cmanager');
         $rec = $DB->get_record('block_cmanager_config', array('varname'=>'approveduseremail'));
 
-        if (strlen(trim($rec->value)) > 0){//are there characters in the field.
+        if (strlen(trim($rec->value)) > 0) { //are there characters in the field.
             $messagetext = block_cmanager_convert_tags_to_values($rec->value, $current_mod_info);
-            email_to_user($emailinguserobject, $senderemailaddress, $subject, $messagetext, $messagehtml='', $attachment='', 
+            email_to_user($emailinguserobject, $senderemailaddress, $subject, format_text($messagetext), $messagehtml='', $attachment='',
             $attachname='', true, $replyto='', $replytoname='', $wordwrapwidth=79);
         }
 }
@@ -127,7 +127,7 @@ global $USER, $CFG, $emailsender, $senderemailaddress, $DB;
             $subject = get_string('emailSubj_adminApproved','block_cmanager');
 
 
-            block_cmanager_send_email_to_address($to, $subject, $messagetext);
+            block_cmanager_send_email_to_address($to, $subject, format_text($messagetext));
         }//end for loop
     }//end if
 }//end function
@@ -158,7 +158,7 @@ function block_cmanager_request_new_mod_email_admins($current_mod_info){
             //$from = $senderemailaddress;
             $subject = get_string('emailSubj_adminNewRequest','block_cmanager');
 
-            block_cmanager_send_email_to_address($to, $subject, $messagetext);						 
+            block_cmanager_send_email_to_address($to, $subject, format_text($messagetext));
         }//end for
     }//end if
 	
@@ -180,7 +180,7 @@ function block_cmanager_request_new_mod_email_user($uid, $current_mod_info){
 
     if (strlen(trim($user_email_message->value)) > 0) {//are there characters in the field.
         $messagetext = block_cmanager_convert_tags_to_values($user_email_message->value, $current_mod_info);
-        email_to_user($emailinguserobject, $emailsender, $subject, $messagetext, $messagehtml='', $attachment='', 
+        email_to_user($emailinguserobject, $emailsender, $subject, format_text($messagetext), $messagehtml='', $attachment='',
         $attachname='', true, $replyto='', $replytoname='', $wordwrapwidth=79);
     }//end if
 }//end function
@@ -238,7 +238,7 @@ $message
 $additionalSignature
 ";
 
-	email_to_user($emailinguserobject, $from, $subject, $messagetext, $messagehtml='', $attachment='', 
+	email_to_user($emailinguserobject, $from, $subject, format_text($messagetext), $messagehtml='', $attachment='',
 	              $attachname='', true, $replyto='', $replytoname='', $wordwrapwidth=79);
 
 		}//end if
@@ -276,7 +276,7 @@ $additionalSignature
 		
 		
 			 
-		block_cmanager_send_email_to_address($to, $subject, $messagetext);
+		block_cmanager_send_email_to_address($to, $subject, format_text($messagetext));
 	 }//end for
 		
      }//end if
@@ -313,7 +313,7 @@ function block_cmanager_send_deny_email_admin($message, $mid, $current_mod_info)
         $messagetext .= '';
         
         $messagetext .= block_cmanager_convert_tags_to_values($admin_email->value, $current_mod_info);
-        block_cmanager_send_email_to_address($to, $subject, $messagetext);
+        block_cmanager_send_email_to_address($to, $subject, format_text($messagetext));
     	
      }//end loop
 
@@ -343,7 +343,7 @@ function block_cmanager_send_deny_email_user($message, $userid, $mid, $current_m
         $messagetext = $message;
         $messagetext .= '';
         $messagetext .= block_cmanager_convert_tags_to_values($user_email->value, $current_mod_info);
-        email_to_user($emailinguserobject, $from, $subject, $messagetext, $messagehtml= '', $attachment='', 
+        email_to_user($emailinguserobject, $from, $subject, format_text($messagetext), $messagehtml= '', $attachment='',
         $attachname='', true, $replyto='', $replytoname='', $wordwrapwidth=79);
     }
 
@@ -404,7 +404,7 @@ function block_cmanager_handover_email_lecturers($course_id, $currentUserId, $cu
 " . $custommessage . "
 ". $custom_sig;
 				
-	           email_to_user($emailinguserobject, $from, $subject, $messagetext, $messagehtml='', $attachment='', 
+	           email_to_user($emailinguserobject, $from, $subject, format_text($messagetext), $messagehtml='', $attachment='',
   			                 $attachname='', $usetrueaddress=true, $replyto='', $replytoname='', $wordwrapwidth=79);
 	
 }
@@ -429,7 +429,7 @@ $custommessage
 $custom_sig
 							";
 	
-	email_to_user($current_user_emailinguserobject, $from, $subject, $messagetext, $messagehtml='', $attachment='', 
+	email_to_user($current_user_emailinguserobject, $from, $subject, format_text($messagetext), $messagehtml='', $attachment='',
 				  $attachname='', $usetrueaddress=true, $replyto='', $replytoname='', $wordwrapwidth=79);
 
 }//end if
@@ -466,7 +466,7 @@ $custom_sig
             $userobj;
             $userobj->email = $to;
             			
-            block_cmanager_send_email_to_address($to, $subject, $messagetext);
+            block_cmanager_send_email_to_address($to, $subject, format_text($messagetext));
 		
 		
 		}//end loop

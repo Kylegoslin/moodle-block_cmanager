@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -32,11 +33,13 @@ require_once($formPath);
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
-$PAGE->navbar->add(get_string('modrequestfacility', 'block_cmanager'));
+$PAGE->navbar->add(get_string('block_request', 'block_cmanager'), new moodle_url('/blocks/cmanager/course_request.php'));
+$PAGE->navbar->add(get_string('formBuilder_step2', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/course_new.php');
 $PAGE->set_context(context_system::instance());
 
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_title(get_string('formBuilder_step2', 'block_cmanager'));
+$PAGE->set_heading(get_string('formBuilder_step2', 'block_cmanager'));
 
 
 $context = context_system::instance();
@@ -54,7 +57,7 @@ $ineditingmode = false;
 $editid = optional_param('edit', '0', PARAM_INT);
 if ($editid) {
     $ineditingmode = true;
-    $currentsess = $editid; 
+    $currentsess = $editid;
 } else {
     $currentsess = $_SESSION['cmanager_session'] ;
 }
@@ -68,52 +71,48 @@ if ($editid) {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_new_course_form extends moodleform {
- 
+
     function definition() {
         global $CFG, $currentsess, $ineditingmode, $DB;
-		
+
         $currentrecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentsess));
-		
-		$mform =& $this->_form; 
-		$mform->addElement('header', 'mainheader','<span style="font-size:18px">'.  
-                           get_string('modrequestfacility','block_cmanager'). '</span>');
+
+		$mform =& $this->_form;
 
       	// Page description text
-		$mform->addElement('html', '<p></p>'.get_string('courserequestline1','block_cmanager'));
-		$mform->addElement('html', '<p></p><div style="width:545px; text-align:left"><b>'. 
-                           get_string('formBuilder_step2','block_cmanager').'</b></div><p></p>');
+		$mform->addElement('html', '<p>' . get_string('formBuilder_previewInstructions1','block_cmanager') . '</p>');
 
         // Dynamically generate the form from the pre-designed selected form.
         $formid = $DB->get_field_select('block_cmanager_config', 'value', "varname = 'current_active_form_id'");
- 
+
   	    $selectquery = "";
-		$formfields = $DB->get_records('block_cmanager_formfields', array('formid'=>$formid), $sort='position ASC');		
-				
+		$formfields = $DB->get_records('block_cmanager_formfields', array('formid'=>$formid), $sort='position ASC');
+
         $fieldnamecounter = 1;
-		
+
         foreach ($formfields as $field) {
             $fieldname = 'f' . $fieldnamecounter; // Give each field an incremented fieldname.
-			   
-			if ($field->type == 'textfield') {   	
+
+			if ($field->type == 'textfield') {
 			    if ($ineditingmode == true) {
 				    $fname = 'c' . $fieldnamecounter;
 				  	$fieldvalue = $currentrecord->$fname;
-					block_cmanager_create_text_field(stripslashes($field->lefttext), $mform, $fieldname, 
+					block_cmanager_create_text_field(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                      $fieldvalue, $field->reqfield);
 				} else {
-				      block_cmanager_create_text_field(stripslashes($field->lefttext), $mform, $fieldname, '', 
+				      block_cmanager_create_text_field(stripslashes(format_string($field->lefttext)), $mform, $fieldname, '',
                                                        $field->reqfield);
 				  }
-				  
+
 			}
             else if ($field->type == 'textarea') {
 			        if ($ineditingmode == true) {
 					    $fname = 'c' . $fieldnamecounter;
 					  	$fieldvalue = $currentrecord->$fname;
-						block_cmanager_create_text_area(stripslashes($field->lefttext), $mform, $fieldname, 
+						block_cmanager_create_text_area(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                         $fieldvalue, $field->reqfield);
 					} else {
-				  		block_cmanager_create_text_Area(stripslashes($field->lefttext), $mform, $fieldname, 
+				  		block_cmanager_create_text_Area(stripslashes(format_string($field->lefttext)), $mform, $fieldname,
                                                         '', $field->reqfield);
 				  	}
 			}
@@ -121,32 +120,32 @@ class block_cmanager_new_course_form extends moodleform {
 			        if ($ineditingmode == true) {
 					    $fname = 'c' . $fieldnamecounter;
 					  	$fieldvalue = $currentrecord->$fname;
-						block_cmanager_create_dropdown(stripslashes($field->lefttext), $field->id, $mform, 
+						block_cmanager_create_dropdown(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                        $fieldname, $fieldvalue, $field->reqfield);
-							
+
 					} else  {
-			   			block_cmanager_create_dropdown(stripslashes($field->lefttext), $field->id, $mform, 
-                                                       $fieldname, '', $field->reqfield); 
+			   			block_cmanager_create_dropdown(stripslashes(format_string($field->lefttext)), $field->id, $mform,
+                                                       $fieldname, '', $field->reqfield);
 					}
 		   }
 		   else if ($field->type == 'radio') {
 			  	 	if ($ineditingmode == true) {
 					  	 $fname = 'c' . $fieldnamecounter;
 					  	 $fieldvalue = $currentrecord->$fname;
-						 block_cmanager_create_radio(stripslashes($field->lefttext), $field->id, $mform, 
+						 block_cmanager_create_radio(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                      $fieldname, $fieldvalue, $field->reqfield);
-						
+
 					} else {
-						 block_cmanager_create_radio(stripslashes($field->lefttext), $field->id, $mform, 
+						 block_cmanager_create_radio(stripslashes(format_string($field->lefttext)), $field->id, $mform,
                                                      $fieldname, '', $field->reqfield);
 					}
 		  }
-			   
-			   
+
+
 			   $fieldnamecounter++;
 		}
-	   
- 
+
+
 	    $mform->addElement('html', '<p></p>&nbsp<p></p>');
 	    $buttonarray=array();
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('Continue','block_cmanager'));
@@ -156,7 +155,7 @@ class block_cmanager_new_course_form extends moodleform {
 	}
 }
 
- 
+
 
 
 $mform = new block_cmanager_new_course_form();//name of the form you defined in file above.
@@ -172,10 +171,10 @@ if ($mform->is_cancelled()) {
 
     global $USER, $COURSE, $CFG;
 
-	// Update all the information in the database record	
+	// Update all the information in the database record
 	$newrec = new stdClass();
 	$newrec->id = $currentsess;
-	
+
     if (!empty($fromform->f1)) {
         $newrec->c1 = $fromform->f1;
     }
@@ -222,41 +221,40 @@ if ($mform->is_cancelled()) {
         $newrec->c15 = $fromform->f15;
     }
 
-    // Tag the module as new  
-	$newrec->req_type = get_string('course_new_mod_create','block_cmanager');
+    // Tag the module as new
 	$newrec->status = 'PENDING';
-	$DB->update_record('block_cmanager_records', $newrec); 
+	$DB->update_record('block_cmanager_records', $newrec);
 
 	echo "<script>window.location='review_request.php?id=$currentsess';</script>";
 	die;
- 
+
   }
 /**
 * Dynamic text field creation
-*/ 
+*/
 function block_cmanager_create_text_field($lefttext, $form, $fieldname, $fieldvalue, $reqfield) {
-	
+
 	$attributes = array();
 	$attributes['value'] = $fieldvalue;
 	$form->addElement('text', $fieldname, $lefttext, $attributes);
+    $form->setType($fieldname, PARAM_TEXT);
 	if ($reqfield == 1) {
 		$form->addRule($fieldname, '', 'required', null, 'server', false, false);
-        $form->setType($fieldname, PARAM_TEXT);
 	}
 }
 
 /**
-* Dynamic text area creation 
+* Dynamic text area creation
 */
 function block_cmanager_create_text_area($lefttext, $form, $fieldname, $fieldvalue, $reqfield) {
-	
+
 	$attributes = array();
 	$attributes['wrap'] = 'virtual';
 	$attributes['rows'] = '5';
 	$attributes['cols'] = '60';
-				
+
 	$form->addElement('textarea', $fieldname, $lefttext, $attributes);
-	$form->setDefault($fieldname, $fieldvalue); 
+	$form->setDefault($fieldname, $fieldvalue);
     $form->setType($fieldname, PARAM_TEXT);
 	if ($reqfield == 1) {
 		$form->addRule($fieldname, '', 'required', null, 'server', false, false);
@@ -268,70 +266,55 @@ function block_cmanager_create_text_area($lefttext, $form, $fieldname, $fieldval
 * Dynamic radio button creation
 */
 function block_cmanager_create_radio($lefttext, $id, $form, $fieldname, $selectedValue, $reqfield) {
-				
+
     global $DB;
 	$selectquery = "fieldid = '$id'";
 	$field3Items = $DB->get_recordset_select('block_cmanager_form_data', $select=$selectquery);
-	
-	$counter = 1;									  
+
+    $attributes = '';
+    $radioarray = [];
 	foreach ($field3Items as $item) {
-	    $attributes = '';
-	    if ($counter == 1) { 
-			$radioarray=array();
-			$radioarray[] =& $form->createElement('radio', $fieldname, $lefttext, $item->value,
-                                                  $item->value, $attributes);
-			$form->addGroup($radioarray, $fieldname, $lefttext, array(' '), false);
-		    if ($reqfield == 1) {	
-			    $form->addRule($fieldname, '', 'required', null, 'server', false, false);
-              
-			}
-			
-		    $counter++;
-		} else {
-			$radioarray=array();
-			$radioarray[] =& $form->createElement('radio', $fieldname, '', $item->value, 
-                                                  $item->value, $attributes);
-			$form->addGroup($radioarray, $fieldname, '', array(' '), false);
-		    $counter++;
-		}
-		
-	  } 
-		
-	
+        $radioarray[] =& $form->createElement('radio', $fieldname, '', $item->value, $item->value, $attributes);
+    }
+    $form->addGroup($radioarray, $fieldname, $lefttext, [(count($radioarray) > 1 ? '<br>' : '')], false);
+    if ($reqfield == 1) {
+        $form->addRule($fieldname, '', 'required', null, 'server', false, false);
+
+    }
+
 	$form->setDefault($fieldname, $selectedValue);
-    $form->setType($fieldname, PARAM_TEXT);	
-	
+    $form->setType($fieldname, PARAM_TEXT);
+
 }
 
 /**
 * Dynamically create a drop down select menu
 */
 function block_cmanager_create_dropdown($lefttext, $id, $form, $fieldname, $selectedValue, $reqfield){
-	
+
 	global $DB;
-	
+
 	$options = array();
-	    
+
 	$selectquery = "fieldid = '$id'";
 	$field3Items = $DB->get_recordset_select('block_cmanager_form_data', $select=$selectquery);
 	foreach ($field3Items as $item) {
 	        $value = $item->value;
 			if ($value != '') {
-			    $options[$value] = $value;
-			    $options[$value] = $value;
+			    $options[$value] = format_string($value);
 			}
 	 }
-		  
+
 	$form->addElement('select', $fieldname, $lefttext , $options);
 	$form->setDefault($fieldname, $selectedValue);
-		
+
 	if ($reqfield == 1) {
 	    $form->addRule($fieldname, '', 'required', null, 'server', false, false);
 	}
     $form->setType($fieldname, PARAM_TEXT);
-	
+
 }
- 
+
 echo $OUTPUT->header();
 
 $mform->focus();

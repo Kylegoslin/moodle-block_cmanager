@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
@@ -62,15 +63,6 @@ if(isset($_GET['id'])){
 	$mid = $_SESSION['mid'];
 }
 
-
-echo '<script>
-function goBack(){
-	window.location ="../cmanager_admin.php";
-}
-</script>';
-
-
-
 class block_cmanager_deny_form extends moodleform {
 
     function definition() {
@@ -91,7 +83,7 @@ class block_cmanager_deny_form extends moodleform {
 
 
 	// Page description text
-	$mform->addElement('html', '<button type="button" onclick="goBack();"><img src="../icons/back.png"/>'.get_string('back','block_cmanager').'</button><p></p>
+	$mform->addElement('html', '<p><a href="../cmanager_admin.php" class="btn btn-default"><img src="../icons/back.png" alt=""> '.get_string('back','block_cmanager').'</a></p>
 
 		<script>
 		function addSelectedText(num){
@@ -197,7 +189,7 @@ class block_cmanager_deny_form extends moodleform {
 		<textarea id="newcomment" name="newcomment" rows="30" cols="52" maxlength="280"></textarea>
 		<p></p>
 	</div>
-		<input type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
+		<input class="btn btn-default" type="submit" value="'.get_string('denyrequest_Btn','block_cmanager').'"/>
 
 
 
@@ -214,7 +206,7 @@ class block_cmanager_deny_form extends moodleform {
 	}
 }
 
-/** 
+/**
 * Get custom text
 */
 function customText(){

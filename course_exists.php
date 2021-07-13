@@ -1,5 +1,5 @@
-<?php 
-// --------------------------------------------------------- 
+<?php
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,8 +39,8 @@ $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_u
 $PAGE->navbar->add(get_string('courseexists', 'block_cmanager'));
 $PAGE->set_url('/blocks/cmanager/course_exists.php');
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string('courseexists', 'block_cmanager'));
+$PAGE->set_title(get_string('courseexists', 'block_cmanager'));
 
 
 // Main variable for storing the current session id.
@@ -51,125 +52,104 @@ $currentSess = $_SESSION['cmanager_session'];
 <?php
 
 class block_cmanager_course_exists_form extends moodleform {
- 
-    function definition() {
-    	
-        global $CFG, $DB, $currentSess;
-		
-        $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-        $mform =& $this->_form; // Don't forget the underscore! 
-        $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('modrequestfacility','block_cmanager') . '</span>');
 
+    function definition() {
+
+        global $CFG, $DB, $currentSess;
+
+        $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
+        $mform =& $this->_form; // Don't forget the underscore!
 
 		// Page description text
-		$mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;' . get_string('modexists','block_cmanager'). '<p></p>&nbsp;');
+		$mform->addElement('html', '<p>' . get_string('modexists','block_cmanager') . '</p>');
+
+		$mform->addElement('html', '<table class="table table-striped">');
+
+        // Get out record
+        $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
+
+
+        $modCode = $currentRecord->modcode;
+        $modTitle = $currentRecord->modname;
+        $modMode = $currentRecord->modmode;
+
+        $spaceCheck =  substr($modCode, 0, 4) . ' ' . substr($modCode, 4, strlen($modCode));
+
+        $selectQuery = "shortname LIKE '%$modCode%'
+
+                        OR (shortname LIKE '%$spaceCheck%'
+                        AND shortname LIKE '%$modMode%')
+                        OR shortname LIKE '%$spaceCheck%'";
+
+        $recordsExist = $DB->record_exists_select('course', $selectQuery);
 
 
 
-		 $mform->addElement('html', '<center>
-				<div id="twobordertitlewide" style="background:transparent; width:820px">
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('modcode','block_cmanager'). '</b></div> 
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('modname','block_cmanager'). '</b></div>
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('catlocation','block_cmanager'). '</b></div>
+        $allRecords = $DB->get_recordset_select('course', $select=$selectQuery);
 
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('lecturingstaff','block_cmanager'). '</b></div> 
-					<div style="text-align: left; float: left; width:160px">&nbsp;<b>' . get_string('actions','block_cmanager'). '</b></div> 
-	
-				</div>
-				');
-
-   
-
-
-	// Get out record
-	$currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-	
-
-	$modCode = $currentRecord->modcode;
-	$modTitle = $currentRecord->modname;
-	$modMode = $currentRecord->modmode;
-	   
-	$spaceCheck =  substr($modCode, 0, 4) . ' ' . substr($modCode, 4, strlen($modCode));
-	
-	$selectQuery = "shortname LIKE '%$modCode%' 
-					
-				    OR (shortname LIKE '%$spaceCheck%' 
-					AND shortname LIKE '%$modMode%')
-					OR shortname LIKE '%$spaceCheck%'";
-	
-	$recordsExist = $DB->record_exists_select('course', $selectQuery);
-	
-	
-	
-	$allRecords = $DB->get_recordset_select('course', $select=$selectQuery);
+        // Table heading.
+        $mform->addElement('html', '
+            <tr>
+                <th>' . get_string('modcode','block_cmanager') . '</th>
+                <th>' . get_string('modname','block_cmanager') . '</th>
+                <th>' . get_string('catlocation','block_cmanager'). '</th>
+                <th>' . get_string('lecturingstaff','block_cmanager')  . '</th>
+                <th>' . get_string('actions','block_cmanager') . '</th>
+            </tr>
+        ');
 
 
+        foreach($allRecords as $record){
 
-	
-foreach($allRecords as $record){
-		
+            // Get the full category name
+            $categoryName = $DB->get_record('course_categories', array('id'=>$record->category));
 
-	$lecturerHTML = '';
-	// Get the full category name
-	$categoryName = $DB->get_record('course_categories', array('id'=>$record->category));
-	
-     // Get lecturer info
- 	$lecturerHTML = block_cmanager_get_lecturer_info($record->id);
+             // Get lecturer info
+            $lecturersHTML = block_cmanager_get_lecturers($record->id);
 
-	// Check if the category name is blank
-	if(!empty($categoryName->name)){
-		$catLocation = $categoryName->name;
-	} else {
-		$catLocation = '&nbsp';
-	}
+            // Check if the category name is blank
+            if(!empty($categoryName->name)){
+                $catLocation = $categoryName->name;
+            } else {
+                $catLocation = '&nbsp';
+            }
 
-
- 	$mform->addElement('html', '
-
-	<div id="singleborderwide" style="background:transparent">
-	<div style="text-align: left; float: left; width:160px">' . $record->shortname . '</div> 
-	<div style="text-align: left; float: left; width:160px">' . $record->fullname .'</div>
-	<div style="text-align: left; float: left; width:160px"> ' . $catLocation . '</div>
-
-	<div style="text-align: left; float: left; width:160px">' . $lecturerHTML. ' </div> 
-	<div style="text-align: left; float: left; width:160px"><span style="font-size: 10px;"><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager').'</a>
-								<p></p>
-								<a href="mailto:' .  block_cmanager_get_list_of_lecturer_emails($record->id). '">'.get_string('emailSubj_requester','block_cmanager').'</a></span></div> 
-	</div>
-       ');
+            $mform->addElement('html', '
+                <tr>
+                    <th>' . format_string($record->shortname) . '</th>
+                    <td>' . format_string($record->fullname) .'</td>
+                    <td>' . format_string($catLocation) . '</td>
+                    <td>' . $lecturersHTML . '</td>
+                    <td><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager') . '</a></td>
+                </tr>
+            ');
         }
 
+        $mform->addElement('html', '</table>');
 
-	echo '<script>function noneOfThese(){
-		
-		
-		window.location="course_new.php?status=None";
-	}</script>';
- 	$mform->addElement('html', '</center>');
-	// Page description text
-	$mform->addElement('html', '<p></p><center>' . get_string('noneofthese','block_cmanager'). ', <input type="button" value="'.get_string('clickhere','block_cmanager').'" onclick="noneOfThese()"><p></p></center>');
- 	
+        // Button: None of these? Continue.
+        $mform->addElement('html', '<p><a class="btn btn-default" href="course_new.php?status=None">' . get_string('noneofthese','block_cmanager') . '</a></p>');
 
-	$mform->closeHeaderBefore('buttonar');
-	}
+        $mform->closeHeaderBefore('buttonar');
+    }
 }
 
 
 $mform = new block_cmanager_course_exists_form();//name of the form you defined in file above.
 
-  
+
   if ($mform->is_cancelled()){
 
   } else if ($fromform=$mform->get_data()){
-  	
+
   } else {
  	  	echo $OUTPUT->header();
 	    $mform->focus();
 	    $mform->set_data($mform);
 	    $mform->display();
 	    echo $OUTPUT->footer();
-	  
- 
+
+
 }
 
 

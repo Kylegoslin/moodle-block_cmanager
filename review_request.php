@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2014-2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,14 +38,14 @@ require_login();
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/module_manager.php'));
 $PAGE->navbar->add(get_string('modrequestfacility', 'block_cmanager'));
-$PAGE->set_url('/blocks/cmanager/review_request.php');
+$mid = optional_param('id', '', PARAM_INT);
+$PAGE->set_url('/blocks/cmanager/review_request.php', ['id'=> $mid]);
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string('requestReview_Summary', 'block_cmanager'));
+$PAGE->set_title(get_string('requestReview_Summary', 'block_cmanager'));
 echo $OUTPUT->header();
 
-if (isset($_GET['id'])) {
-	$mid = required_param('id', PARAM_INT);
+if (!empty($mid)) {
 	$_SESSION['mid'] = $mid;
 } else {
 	$mid = $_SESSION['mid'];
@@ -56,17 +57,6 @@ if (has_capability('block/cmanager:addrecord',$context)) {
 } else {
   print_error(get_string('cannotrequestcourse', 'block_cmanager'));
 }
-
-
-?>
-
-<link rel="stylesheet" type="text/css" href="css/main.css" />
-<style>
-tr:nth-child(odd)		{ background-color:#eee; }
-tr:nth-child(even)		{ background-color:#fff; }
-
-</style>
-<?php
 
 /**
  * Review request
@@ -82,8 +72,8 @@ class block_cmanager_review_request_form extends moodleform {
         global $CFG, $currentSess, $mid, $USER, $DB;
 
         $mform =& $this->_form; // Don't forget the underscore!
-        $mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('requestReview_Summary','block_cmanager'). '</span>');
-        $mform->addElement('html', '<p></p>'.get_string('requestReview_intro1','block_cmanager').'<br>'.get_string('requestReview_intro2','block_cmanager').'<p></p>&nbsp;<p></p>&nbsp;');
+        $mform->addElement('html', '<p>' . get_string('requestReview_intro1','block_cmanager') . '</p>');
+        $mform->addElement('html', '<p>' . get_string('requestReview_intro2','block_cmanager') . '</p>');
 
         $rec = $DB->get_recordset_select('block_cmanager_records', 'id = ' . $mid);
 	    $displayModHTML = block_cmanager_display_admin_list($rec, false, false, false, '');
@@ -135,7 +125,7 @@ if ($mform->is_cancelled()) {
 	// Send email to admin saying we are requesting a new mod
 	block_cmanager_request_new_mod_email_admins($replaceValues);
 
-	// Send email to user to track that we are requestig a new mod
+	// Send email to user to track that we are requesting a new mod
 	block_cmanager_request_new_mod_email_user($USER->id, $replaceValues);
 
 

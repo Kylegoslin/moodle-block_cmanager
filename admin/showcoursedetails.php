@@ -29,6 +29,7 @@ global $CFG, $DB;
 $formPath = "$CFG->libdir/formslib.php";
 require_once($formPath);
 require_login();
+$PAGE->set_context(context_system::instance());
 
 require_once('../lib/displayLists.php');
 

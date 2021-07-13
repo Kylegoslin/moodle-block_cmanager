@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -41,8 +42,8 @@ $PAGE->navbar->add(get_string('allarchivedrequests', 'block_cmanager'));
 
 $PAGE->set_url('/blocks/cmanager/cmanager_admin.php');
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string('allarchivedrequests', 'block_cmanager'));
+$PAGE->set_title(get_string('allarchivedrequests', 'block_cmanager'));
 echo $OUTPUT->header();
 
 $context = context_system::instance();
@@ -50,39 +51,37 @@ $context = context_system::instance();
 if (has_capability('block/cmanager:approverecord',$context)) {
 } else {
        print_error(get_string('cannotviewrecords', 'block_cmanager'));
-} 
+}
 
 ?>
 
-
-<link rel="stylesheet" type="text/css" href="css/main.css" />
 <script src="js/jquery/jquery-3.3.1.min.js"></script>
 <script src="js/jquery/jquery-ui.1.12.1.min.js"></script>
-  
+
 <script type="text/javascript">
 var deleteRec = 0;
 function cancelConfirm(id,langString) {
-	
+
     deleteRec = id;
     console.log("deleting rec" + deleteRec);
     $("#delete_modal").modal();
-	
+
 }
 
 /**
- * This function is used to save the text from the 
+ * This function is used to save the text from the
  * categories when they are changed.
  */
 function saveChangedCategory(fieldvalue, recordId){
 
-   
-   
+
+
     $.post("ajax_functions.php", { type: 'updatecategory', value: fieldvalue, recId: recordId },
     		   function(data) {
     		     alert("Changes have been saved!");
     		   });
-	
-	
+
+
 }
 
 
@@ -105,14 +104,14 @@ function saveChangedCategory(fieldvalue, recordId){
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 class block_cmanager_adminarch_form extends moodleform {
- 
+
     function definition() {
         global $CFG;
         global $USER, $DB;
-        $mform =& $this->_form; // Don't forget the underscore! 
-     
+        $mform =& $this->_form; // Don't forget the underscore!
+
       	$selectQuery = "status = 'PENDING' ORDER BY id ASC";
-     
+
         // If search is enabled then use the
         // search parameters
         if ($_POST && isset($_POST['search'])) {
@@ -120,7 +119,7 @@ class block_cmanager_adminarch_form extends moodleform {
     		$searchType = required_param('searchtype', PARAM_TEXT);
 
             if (!empty($searchText) && !empty($searchType)) {
-    			
+
     			if ($searchType == 'code') {
     				$selectQuery = "`modcode` LIKE '%{$searchText}%'";
     			}
@@ -132,7 +131,7 @@ class block_cmanager_adminarch_form extends moodleform {
     			}
     		}
 	}
-	
+
  echo "
  <script>
  // Open the selected archived request page
@@ -141,19 +140,19 @@ class block_cmanager_adminarch_form extends moodleform {
      window.location = 'cmanager_admin_arch.php?view=history&p=' + page.value;
  }
 </script>";
-  
-  
+
+
 // Arch Requests Dropdow
 $page1_fieldname1 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname1'");
 $page1_fieldname2 = $DB->get_field_select('block_cmanager_config', 'value', "varname='page1_fieldname2'");
 
-		
+
 $additionalSearchQuery = '';
-		
+
 if ($_POST && isset($_POST['archsearch'])) {
 	$archSearchText = required_param('archsearchtext', PARAM_TEXT);
     $archSearchType = required_param('archsearchtype', PARAM_TEXT);
-	
+
 	if (!empty($archSearchText) && !empty($archSearchType)) {
         if($archSearchType == 'code') {
 		    $additionalSearchQuery = " AND `modcode` LIKE '%{$archSearchText}%'";
@@ -166,17 +165,17 @@ if ($_POST && isset($_POST['archsearch'])) {
 		}
 	}
 }
-		
+
 
 $numberOfRecords = $DB->count_records_sql("SELECT count(id) FROM " . $CFG->prefix ."block_cmanager_records WHERE status = 'COMPLETE' OR status = 'REQUEST DENIED'" . $additionalSearchQuery);
 $numberOfPages = ceil($numberOfRecords / 10) -1;
-		
+
 $selectedOption = '';
-$archRequestsDropdown = ' <br>View Page: 
+$archRequestsDropdown = ' <br>View Page:
         <select onchange="goToPage();" name="pageNumber" id="pageNumber">';
-           
-    $i = 1;		   
-		   
+
+    $i = 1;
+
     while ($i < $numberOfPages+1) {
 	    if (isset($_GET['p'])) {
 	        if (required_param('p', PARAM_INT) == $i) {
@@ -185,11 +184,11 @@ $archRequestsDropdown = ' <br>View Page:
         }
         $archRequestsDropdown .= '<option ' .$selectedOption .' value="' . $i. '">' . $i. '</option>';
         $i++;
-        $selectedOption = '';	
-    }  
+        $selectedOption = '';
+    }
 
     if ($numberOfRecords % 2) {
-	
+
     } else {
 	    if (isset($_GET['p'])) {
 	    if (required_param('p', PARAM_INT) == $i) {
@@ -201,9 +200,9 @@ $archRequestsDropdown = ' <br>View Page:
 
     $archRequestsDropdown .= '</select>';
 
-  
+
 // -----------------------------------------------------------------------------------------
- 
+
 // if a page number is selected
 if (isset($_GET['p'])) {
     $selected_page_number = required_param('p', PARAM_INT);
@@ -213,27 +212,19 @@ if (isset($_GET['p'])) {
     $fromLimit = 0;
     $toLimit = 10;
 }
-	 
-	
-$pendingList = $DB->get_records_sql("SELECT * FROM ". $CFG->prefix ."block_cmanager_records 
-                                     WHERE status = 'COMPLETE' OR status = 'REQUEST DENIED'" . $additionalSearchQuery . " 
+
+
+$pendingList = $DB->get_records_sql("SELECT * FROM ". $CFG->prefix ."block_cmanager_records
+                                     WHERE status = 'COMPLETE' OR status = 'REQUEST DENIED'" . $additionalSearchQuery . "
                                      order by id desc LIMIT $fromLimit, $toLimit");
-$mform->addElement('header', 'mainheader', '<span style="font-size:18px"> '.get_string('allarchivedrequests','block_cmanager').'</span>');
 
 $outputHTML = '';
 $outputHTML .= $archRequestsDropdown;
-$outputHTML .= '
-				<div id="twobordertitle" style="background:transparent">
-				<div style="text-align: left; float: left; font-size:11pt">&nbsp;<b>'. get_string('archivedrequests','block_cmanager').'</b></div> 
-				</div>
-			';
+$outputHTML .= '<h2>'. get_string('archivedrequests','block_cmanager').'</h2>';
 $outputHTML .= block_cmanager_display_admin_list($pendingList, true, false, false, 'admin_arch');
-			
-			
-	
 $mform->addElement('html', $outputHTML);
 
-	
+
 
 
     } // Close the function
@@ -244,24 +235,24 @@ $mform->addElement('html', $outputHTML);
 $mform = new block_cmanager_adminarch_form();
 
 if ($mform->is_cancelled()) {
-    
-	
+
+
 } else if ($fromform=$mform->get_data()) {
 //this branch is where you process validated data.
- 
+
 } else {
 
 }
 
 
 
-		
+
 if ($_POST && isset($_POST['archsearch'])) {
 
 	$archSearchText = required_param('archsearchtext', PARAM_TEXT);
 	$archSearchType = required_param('archsearchtype', PARAM_TEXT);
-	
-	echo "<script>document.getElementById('archsearchtext').value = '$archSearchText'; ";	
+
+	echo "<script>document.getElementById('archsearchtext').value = '$archSearchText'; ";
 	echo "
 		var desiredValue = '$archSearchType';
 		var el = document.getElementById('archsearchtype');
@@ -270,11 +261,11 @@ if ($_POST && isset($_POST['archsearch'])) {
 		    el.selectedIndex = i;
 		    break;
 		  }
-		} 
+		}
 		</script>
 		";
 
-	
+
 }
 
 $mform->focus();
@@ -282,20 +273,20 @@ $mform->display();
 echo $OUTPUT->footer();
 
 // Modal for deleting requests
-echo generateGenericConfirm('delete_modal', get_string('alert', 'block_cmanager') , 
-                                    get_string('configure_delete', 'block_cmanager'), 
+echo generateGenericConfirm('delete_modal', get_string('alert', 'block_cmanager') ,
+                                    get_string('configure_delete', 'block_cmanager'),
                                     get_string('yesDeleteRecords', 'block_cmanager'));
-                                    
-?>                                    
+
+?>
 <script>
 
 // delete request ok  button click handler
 $("#okdelete_modal").click(function(){
-   
+
  window.location = "deleteRequest.php?t=adminarch&&id=" + deleteRec;
 });
 
 </script>
-  
-	
+
+
 <script src="js/bootstrap.min.js"/>

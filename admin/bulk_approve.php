@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -50,16 +50,16 @@ if (isset($_GET['mul'])) {
 }
 
 class block_cmanager_bulk_approve_form extends moodleform {
- 
+
     function definition() {
         global $CFG;
         global $currentSess;
 		global $USER;
 		global $DB;
- 	
+
         $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
-        $mform =& $this->_form; // Don't forget the underscore! 
-		 
+        $mform =& $this->_form; // Don't forget the underscore!
+
         $mform->addElement('header', 'mainheader', get_string('approvingcourses','block_cmanager'));
 
 		// Page description text
@@ -67,30 +67,30 @@ class block_cmanager_bulk_approve_form extends moodleform {
 					    	<a href="../cmanager_admin.php">< Back</a>');
 
 		$mform->addElement('html', '<p></p><center>'.get_string('approvingcourses', 'block_cmanager').'</center>');
-		
-		
+
+
 		global $USER, $CFG, $DB;
-		
+
 		// Send Email to all concerned about the request deny.
 		require_once('../lib/course_lib.php');
-		
+
 		$denyIds = explode(',',$_SESSION['mul']);
-		    
+
 			foreach ($denyIds as $cid) {
-			
+
 				// If the id isn't blank
 				if ($cid != 'null') {
-				
+
 						$mid = block_cmanager_create_new_course_by_record_id($cid, true);
-									
+
 				}
-			
-		
-			}	
-	
+
+
+			}
+
 		$_SESSION['mul'] = '';
 		echo "<script> window.location = '../cmanager_admin.php';</script>";
-		
+
 
 	}
 }
@@ -103,12 +103,12 @@ class block_cmanager_bulk_approve_form extends moodleform {
 
 
    if ($mform->is_cancelled()) {
-        
+
 	echo "<script>window.location='../cmanager_admin.php';</script>";
 	die;
 
   } else if ($fromform=$mform->get_data()) {
-	
+
 
 
   } else {

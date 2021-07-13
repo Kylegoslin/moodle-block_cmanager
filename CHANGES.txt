@@ -3,23 +3,45 @@
 		CRM Changelog
 ----------------------------------------------------------------------
 
-        
+CRM 5.3
+
+Date: May/2021
+- User interface (look and feel) facelift.
+- Fixed many bug.
+- Now compatible with Moodle 3.7, 3.8, 3.9, 3.10 and 3.11.
+- Compatible with PHP 7.x.
+- Should now fully support tagged language strings.
+- Should be compatible with most Bootstrap 4 - Boost-based themes.
+- Many accessibility improvements.
+- Corrected typos in language strings.
+- Fixed HTML title on several pages.
+- Fixed breadcrumbs on several pages.
+- Commented some ambiguous source code.
+- Applied Moodle coding standards in some places.
+- Refactored some code to reduce duplication.
+- Replaced some JavaScript with HTML.
+- Corrected some HTML5 issues.
+- Fixed some formatting issues in documentation on Moodle 3.9 and 3.10 Docs.
+- Fixed field sorting issue in preview.
+- Font size is now inherited from theme.
+- Fixed issues with displaying radio buttons in forms.
+
 CRM 5.1
 
 Date: June/2018
 
 - Fixed buttons on review request page, were right aligning instead of bottom.
 - Updated version.php issue.
-- Updated DB schema issue for new moodle.   
+- Updated DB schema issue for new moodle.
 
 - Origin issue corrected during request process
-- cmanager home select all option cross browser issue fixed during bulk request actions  
+- cmanager home select all option cross browser issue fixed during bulk request actions
 - removed old code from cmanager_config.php
 - removed old $_POST/$_GET references from root folder.
-- Updated version requirement for Moodle & cmanager version    
+- Updated version requirement for Moodle & cmanager version
 - formlib/preview.php types set for each field.
-- additional clenaing on ajax function.php and parameters. 
-- Delete icons link fixed in formbuilder.     
+- additional cleaning on ajax function.php and parameters.
+- Delete icons link fixed in formbuilder.
 - Additional lang strings added to settings.
 - cmanager_admin lang strings added.
 - Blank search prevented for admin.

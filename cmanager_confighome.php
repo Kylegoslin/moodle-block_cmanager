@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../config.php");
@@ -36,8 +37,8 @@ $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'
 
 $PAGE->set_url('/blocks/cmanager/block_cmanager_confighome.php');
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string('configurecoursemanagersettings', 'block_cmanager'));
+$PAGE->set_title(get_string('configurecoursemanagersettings', 'block_cmanager'));
 echo $OUTPUT->header();
 
 
@@ -62,10 +63,8 @@ class block_cmanager_confighome_form extends moodleform {
 	function definition() {
 
 		$mform =& $this->_form; // Don't forget the underscore!
-		$mform->addElement('header', 'mainheader', '<span style="font-size:18px">'. get_string('configurecoursemanagersettings','block_cmanager'). '</span>');
 
 		$mainSlider = "
-		<p></p>
 		<table style=\"width:100%; \">
 		<tr>
 		<td style=\"padding:25px; width:30px\"><img src=\"icons/config/admin.png\"></td>
@@ -116,5 +115,3 @@ else {
 	echo $OUTPUT->footer();
 
 }
-
-

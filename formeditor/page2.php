@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");
@@ -37,11 +38,11 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('cmanagerDisplay', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_admin.php'));
 $PAGE->navbar->add(get_string('configurecoursemanagersettings', 'block_cmanager'), new moodle_url('/blocks/cmanager/cmanager_confighome.php'));
 $PAGE->navbar->add(get_string('formpage2', 'block_cmanager'));
-
-$PAGE->set_url('/blocks/cmanager/formeditor/page2.php');
+$mid = optional_param('id', '', PARAM_INT);
+$PAGE->set_url('/blocks/cmanager/formeditor/page2.php', ['id' => $mid]);
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'block_cmanager'));
-$PAGE->set_title(get_string('pluginname', 'block_cmanager'));
+$PAGE->set_heading(get_string('formBuilder_name', 'block_cmanager'));
+$PAGE->set_title(get_string('formBuilder_name', 'block_cmanager'));
 echo $OUTPUT->header();
 
 $context = context_system::instance();
@@ -50,25 +51,22 @@ if (has_capability('block/cmanager:viewconfig',$context)) {
   print_error(get_string('cannotviewrecords', 'block_cmanager'));
 }
 
-
-
-
 // Deleting dropdown menus
 if(isset($_GET['t']) && isset($_GET['del'])){
 
-  
+
 	if($_GET['t'] == 'dropitem'){ // Delete a dropdown menu item
-		//$itemid = $_GET['del']; 
+		//$itemid = $_GET['del'];
         $itemid = required_param('del', PARAM_INT);
-		
-        
-        //$fieldid = $_GET['fid']; 
+
+
+        //$fieldid = $_GET['fid'];
         $fieldid = required_param('fid', PARAM_INT);
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid,'id'=>$itemid));
 	}
-	
+
 	if($_GET['t'] == 'drop'){ // Delete all dropdown field items
-	
+
 		//$fieldid = $_GET['del'];
         $fieldid =  required_param('del', PARAM_INT);
 		$DB->delete_records('block_cmanager_form_data', array('fieldid'=>$fieldid));
@@ -82,7 +80,7 @@ if(isset($_GET['del'])){
 
 	$formid =  required_param('id', PARAM_INT);
 	$delid =  required_param('del', PARAM_INT);
-    
+
     $DB->delete_records_select('block_cmanager_formfields', "id = $delid");
 
 	//Update the position numbers
@@ -108,15 +106,15 @@ if(isset($_GET['del'])){
 // Move field up
 if(isset($_GET['up'])){
 
-	
+
     $currentid =  required_param('up', PARAM_INT);
     $formid =  required_param('id', PARAM_INT);
     // current record being moved
 	$currentrecord = $DB->get_record('block_cmanager_formfields', array('id'=>$currentid, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
-    
+
 	$currentposition = $currentrecord->position;
- 
-    
+
+
     // record above the one being moved
 	$higherpos = ($currentposition-1);
     $higherrecord = $DB->get_record('block_cmanager_formfields', array('position'=>$higherpos, 'formid'=>$formid), $fields='*', IGNORE_MULTIPLE);
@@ -141,7 +139,7 @@ if(isset($_GET['up'])){
 // Move field down
 if(isset($_GET['down'])){
 
-	
+
     $currentid =  required_param('down', PARAM_INT);
     $formid =  required_param('id', PARAM_INT);
 
@@ -177,109 +175,67 @@ else {
 	echo get_string('formBuilder_p2_error','block_cmanager');
 	die;
 }
-	
-	
-	$htmloutput = '<br>
-	<script>		
-	var num = 1; // Used to count the number of fields added.
-    var formid = '.$formid .';
-
-    var movedownEnabled = 1;
-	var numberoffields = 0;
-    
-
-	//onscreen language variables and default values
-	var dropdownTxt = "";
-	var radioTxt = "";
-	var textAreaTxt = "";
-	var textFieldTxt = "";
-	var leftTxt = "";
-	var saveTxt = "";
-	var addedItemsTxt = "";
-	var addItemBtnTxt = "";
-	
-		//Accept values for onscreen language variables from PHP
-	function setLangStrings(lang_dropdownTxt,lang_radioTxt,lang_textAreaTxt,lang_textFieldTxt,lang_leftTxt,lang_saveTxt,lang_addedItemsTxt,lang_addItemBtnTxt)
-	{
-
-		dropdownTxt = lang_dropdownTxt;
-		radioTxt = lang_radioTxt;
-		textAreaTxt = lang_textAreaTxt;
-		textFieldTxt = lang_textFieldTxt;
-		leftTxt = lang_leftTxt;
-		saveTxt = lang_saveTxt;
-		addedItemsTxt = lang_addedItemsTxt;
-		addItemBtnTxt = lang_addItemBtnTxt;
-
-	}
-				setLangStrings("'.get_string('formBuilder_dropdownTxt','block_cmanager').'","'.get_string('formBuilder_radioTxt','block_cmanager').'","'.get_string('formBuilder_textAreaTxt','block_cmanager').'","'.get_string('formBuilder_textFieldTxt','block_cmanager').'","'.get_string('formBuilder_leftTxt','block_cmanager').'","'.get_string('formBuilder_saveTxt','block_cmanager').'","'.get_string('formBuilder_addedItemsTxt','block_cmanager').'","'.get_string('formBuilder_addItemBtnTxt','block_cmanager').'")
-	
-	
-function goBack(){
-	window.location ="form_builder.php";
-}
-
-			</script>
-			
-	<button type="button" onclick="goBack();"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</button><p></p>
-	
-			<br>
-			<br><b>'.get_string('formBuilder_editingForm','block_cmanager').':</b> ' .$formname.'<br><br>
-			'.get_string('formBuilder_p2_instructions','block_cmanager').'
-			<hr><p></p><br>
-	 		'.get_string('formBuilder_p2_addNewField','block_cmanager').':
-			<select name="newfieldselect" onchange="addNewField(this);">
-			   <option>'.get_string('formBuilder_p2_dropdown1','block_cmanager').'</option>
-			   <option value="tf">'.get_string('formBuilder_p2_dropdown2','block_cmanager').'</option>
-			   <option value="ta">'.get_string('formBuilder_p2_dropdown3','block_cmanager').'</option>
-			   <option value="radio">'.get_string('formBuilder_p2_dropdown4','block_cmanager').'</option>
-			   <option value="dropdown">'.get_string('formBuilder_p2_dropdown5','block_cmanager').'</option>
-			</select>
-
-			<p></p>
-			<br>
-			<hr>
-			<div style="width: 100%; filter:alpha(Opacity=50); overflow:auto;">
-			<div style="background: #9c9c9c;">
-			<br>
-			<center><b>' .$formname.' '.get_string('formBuilder_shownbelow','block_cmanager').'</b></center><br>
-			</div><p></p><br>
 
 
+$htmloutput = '
+    <script src="../js/jquery/jquery-3.3.1.min.js"></script>
+    <script>
+        var num = 1; // Used to count the number of fields added.
+        var formid = '.$formid .';
+
+        var movedownEnabled = 1;
+        var numberoffields = 0;
 
 
+        //onscreen language variables and default values
+        var dropdownTxt = "";
+        var radioTxt = "";
+        var textAreaTxt = "";
+        var textFieldTxt = "";
+        var leftTxt = "";
+        var saveTxt = "";
+        var addedItemsTxt = "";
+        var addItemBtnTxt = "";
 
+        //Accept values for onscreen language variables from PHP
+        function setLangStrings(lang_dropdownTxt,lang_radioTxt,lang_textAreaTxt,lang_textFieldTxt,lang_leftTxt,lang_saveTxt,lang_addedItemsTxt,lang_addItemBtnTxt)
+        {
 
+            dropdownTxt = lang_dropdownTxt;
+            radioTxt = lang_radioTxt;
+            textAreaTxt = lang_textAreaTxt;
+            textFieldTxt = lang_textFieldTxt;
+            leftTxt = lang_leftTxt;
+            saveTxt = lang_saveTxt;
+            addedItemsTxt = lang_addedItemsTxt;
+            addItemBtnTxt = lang_addItemBtnTxt;
 
-			<div id="formdiv" style="width:400px">
+        }
+        setLangStrings("'.get_string('formBuilder_dropdownTxt','block_cmanager').'","'.get_string('formBuilder_radioTxt','block_cmanager').'","'.get_string('formBuilder_textAreaTxt','block_cmanager').'","'.get_string('formBuilder_textFieldTxt','block_cmanager').'","'.get_string('formBuilder_leftTxt','block_cmanager').'","'.get_string('formBuilder_saveTxt','block_cmanager').'","'.get_string('formBuilder_addedItemsTxt','block_cmanager').'","'.get_string('formBuilder_addItemBtnTxt','block_cmanager').'")
+    </script>
 
+    <a class="btn btn-default" href="form_builder.php"><img src="../icons/back.png"/> '.get_string('back','block_cmanager').'</a>
 
-			</div>
+    <h2>' . get_string('formBuilder_editingForm','block_cmanager') . ': ' .$formname.'</h2>
+    <p>' . get_string('formBuilder_p2_instructions','block_cmanager') . '</p>
 
-			<a href="preview.php?id=' . $formid . '">'.get_string('formBuilder_previewForm','block_cmanager').'</a>
-			<center><a href="../cmanager_admin.php"><input type="button" value="'.get_string('formBuilder_returntoCM','block_cmanager').'"/></a></center>
-		';
-	$htmloutput .= generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );	
-	echo $htmloutput;	
+    <div id="formdiv"></div>
+    <label for="newfieldselect">'.get_string('formBuilder_p2_addNewField','block_cmanager').':</label>
+    <select name="newfieldselect" id="newfieldselect" onchange="addNewField(this);">
+        <option>'.get_string('formBuilder_p2_dropdown1','block_cmanager').'</option>
+        <option value="tf">'.get_string('formBuilder_p2_dropdown2','block_cmanager').'</option>
+        <option value="ta">'.get_string('formBuilder_p2_dropdown3','block_cmanager').'</option>
+        <option value="radio">'.get_string('formBuilder_p2_dropdown4','block_cmanager').'</option>
+        <option value="dropdown">'.get_string('formBuilder_p2_dropdown5','block_cmanager').'</option>
+    </select>
+    <p class="mt-3">
+        <a class="btn btn-default" href="preview.php?id=' . $formid . '">' . get_string('formBuilder_previewForm','block_cmanager') . '</a>
+        <a class="btn btn-default" href="../cmanager_admin.php">' . get_string('formBuilder_returntoCM','block_cmanager') . '</a>
+    </p>
+    ';
+	$htmloutput .= generateGenericPop('saved', get_string('ChangesSaved','block_cmanager'), get_string('ChangesSaved','block_cmanager'), get_string('ok','block_cmanager') );
+	echo $htmloutput;
 ?>
-
-
-
-
-
-			<div id="formdiv" style="width:400px">
-
-
-			</div>
-
-
-
-
-
-<script src="../js/jquery/jquery-3.3.1.min.js"></script>
-
-
-
 <script>
 // Save the form field status as either a required field
 // or an optional field. Display a modal after saving.
@@ -358,9 +314,9 @@ function createTextField(){
 
 	   });
 
-	
+
 		num++;
-	window.location = 'page2.php?id=' + formid; 
+	window.location = 'page2.php?id=' + formid;
 
 
 
@@ -370,88 +326,59 @@ function createTextField(){
 // If the text field already existed, rebuilt it using data from the db.
 function recreateTextField(uniqueId, leftText, requiredFieldValue){
 
-       // leftText = decodeURI(leftText);
-		var ni = document.getElementById('formdiv');
-		var newdiv = document.createElement('div');
-		//newdiv.style.backgroundColor = "gray";
-		newdiv.style.borderWidth = '1px';
-		newdiv.style.borderStyle = 'dotted';
+    // leftText = decodeURI(leftText);
+    var ni = document.getElementById('formdiv');
+    var newdiv = document.createElement('div');
+    //newdiv.style.backgroundColor = "gray";
+    newdiv.style.borderBottomWidth = '1px';
+    newdiv.style.borderBottomStyle = 'dotted';
 
-		newdiv.style.width = 400;
-		newdiv.style.height = 110;
-        newdiv.style.marginBottom = 5;
-        newdiv.style.marginLeft = 5;
+    newdiv.style.width = 400;
+    newdiv.style.height = 110;
+    newdiv.style.margin = '5px';
 
-		var divIdName = 'my'+num+'Div';
-        newdiv.setAttribute('id',num);
-        ni.appendChild(newdiv);
+    var divIdName = 'my'+num+'Div';
+    newdiv.setAttribute('id',num);
+    ni.appendChild(newdiv);
 
-   	    var selectedText = '';
-   	    if(requiredFieldValue == '1'){
+    var selectedText = '';
+    if(requiredFieldValue == '1'){
+        selectedText = 'selected';
+    }
 
-   	    	       	selectedText = 'selected="selected"';
-   	    }
-
-
-   	    if(numberoffields == 1){
-   	    		newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <img src="../icons/move_up_dis.png"   alt="move up" /> '+
-   	    		'<img src="../icons/move_down_dis.png"   alt="move down" />  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> ' +
-   	    		'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-   	    		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')">  ' +
-   	    		'<option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>   ' +
-   	    		'<option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  ' +
-   	    		' </select><p></p> ' +
-   	    		' <table><tr><td>'+leftTxt+':</td> ' +
-   	    		' <td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr> ' +
-   	    		' </table> ' +
-				'<input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-   	    } else {
-   	   		 	if(num == 1){
-			   	   		newdiv.innerHTML = '<b>'+textFieldTxt+':</b> '+
-			   	   		'<img src="../icons/move_up_dis.png"   alt="move up" />  <a href="page2.php?id=' + formid + '&down=' + uniqueId + '">'+
-			   	   		'<img src="../icons/move_down.png" width="30" height="30" alt="move down" /></a>  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '">'+
-			   	   		'<img src="../icons/deleteIcon.png"   alt="delete" /></a>'+
-			   	   		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> '+
-			   	   		'<option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option> '+
-			   	   		'<option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option> '+
-			   	   		 '</select> <p></p>'+
-			   	   		 '<table>'+
-			   	   		 '<tr>'+
-			   	   		 '<td>'+leftTxt+':</td>'+
-			   	   		 '<td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table>'+
-			   	   		 '<input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/> ';
-			       	}
-					else if(movedownEnabled == 0){
-						 newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '">'+
-						 '<img src="../icons/move_up.png"   alt="move up" /></a>   '+
-						 '<img src="../icons/move_down_dis.png"   alt="move down" />   <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-						 '<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-						 '<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> '+
-						 '<option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option> '+
-						 '<option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>'+
-						 '</select><p></p><table><tr><td>'+leftTxt+':</td>'+
-						 '<td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table>'+
-						 '<input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-			       	}
-				    else {
-				    	 newdiv.innerHTML = '<b>'+textFieldTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '">'+
-				    	 '<img src="../icons/move_up.png"   alt="move up" /></a>'+ 
-				    	 ' <a href="page2.php?id=' + formid + '&down=' + uniqueId + '">'+
-				    	 ' <img src="../icons/move_down.png"   alt="move down" /></a>'+
-				    	 ' <a href="page2.php?id=' + formid + '&del=' + uniqueId + '">'+
-				    	 ' <img src="../icons/deleteIcon.png"   alt="delete" /></a>'+
-				    	 '<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> '+
-				    	 '	<option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option> '+
-				    	 '	 <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option> '+
-				    	 '	 </select>'+
-				    	 ' <p></p><table><tr><td>'+leftTxt+':</td><td>'+
-				    	 '<input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table>'+
-				    	 '<input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-			       	}
-
-       		}
-       			num++;
+    var icons;
+    if(numberoffields == 1) {
+        icons = '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+    }
+    else {
+        if(num == 1){
+            icons = '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('movedown'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+        }
+        else if(movedownEnabled == 0){
+            icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a> ';
+        }
+        else {
+            icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('movedown'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+        }
+    }
+    newdiv.innerHTML = '<div class="row">'+
+        '<div class="col-sm-6">'+
+        '<label for="x'+uniqueId +'"><strong>'+textFieldTxt+':</strong> '+leftTxt+'</label>'+
+        ' <input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input>'+
+        ' <select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')">  ' +
+        '   <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>   ' +
+        '   <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  ' +
+        ' </select>'+
+        ' <input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>'+
+        '</div>'+
+        '<div class="col-sm-2">'+icons+
+        '</div>'+
+        '</div>';
+    num++;
 }
 
 	// Create a new blank text field on the page
@@ -480,7 +407,7 @@ function createTextArea(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'textarea', formid: formid},
 				function(data) {
 
-					
+
 		   });
 
 
@@ -509,9 +436,9 @@ var value = document.getElementById('newitem'+id).value;
 
  //alert('A new item has been added: ' + value);
    window.location = 'page2.php?id=' + formid;
-   
-   
-   
+
+
+
 }
 
 
@@ -519,64 +446,61 @@ var value = document.getElementById('newitem'+id).value;
 // If the text field already existed, rebuilt it using data from the db.
 function recreateTextArea(uniqueId, leftText, requiredFieldValue){
 
-       
-		var ni = document.getElementById('formdiv');
-		var newdiv = document.createElement('div');
-		//newdiv.style.backgroundColor = "gray";
-		newdiv.style.borderWidth = '1px';
-		newdiv.style.borderStyle = 'dotted';
+    var ni = document.getElementById('formdiv');
+    var newdiv = document.createElement('div');
+    //newdiv.style.backgroundColor = "gray";
+    newdiv.style.borderBottomWidth = '1px';
+    newdiv.style.borderBottomStyle = 'dotted';
 
-		newdiv.style.width = 400;
-		newdiv.style.height = 110;
-        newdiv.style.marginBottom = 5;
-        newdiv.style.marginLeft = 5;
+    newdiv.style.width = 400;
+    newdiv.style.height = 110;
+    newdiv.style.margin = '5px';
 
-		var divIdName = 'my'+num+'Div';
-        newdiv.setAttribute('id',num);
-        ni.appendChild(newdiv);
+    var divIdName = 'my'+num+'Div';
+    newdiv.setAttribute('id',num);
+    ni.appendChild(newdiv);
 
-   	   var selectedText = '';
-   	    if(requiredFieldValue == '1'){
+    var selectedText = '';
+    if(requiredFieldValue == '1'){
+        selectedText = 'selected';
+    }
 
-   	    	       	selectedText = 'selected="selected"';
-   	    }
-
-
-   	   if(numberoffields == 1){
-   	    		newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <img src="../icons/move_up_dis.png"   alt="move up" /> <img src="../icons/move_down_dis.png"   alt="move down" />  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-   	   	 						 '<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select>'+
-   	    						'<p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-
-   	    } else {
-				   	   	if(num == 1){
-					     		 newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <img src="../icons/move_up_dis.png"   alt="move up"/>  <a href="page2.php?id=' + formid + '&down=' + uniqueId + '">'+
-					     		 '<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-					     		 '<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-					     		 '<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+ uniqueId+ '" value = "' + leftText+ '" size="30" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-				       			}
-				       	else if(movedownEnabled == 0){
-				       	 		newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> ' +
-				       	 		'<img src="../icons/move_up.png"   alt="move up" /></a> <img src="../icons/move_down_dis.png"   alt="move down" /> <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-				       	 		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-				       	}
-				       	else {
-				       	 		newdiv.innerHTML = '<b>'+textAreaTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/move_up.png"   alt="move up" /></a> <a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-				       	 		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-
-				       			}
-       		}
-       			num++;
+    var icons;
+    if(numberoffields == 1){
+        icons = '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+    }
+    else {
+        if(num == 1) {
+            icons = '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('down'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+        }
+        else if(movedownEnabled == 0){
+            icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+        }
+        else {
+            icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('movedown'); ?>"></i></a>'+
+                '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+        }
+    }
+    newdiv.innerHTML = '<div class="row">'+
+        '<div class="col-sm-6">'+
+        '<label for="x'+uniqueId +'"><strong>'+textAreaTxt+':</strong> '+leftTxt+'</label>'+
+        ' <input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input>'+
+        ' <select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')">  ' +
+        '   <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>   ' +
+        '   <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  ' +
+        ' </select>'+
+        ' <input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>'+
+        '</div>'+
+        '<div class="col-sm-2">'+icons+
+        '</div>'+
+        '</div>';
+    num++;
 }
 
-
-
-		// Create a new blank text field on the page
+// Create a new blank text field on the page
 function createDropdown(){
 
 	  var fieldsInHTML = '';
@@ -603,7 +527,7 @@ function createDropdown(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'dropdown', formid: formid},
 				function(data) {
 	     		uniqueId = data;
-	     		
+
 
 		   });
 
@@ -615,74 +539,74 @@ function createDropdown(){
 
 // If the text field already existed, rebuilt it using data from the db.
 function recreateDropdown(uniqueId, leftText, requiredFieldValue){
-        
-	  var fieldsInHTML = 'No fields added..';
 
+    var fieldsInHTML = '<?php echo get_string('formBuilder_nooptionsadded', 'block_cmanager'); ?>';
 
-       // Get the values for the dropdown menu
-        $.ajaxSetup({async:false});
-        $.post("ajax_functions.php", { id: uniqueId, type: 'getdropdownvalues'},
+    // Get the values for the dropdown menu
+    $.ajaxSetup({async:false});
+    $.post("ajax_functions.php", { id: uniqueId, type: 'getdropdownvalues'},
+        function(data) {
+            fieldsInHTML = data;
 
-   		function(data) {
-     		fieldsInHTML = data;
+            var ni = document.getElementById('formdiv');
+            var newdiv = document.createElement('div');
+            //newdiv.style.backgroundColor = "gray";
+            newdiv.style.borderBottomWidth = '1px';
+            newdiv.style.borderBottomStyle = 'dotted';
 
-		var ni = document.getElementById('formdiv');
-		var newdiv = document.createElement('div');
-		//newdiv.style.backgroundColor = "gray";
-		newdiv.style.borderWidth = '1px';
-		newdiv.style.borderStyle = 'dotted';
+            newdiv.style.width = 400;
+            newdiv.style.height = 400;
+            newdiv.style.margin = '5px';
 
-		newdiv.style.width = 400;
-		newdiv.style.height = 400;
-        newdiv.style.marginBottom = 5;
-        newdiv.style.marginLeft = 5;
+            var divIdName = 'my'+num+'Div';
+            newdiv.setAttribute('id',num);
+            ni.appendChild(newdiv);
 
-		var divIdName = 'my'+num+'Div';
-        newdiv.setAttribute('id',num);
-        ni.appendChild(newdiv);
+            var selectedText = '';
+            if(requiredFieldValue == '1'){
+                selectedText = 'selected';
+            }
 
-   	   var selectedText = '';
-   	    if(requiredFieldValue == '1'){
+            if (fieldsInHTML.length == 0){
+                fieldsInHTML = '<?php echo get_string('formBuilder_nooptionsadded', 'block_cmanager'); ?>';
+            }
 
-   	    	       	selectedText = 'selected="selected"';
-   	    }
-
-
-   	   if(numberoffields == 1){
-   	    		//newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <img src="../icons/move_up_dis.png"   alt="move up" /> <img src="../icons/move_down_dis.png"   alt="move down" />  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><img src="../icons/deleteIcon.png"   alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-			     newdiv.innerHTML = '<b>'+dropdownTxt+':</b><img src="../icons/move_up_dis.png"   alt="move up" /><a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-			     '<img src="../icons/move_down.png"   alt="move down" /></a> <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> '+
-			     '<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-			     '<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-   	    } else {
-
-				   	   	if(num == 1){
-			       					newdiv.innerHTML = '<b>'+dropdownTxt+':</b><img src="../icons/move_up_dis.png"   alt="move up" /><a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-			       					'<img src="../icons/move_down.png"   alt="move down" /></a> <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> ' +
-			       					'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-			       					'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-				       	}
-				       	else if(movedownEnabled == 0){
-				       		newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> '+
-				       		'<img src="../icons/move_up.png"   alt="move up" /></a> '+
-				       		'<img src="../icons/move_down_dis.png"   alt="move down" /> <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> '+
-				       		'<img src="../icons/deleteIcon.png"   alt="delete" /></a>'+
-				       		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-				       	} else {
-
-				       	 		newdiv.innerHTML = '<b>'+dropdownTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/move_up.png"   alt="move up" /></a>  <a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> '+
-				       	 		'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-				       	 		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-				       			}
-       			}
-	   });
-
-       			num++;
+            var icons;
+            if(numberoffields == 1){
+                icons ='<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+            } else {
+                if(num == 1){
+                    icons ='<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('down'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+                }
+                else if(movedownEnabled == 0){
+                    icons ='<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+                } else {
+                    icons ='<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('down'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+                }
+            }
+            newdiv.innerHTML = '<div class="row">'+
+                '<div class="col-sm-6">'+
+                '<label for="x'+uniqueId +'"><strong>'+dropdownTxt+':</strong> '+leftTxt+'</label>'+
+                ' <input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input>'+
+                ' <select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')">  ' +
+                '   <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>   ' +
+                '   <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  ' +
+                ' </select>'+
+                ' <input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>'+
+                '</div>'+
+                '<div class="col-sm-2">'+icons+
+                '</div>'+
+                '</div>'+
+                ' <input type="text" id="newitem'+uniqueId +'"> <input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');">'+
+                '<p>'+addedItemsTxt+':</p>'+
+                fieldsInHTML;
+        }
+    );
+    num++;
 }
 
 
@@ -693,8 +617,8 @@ function createRadio(){
 		var ni = document.getElementById('formdiv');
 		var newdiv = document.createElement('div');
 		//newdiv.style.backgroundColor = "gray";
-		newdiv.style.borderWidth = '1px';
-		newdiv.style.borderStyle = 'dotted';
+		newdiv.style.borderBottomWidth = '1px';
+		newdiv.style.borderBottomStyle = 'dotted';
 
 		newdiv.style.width = 450;
 		newdiv.style.height = 400;
@@ -712,7 +636,7 @@ function createRadio(){
          $.post("ajax_functions.php", { type: 'page2addfield', fieldtype: 'radio', formid: formid},
 				function(data) {
 	     		uniqueId = data;
-	     		
+
 
 		   });
 
@@ -724,76 +648,74 @@ function createRadio(){
 
 // If the text field already existed, rebuilt it using data from the db.
 function recreateRadio(uniqueId, leftText, requiredFieldValue){
-        leftText = decodeURI(leftText);
-	  var fieldsInHTML = 'No fields added..';
+    leftText = decodeURI(leftText);
+    var fieldsInHTML;
 
+    // Get the values for the dropdown menu
+    $.ajaxSetup({async:false});
+    $.post("ajax_functions.php", { id: uniqueId, type: 'getdropdownvalues'},
 
+        function(data) {
+            fieldsInHTML = data;
+            var ni = document.getElementById('formdiv');
+            var newdiv = document.createElement('div');
+            newdiv.style.borderBottomWidth = '1px';
+            newdiv.style.borderBottomStyle = 'dotted';
 
-       // Get the values for the dropdown menu
-        $.ajaxSetup({async:false});
-        $.post("ajax_functions.php", { id: uniqueId, type: 'getdropdownvalues'},
+            newdiv.style.width = 400;
+            newdiv.style.height = 400;
+            newdiv.style.margin = '5px';
+            var divIdName = 'my'+num+'Div';
+            newdiv.setAttribute('id',num);
+            ni.appendChild(newdiv);
 
-   		function(data) {
+            var selectedText = '';
+            if(requiredFieldValue == '1'){
+                selectedText = 'selected';
+            }
 
-		fieldsInHTML = data;
-		var ni = document.getElementById('formdiv');
-		var newdiv = document.createElement('div');
-		//newdiv.style.backgroundColor = "gray";
-		newdiv.style.borderWidth = '1px';
-		newdiv.style.borderStyle = 'dotted';
+            if (fieldsInHTML.length == 0){
+                fieldsInHTML = '<?php echo get_string('formBuilder_nooptionsadded', 'block_cmanager'); ?>';
+            }
 
-		newdiv.style.width = 400;
-		newdiv.style.height = 400;
-        newdiv.style.marginBottom = 5;
-        newdiv.style.marginLeft = 5;
-		newdiv.style.overflow = 'auto';
-		var divIdName = 'my'+num+'Div';
-        newdiv.setAttribute('id',num);
-        ni.appendChild(newdiv);
-
-   	var selectedText = '';
-   	    if(requiredFieldValue == '1'){
-
-   	    	       	selectedText = 'selected="selected"';
-   	    }
-
-
-	   if(numberoffields == 1){
-	      // newdiv.innerHTML = '<b>'+radioTxt+':</b> <img src="../icons/move_up_dis.png"   alt="move up" /><img src="../icons/move_down_dis.png"   alt="move down" /> <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><img src="../icons/deleteIcon.png"   alt="delete" /></a> <p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>';
-		newdiv.innerHTML = '<b>'+radioTxt+':</b>  <img src="../icons/move_up_dis.png"   alt="move up" /> <a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-		'<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-		'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-		'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-	} else {
-
-
-   	   	if(num == 1){
-				newdiv.innerHTML = '<b>'+radioTxt+':</b>  <img src="../icons/move_up_dis.png"   alt="move up" /> <a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-				'<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&del=' + uniqueId + '"> '+
-				'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-				'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-
-				}
-       	else if(movedownEnabled == 0){
-       				newdiv.innerHTML = '<b>'+radioTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> '+
-       				'<img src="../icons/move_up.png"   alt="move up" /></a> <img src="../icons/move_down_dis.png"   alt="move down" /> <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> '+
-       				'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-       				'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-       	} else {
-       	 			newdiv.innerHTML = '<b>'+radioTxt+':</b> <a href="page2.php?id=' + formid + '&up=' + uniqueId + '"> '+
-       	 			'<img src="../icons/move_up.png"   alt="move up" /></a>  <a href="page2.php?id=' + formid + '&down=' + uniqueId + '"> '+
-       	 			'<img src="../icons/move_down.png"   alt="move down" /></a>  <a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"> '+
-       	 			'<img src="../icons/deleteIcon.png"   alt="delete" /></a> '+
-       	 			'<select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')"> <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>  <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  </select><p></p><table><tr><td>'+leftTxt+':</td><td><input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input></td></tr></table><input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/><p></p> <input type="text" id="newitem'+uniqueId +'"></input><input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');"><p></p>'+addedItemsTxt+':<p></p>' + fieldsInHTML;
-
-       			}
-       			}
-	   });
-
-       			num++;
+            var icons;
+            if(numberoffields == 1){
+                icons = '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+            }
+            else {
+                if(num == 1){
+                    icons = '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('down'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+                }
+                else if(movedownEnabled == 0){
+                    icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a>';
+                }
+                else {
+                    icons = '<a href="page2.php?id=' + formid + '&up=' + uniqueId + '"><i class="icon fa fa-arrow-up fa-fw " title="<?php echo get_string('moveup'); ?>" aria-label="<?php echo get_string('moveup'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&down=' + uniqueId + '"><i class="icon fa fa-arrow-down fa-fw " title="<?php echo get_string('movedown'); ?>" aria-label="<?php echo get_string('down'); ?>"></i></a>'+
+                        '<a href="page2.php?id=' + formid + '&t=drop&del=' + uniqueId + '"><i class="icon fa fa-trash fa-fw " title="<?php echo get_string('delete'); ?>" aria-label="<?php echo get_string('delete'); ?>"></i></a> ';
+                }
+            }
+            newdiv.innerHTML = '<div class="row">'+
+                '<div class="col-sm-6">'+
+                '<label for="x'+uniqueId +'"><strong>'+radioTxt+':</strong> '+leftTxt+'</label>'+
+                ' <input type="text" id = "x'+uniqueId +'" size="30" value="' + leftText+ '" onfocus="enableSave(\''+uniqueId+'_savebtn\');"></input>'+
+                ' <select id = "optional_'+uniqueId+'" onchange="saveOptionalStatus('+uniqueId+')">  ' +
+                '   <option value="0"> <?php echo get_string('optional_field', 'block_cmanager'); ?> </option>   ' +
+                '   <option '+selectedText+' value="1"> <?php echo get_string('required_field', 'block_cmanager'); ?></option>  ' +
+                ' </select>'+
+                ' <input type="button" value="'+saveTxt+'" disabled="disabled" id="'+uniqueId+'_savebtn" onclick="saveFieldValue(' + uniqueId+')"/>'+
+                '</div>'+
+                '<div class="col-sm-2">'+icons+
+                '</div>'+
+                '</div>'+
+                ' <input type="text" id="newitem'+uniqueId +'"> <input type="button" name="submitbutton" value="'+addItemBtnTxt+'" onclick="addNewItem('+ uniqueId +');">'+
+                '<p>'+addedItemsTxt+':</p>'+
+                fieldsInHTML;
+        }
+    );
+    num++;
 }
 
 
@@ -804,9 +726,9 @@ function saveFieldValue(id){
     var value = document.getElementById('x' + id).value;
 
 	//alert("value: " +value);
-    
+
     var currentid = id;
-    
+
     $.ajaxSetup({async:false});
     $.post("ajax_functions.php", { type: 'updatefield', id: currentid, value: value},
 				function(data) {
@@ -869,4 +791,3 @@ foreach ($formfields as $field) {
 }
 
 echo $OUTPUT->footer();
-

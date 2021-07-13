@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +16,13 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2018 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
+ * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -61,24 +62,18 @@ if (has_capability('block/cmanager:viewrecord',$context)) {
 
 
 ?>
-<link rel="stylesheet" type="text/css" href="css/main.css" />
-<script src="js/jquery/jquery-3.3.1.min.js"></script>
 
 <script type="text/javascript">
 var id = 0;
 // pop up a modal to ask the user are
-// they sure that they want to cancel the 
+// they sure that they want to cancel the
 // request
 function cancelConfirm(cid,langString) {
 	$("#conf1").modal();
     id = cid;
-	
+
 }
 </script>
-<style>
-	tr:nth-child(odd)		{ background-color:#eee; }
-	tr:nth-child(even)		{ background-color:#fff; }
- </style>
 
 <?php
 /**
@@ -96,44 +91,37 @@ class block_cmanager_module_manager_form extends moodleform {
         global $CFG, $DB, $USER;
 
 	    $mform =& $this->_form; // Don't forget the underscore!
-	    $mform->addElement('header', 'mainheader',' <span style="font-size:18px"> '.get_string('cmanagerExstingTab','block_cmanager').'</span>');
-        $mform->addElement('html', '<p></p>&nbsp;&nbsp;&nbsp;'.get_string('cmanagerWelcome','block_cmanager').' &nbsp;
-		                            <p></p><br>
-		                            &nbsp;&nbsp;<INPUT TYPE="BUTTON" VALUE="'.get_string('cmanagerRequestBtn','block_cmanager').'" ONCLICK="window.location.href=\'course_request.php?mode=1\'"><br>
-		                            <p></p><p></p>&nbsp;');
+        $mform->addElement('html', '<p>' . get_string('cmanagerWelcome','block_cmanager') . '</p>');
+        $mform->addElement('html', '<p><a class="btn btn-default" href="course_request.php?mode=1">'.get_string('cmanagerRequestBtn','block_cmanager').'</a></p>');
 	    $uid = $USER->id;
         // Get the list of pending requests
 	    $pendinglist = $DB->get_records('block_cmanager_records',array('createdbyid' => "$uid" , 'status' => 'PENDING'), 'id ASC');
 	    $outputhtml = '<div id="pendingrequestcontainer">';
-        
+
         $outputhtml .= block_cmanager_display_admin_list($pendinglist, true, false, false, 'user_manager');
-        
-        
-        $outputhtml .= generateGenericConfirm('conf1', get_string('alert', 'block_cmanager') , 
-                                     get_string('cmanagerConfirmCancel', 'block_cmanager'), 
+
+
+        $outputhtml .= generateGenericConfirm('conf1', get_string('alert', 'block_cmanager') ,
+                                     get_string('cmanagerConfirmCancel', 'block_cmanager'),
                                      get_string('yes', 'block_cmanager'));
-                                     
+
         $outputhtml .= '
         <script>
         // cancel request click handler
         // just does a hard redirect to the delete page and back.
         $("#okconf1").click(function(){
-              
+
               console.log("deleting request");
               window.location = "deleterequest.php?id=" + id;
-              
-            
+
+
             });
-            
+
         </script>
-        ';                             
+        ';
         // Existing Requests
-	    
-        $mform->addElement('html', '
-	                                <p></p>
-	                                &nbsp;
-	                                <p></p>
-	                                <div style="">	'.$outputhtml.'</div>');
+
+        $mform->addElement('html', '<div style="">	'.$outputhtml.'</div>');
 	    } // Close the function
 
     } // Close the class

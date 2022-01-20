@@ -1,17 +1,23 @@
-----------------------------------------------------------------------
+# Change Log
+All notable changes to this project will be documented in this file.
 
-		CRM Changelog
-----------------------------------------------------------------------
+## [5.3.1] - 2022-01-20 (BETA)
+### Added
+- Adopted by new maintainer - Michael Milette, TNG Consulting Inc.
+- Support for filters in emails.
+- Full support for multi-language sites.
+- Font size is now inherited from theme.
+- File: LICENSE.txt
+- File: .gitignore
+- File: composer.json
+- File: CONTRIBUTING.md
 
-CRM 5.3
-
-Date: May/2021
-- User interface (look and feel) facelift.
+### Updated
+- Modernized look of user interface (look and feel).
 - Fixed many bug.
 - Now compatible with Moodle 3.7, 3.8, 3.9, 3.10 and 3.11.
-- Compatible with PHP 7.x.
-- Should now fully support tagged language strings.
-- Should be compatible with most Bootstrap 4 - Boost-based themes.
+- Compatible with PHP 7.1, 7.2, 7.3 and 7.4.
+- Compatibility with most Bootstrap 4 - Boost-based themes.
 - Many accessibility improvements.
 - Corrected typos in language strings.
 - Fixed HTML title on several pages.
@@ -25,11 +31,21 @@ Date: May/2021
 - Fixed field sorting issue in preview.
 - Font size is now inherited from theme.
 - Fixed issues with displaying radio buttons in forms.
+- Updated README.md documentation
+- Renamed and updated CHANGELOG.md
+- Removed ZIP files of old version of code.
+- Copyright notice to include 2022.
+- Removed ability to delete active form.
+- Fixed field sorting issue in preview.
+- Fixed issues with displaying radio buttons in forms.
+- Fixed deprecated functions.
+- Fixed typos in language file.
+- Fixed display of categories dropdown.
+- Buttons/links css now compatible with bootstrap.
+- Transparent background applied to list folder icons, compatible with all background colours.
+- Fixed installation Warning: time() expected exactly 0 parameters, 1 given
 
-CRM 5.1
-
-Date: June/2018
-
+## [5.1] 2018-06
 - Fixed buttons on review request page, were right aligning instead of bottom.
 - Updated version.php issue.
 - Updated DB schema issue for new moodle.
@@ -48,9 +64,8 @@ Date: June/2018
 - Minor changes to "open details" card.
 - Events/logging added into the course approve process, course delete, new course request.
 
-Date July/2018
-
-- Modified table layout / removed old <p> tags for view_summary.php
+### 2018-07
+- Modified table layout / removed old P tags for view_summary.php
 - jquery 1.7.2 updated to  3.3.1
 - jquery-ui 1.8 updated to 1.12.1 / removed not needed refs.
 - new links to config in block settings when in edit mode to config block. Updated lang strings.
@@ -66,7 +81,7 @@ Date July/2018
 - lib/coursecatlib.php include added.
 - GDPR Privacy API support added.
 
-Date: August 2018
+### Date: 2018-08
 - Minor bug on radio buttons during form creation fixed. (page2.php)
 - Bootstrap modals added to replace older JavaScript pop ups (cmanager_admin)
 - module_manager / cmanager_admin_arch modals added.
@@ -81,12 +96,7 @@ Date: August 2018
 - JS modified in cmanager_admin to remove warnings.
 - page2.php form editor element positioning bug fixed.
 
-
-----------------------------------------------------------------------
-
-
-CRM 4.3
-Date: 25/May/2015
+## [4.3] 2015-05-25
 - Fixed permissions in access.php.
 - Updated readme.txt with quick guide on permissions
 - Changed block_cmanager to work on permissions rather than admin privs
@@ -100,38 +110,24 @@ Date: 25/May/2015
 
 See Github for full log!
 
-----------------------------------------------------------------------
-
-CRM 4.2
-Date: 5/Aug/2014
-- Question marks not accepted during request process. Question marks
-are now allowed.
+## [4.2] 2014-08-05
+- Question marks not accepted during request process. Question marks are now allowed.
 - Editing issue during course request resolved.
 - Bulk approve updated
 
 See Github for full log!
 
-----------------------------------------------------------------------
-CRM 4.1
-Date: 11/April/2014
+## [4.1] 2014-04-11
 - Enrollment keys are optional
 - Safari form1.php saving issue solved.
 - Various small bug fixes
-----------------------------------------------------------------------
 
-CRM Version 4.0
-Date: 1/April/2014
-
+## [4.0] 2014-04-01
 - Updated license information
 - Checked on Moodle 2.6
 - Default form blank value error resolved.
 
-
-----------------------------------------------------------------------
-
-CRM Version 3.9
-Date: 25/Nov/2013
-
+## [3.9] 2013-11-25
 - New Layout for requests
 - Issue with escaping characters resolved
 - New German Language pack added (Thanks to Alexander Kiy )
@@ -141,102 +137,43 @@ Date: 25/Nov/2013
 - Improvements to layout of pages
 - various bug fixes
 
-
-----------------------------------------------------------------------
-
-CRM Version 3.5
-Date: 20/Sep/2013
-
-
+## [3.5] 2013-09-20
 Self enroll error has been resolved, due to a new field appearing
 in the moodle 2.5 enroll database table.
 
+## [3.3] 2013-09-10
+- Long drop down menu on cmanager_admin is show shortened until clicked
+- New Icons added to block
+- Escaping values issue corrected
 
------------------------------------------
+## [3.1]
+### Changes
+- Dropdown deleting error has been resolved. Dropdowns can be deleted without any error. (Error: No Id added)
+- Echo added to review_request.php
+- Ordering issue in course_new.php and displayLists.php updated to ASC
+- Postgree SQL error on module_manager.php removed
+- Category list updated on request page, using the default method of displaying categories in lists.
+- Additional fields added into the naming conventions to include years.
 
-
-
-CRM Version 3.3
-Date: 10/Sep/2013
-Long drop down menu on cmanager_admin is show shortened until clicked
-
-New Icons added to block
-
-Escaping values issue corrected
-
-
-
-
-
-
------------------------------------------------------------------------
-
-CRM Version 3.1
-Date:
-
-CHANGES
-
-Dropdown deleting error has been resolved. Dropdowns can be deleted
-without any error. (Error: No Id added)
-
-Echo added to review_request.php
-
-Ordering issue in course_new.php and displayLists.php updated to ASC
-
-Postgree SQL error on module_manager.php removed
-
-Category list updated on request page, using the default method of displaying
-categories in lists.
-
-Additional fields added into the naming conventions to include years.
-
-----------------------------------------------------------------------
-CRM Version: 3.0
-Date: 12th March 2013
-
-CHANGES:
-
-
-
-Debug errors showing up in Moodle 2.4 these have been removed.
-
-Clear history function has been added to allow the admin to remove all archived requests and also every request in the system.
-
-Mod mode was missing from some summaries, this has been added
-
-Search function has been added to current requests and also existing requests, allowing the admin to search by author name, code and title for specific requests.
-
-Unused Jquery references have been removed. All Jquery references are to the local code, and no external connections are now made.
-
-Unused CSS references have been removed
-
-
-New function added to allow the admin to allow the person making the request to categorise their request using the Moodle categories.
-
-New function added allowing the admin to quickly change the category of a request to allow for quicker approvals.
-
-All course default settings are now pulled from the moodle installation, and not replicated in the CRM.
-
-Dead links when using My Moodle have been fixed.
-
-A counter has been added at a block level to show the number of requests currently pending.
-
-All references to mdl_ have been removed.
-
-Archived requests has now become a separate page.
-
-Misc Config / E-mail settings have been broken down into two separate pages.
-
-Layout has been improved to prevent border lines overlapping on requests.
-
-New Bulk approve function added.
-
-Layout of comments have been updated to improve readability.
-
-New Quick Approval function allowing admin to add course in one click.
-
-New function added to allow fields on form page 2 to become optional or required.
-
-jQuery Tabs removed to improve any cross browser issues.
-
-----------------------------------------------------------------------
+## [3.0] 2013-03-12
+### Changes
+- Debug errors showing up in Moodle 2.4 these have been removed.
+- Clear history function has been added to allow the admin to remove all archived requests and also every request in the system.
+- Mod mode was missing from some summaries, this has been added
+- Search function has been added to current requests and also existing requests, allowing the admin to search by author name, code and title for specific requests.
+- Unused Jquery references have been removed. All Jquery references are to the local code, and no external connections are now made.
+- Unused CSS references have been removed
+- New function added to allow the admin to allow the person making the request to categorise their request using the Moodle categories.
+- New function added allowing the admin to quickly change the category of a request to allow for quicker approvals.
+- All course default settings are now pulled from the moodle installation, and not replicated in the CRM.
+- Dead links when using My Moodle have been fixed.
+- A counter has been added at a block level to show the number of requests currently pending.
+- All references to mdl_ have been removed.
+- Archived requests has now become a separate page.
+- Misc Config / E-mail settings have been broken down into two separate pages.
+- Layout has been improved to prevent border lines overlapping on requests.
+- New Bulk approve function added.
+- Layout of comments have been updated to improve readability.
+- New Quick Approval function allowing admin to add course in one click.
+- New function added to allow fields on form page 2 to become optional or required.
+- jQuery Tabs removed to improve any cross browser issues.

@@ -22,7 +22,7 @@
   *
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
- * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
+ * @copyright  2021-2022 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("../../../config.php");

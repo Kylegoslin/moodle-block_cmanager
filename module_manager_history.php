@@ -83,7 +83,7 @@ function cancelConfirm(id,langString) {
  * in the past.
  * @package    block_cmanager
  * @copyright  2018 Kyle Goslin, Daniel McSweeney
- * @copyright  2021 Michael Milette (TNG Consulting Inc.), Daniel Keaman
+ * @copyright  2021-2022 Michael Milette (TNG Consulting Inc.), Daniel Keaman
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_cmanager_module_manager_history_form extends moodleform {

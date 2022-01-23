@@ -57,6 +57,8 @@ class block_cmanager_course_exists_form extends moodleform {
 
         global $CFG, $DB, $currentSess;
 
+        $norequestcontrol = !empty(get_config('block_cmanager', 'norequestcontrol'));
+
         $currentRecord =  $DB->get_record('block_cmanager_records', array('id'=>$currentSess));
         $mform =& $this->_form; // Don't forget the underscore!
 
@@ -88,13 +90,14 @@ class block_cmanager_course_exists_form extends moodleform {
         $allRecords = $DB->get_recordset_select('course', $select=$selectQuery);
 
         // Table heading.
+        $showactions = empty($norequestcontrol) ? '<th>' . get_string('actions','block_cmanager') . '</th>' : '';
         $mform->addElement('html', '
             <tr>
                 <th>' . get_string('modcode','block_cmanager') . '</th>
                 <th>' . get_string('modname','block_cmanager') . '</th>
                 <th>' . get_string('catlocation','block_cmanager'). '</th>
                 <th>' . get_string('lecturingstaff','block_cmanager')  . '</th>
-                <th>' . get_string('actions','block_cmanager') . '</th>
+                ' . $showactions . '
             </tr>
         ');
 
@@ -114,13 +117,15 @@ class block_cmanager_course_exists_form extends moodleform {
                 $catLocation = '&nbsp';
             }
 
+            $showactions = empty($norequestcontrol) ? '<td><a href="requests/request_control.php?id=' . $record->id . '">' .
+                    get_string('request_requestControl','block_cmanager') . '</a></td>' : '';
             $mform->addElement('html', '
                 <tr>
                     <th>' . format_string($record->shortname) . '</th>
                     <td>' . format_string($record->fullname) .'</td>
                     <td>' . format_string($catLocation) . '</td>
                     <td>' . $lecturersHTML . '</td>
-                    <td><a href="requests/request_control.php?id=' . $record->id . '">'.get_string('request_requestControl','block_cmanager') . '</a></td>
+                    ' . $showactions . '
                 </tr>
             ');
         }
@@ -128,7 +133,13 @@ class block_cmanager_course_exists_form extends moodleform {
         $mform->addElement('html', '</table>');
 
         // Button: None of these? Continue.
-        $mform->addElement('html', '<p><a class="btn btn-default" href="course_new.php?status=None">' . get_string('noneofthese','block_cmanager') . '</a></p>');
+        if (empty($norequestcontrol)) {
+            $showactions = 'course_new.php?status=None';
+        } else {
+            $showactions = 'course_request.php?mode=1';
+        }
+        $mform->addElement('html', '<p><a class="btn btn-default" href="' . $showactions . '">' .
+                get_string('noneofthese','block_cmanager') . '</a></p>');
 
         $mform->closeHeaderBefore('buttonar');
     }
@@ -136,8 +147,6 @@ class block_cmanager_course_exists_form extends moodleform {
 
 
 $mform = new block_cmanager_course_exists_form();//name of the form you defined in file above.
-
-
   if ($mform->is_cancelled()){
 
   } else if ($fromform=$mform->get_data()){
@@ -151,7 +160,3 @@ $mform = new block_cmanager_course_exists_form();//name of the form you defined 
 
 
 }
-
-
-
-?>

@@ -15,20 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for Course Request Manager
+ * Settings for Course Request Manager.
  *
  * @package    block_cmanager
- * @copyright  2012-2018 Kyle Goslin, Daniel McSweeney (Institute of Technology Blanchardstown)
- * @copyright  2021-2022 TNG Consulting Inc.
- * @author     Kyle Goslin, Daniel McSweeney
+ * @copyright  2021-2022 TNG Consulting Inc. - www.tngconsulting.ca
  * @author     Michael Milette
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2022012300;      // The current module version (Date: YYYYMMDDXX)
-$plugin->requires  = 2019052000;      // Requires Moodle 3.7 or later.
-$plugin->component = 'block_cmanager';
-$plugin->maturity = MATURITY_BETA;
-$plugin->release = '5.3.1';
+if ($ADMIN->fulltree) {
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_cmanager/norequestcontrol',
+            get_string('norequestcontrol', 'block_cmanager'),
+            get_string('norequestcontrol_desc', 'block_cmanager'),
+            0 // Default.
+        )
+    );
+}

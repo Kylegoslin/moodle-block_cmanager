@@ -1,18 +1,23 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [5.3.1] - 2022-01-20 (BETA)
+## [5.3.1] - 2022-01-23 (BETA)
 ### Added
 - Adopted by new maintainer - Michael Milette, TNG Consulting Inc.
 - Support for filters in emails.
 - Full support for multi-language sites.
 - Font size is now inherited from theme.
+- Block is no longer visible if user is not authenticated.
+- Fix-2: Plugin setting page, specifically to enable/disable request control option.
 - File: LICENSE.txt
 - File: .gitignore
 - File: composer.json
 - File: CONTRIBUTING.md
 
 ### Updated
+- Refactored block_cmanager.php
+- Block can be placed on any page.
+- You can no longer add more than one instance of the block to a page.
 - Modernized look of user interface (look and feel).
 - Fixed many bug.
 - Now compatible with Moodle 3.7, 3.8, 3.9, 3.10 and 3.11.

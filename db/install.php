@@ -57,7 +57,7 @@ $DB->insert_record('block_cmanager_config', $newrec, false);
 
 $newrec = new stdClass();
 $newrec->varname = 'startdate';
-$newrec->value = time(array('d' => date('d'), 'M' => date('n'), 'Y' => date('Y')));
+$newrec->value = strtotime('today midnight');
 $DB->insert_record('block_cmanager_config', $newrec, false);
 
 $newrec = new stdClass();

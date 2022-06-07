@@ -1,5 +1,5 @@
 <?php
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 // block_cmanager is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,7 @@
 // COURSE REQUEST MANAGER BLOCK FOR MOODLE
 // by Kyle Goslin & Daniel McSweeney
 // Copyright 2012-2014 - Institute of Technology Blanchardstown.
-// --------------------------------------------------------- 
+// ---------------------------------------------------------
 /**
  * COURSE REQUEST MANAGER
   *
@@ -27,12 +27,6 @@
 
 function xmldb_block_cmanager_install() {
 global $CFG, $DB;
-
-echo '<center><h2>Course Manager Configuration Builder</h2>';
-
-echo 'Building Config Variables...';
-
-
 
 $newrec = new stdClass();
 $newrec->varname = 'selfcat';
@@ -357,19 +351,6 @@ $newrec->position = 1;
 $newrec->reqfield = 1;
 $newrec->formid = $activeFormId;
 $DB->insert_record('block_cmanager_formfields', $newrec, false);
-
-
-
-
-
-
-echo '<p></p>';
-echo 'All config variables have been created';
-echo '<p></p>';
-echo '<b>Thats it! Your Course manager is now ready to use!</b> <p></p>&nbsp <p></p> <a href="../../../">Return to your Moodle</a>';
-
-
-echo '</center>';
 
 }
 ?>
